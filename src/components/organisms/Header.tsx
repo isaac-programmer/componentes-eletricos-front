@@ -1,11 +1,26 @@
-import { ChevronDown, CircuitBoard } from "lucide-react";
+import { 
+    Menu,
+    ChevronDown,
+    CircuitBoard,
+} from "lucide-react";
 
-export function Header() {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
     return (
         <header className="bg-white-div border-b border-border flex items-center justify-between p-6 flex-shrink-0">
             <div className="flex items-center gap-3">
-                <CircuitBoard className="h-6 w-6 text-primary" />
-                <h2 className="text-xl text-primary">Componentes</h2>
+                <button 
+                  onClick={onMenuClick} 
+                  className="md:hidden p-1 text-gray-600 hover:text-primary"
+                >
+                  <Menu className="h-6 w-6" />
+                </button>
+
+                <CircuitBoard className="h-6 w-6 hidden md:block text-primary" />
+                <h2 className="text-xl hidden md:block text-primary">Componentes</h2>
             </div>
 
             <div className="flex items-center gap-3">
