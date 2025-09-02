@@ -3,6 +3,9 @@
 import {
   Home,
   CircuitBoard,
+  Cpu,
+  List,
+  Airplay,
   Factory,
   LayoutGrid,
   FileText,
@@ -16,9 +19,9 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/home", label: "Home", icon: Home },
-  { href: "/componentes", label: "Componentes", icon: CircuitBoard },
-  { href: "/laboratorios", label: "Laboratórios", icon: Factory },
-  { href: "/categorias", label: "Categorias", icon: LayoutGrid },
+  { href: "/componentes", label: "Componentes", icon: Cpu },
+  { href: "/laboratorios", label: "Laboratórios", icon: Airplay },
+  { href: "/categorias", label: "Categorias", icon: List },
   { href: "/relatorios", label: "Relatórios", icon: FileText },
   { href: "/usuarios", label: "Usuários", icon: Users },
 ];
