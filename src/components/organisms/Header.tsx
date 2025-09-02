@@ -1,7 +1,7 @@
 import { 
     Menu,
     ChevronDown,
-    CircuitBoard,
+    Cpu,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -19,7 +19,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   <Menu className="h-6 w-6" />
                 </button>
 
-                <CircuitBoard className="h-6 w-6 hidden md:block text-primary" />
+                <Cpu className="h-6 w-6 hidden md:block text-primary" />
                 <h2 className="text-xl hidden md:block text-primary">Componentes</h2>
             </div>
 
