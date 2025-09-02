@@ -24,8 +24,8 @@ const navItems = [
 ];
 
 interface SidebarProps {
-  isOpen: boolean; // desktop
-  isMobileOpen: boolean; // mobile
+  isOpen: boolean;
+  isMobileOpen: boolean;
   onToggleDesktop: () => void;
   onCloseMobile: () => void;
 }
@@ -39,129 +39,91 @@ export function Sidebar({
   const pathname = usePathname();
 
   return (
-    <>
-      <aside
-        className={clsx(
-          "hidden md:flex h-full flex-col justify-between p-6 bg-white-div border-r border-border transition-all duration-300",
-          isOpen ? "w-64" : "w-auto"
-        )}
-      >
-        <div className="flex flex-col gap-16">
-          <div className={clsx(
-            "flex items-center justify-between",
-            !isOpen && "justify-center"
-          )}>
-            {isOpen && (
-              <img
-                src="/logo-horizontal.png"
-                alt="Logo da UFC"
-                className="transition-all duration-300"
-              />
+    <aside
+      className={clsx(
+        "flex flex-col justify-between bg-white-div border-r border-border transition-all duration-300 ease-in-out",
+        "fixed inset-y-0 left-0 z-20",
+        isMobileOpen ? "translate-x-0" : "-translate-x-full",
+        "w-64",
+        "md:relative md:translate-x-0",
+        isOpen ? "md:w-64" : "md:w-auto"
+      )}
+    >
+      <div className="flex flex-col gap-16 p-6">
+        <div className={clsx(
+          "flex items-center justify-between",
+          !isOpen && "md:justify-center",
+        )}>
+          <img
+            src="/logo-horizontal.png"
+            alt="Logo da UFC"
+            className={clsx(
+              "overflow-hidden transition-all",
+              isOpen ? "w-32" : "w-0",
+              "md:block"
             )}
-            <button
-              className="p-1 rounded-md cursor-pointer hover:bg-gray-200"
-              onClick={onToggleDesktop}
-            >
-              <ChevronLeft
-                className={clsx(
-                  "h-5 w-5 text-paragraph transition-transform duration-300",
-                  !isOpen && "rotate-180"
-                )}
-              />
-            </button>
-          </div>
+          />
+          
+          <button
+            className="p-1 rounded-md cursor-pointer hover:bg-gray-200 md:hidden"
+            onClick={onCloseMobile}
+          >
+            <ChevronLeft className="h-5 w-5 text-paragraph" />
+          </button>
 
-          <nav className="flex flex-col gap-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={clsx(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
-                  pathname.startsWith(item.href)
-                    ? "bg-primary text-white"
-                    : "text-primary hover:bg-gray-200"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {isOpen && <span>{item.label}</span>}
-              </Link>
-            ))}
+          <button
+            className="hidden md:block p-1 rounded-md cursor-pointer hover:bg-gray-200"
+            onClick={onToggleDesktop}
+          >
+            <ChevronLeft
+              className={clsx(
+                "h-5 w-5 text-paragraph transition-transform duration-300",
+                !isOpen && "rotate-180"
+              )}
+            />
+          </button>
+        </div>
 
-            <hr className="text-border" />
-
+        <nav className="flex flex-col gap-4">
+          {navItems.map((item) => (
             <Link
-              href="/logout"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-primary hover:bg-gray-200 transition-colors"
-            >
-              <LogOut className="h-5 w-5" />
-              {isOpen && "Sair"}
-            </Link>
-          </nav>
-        </div>
-
-        <div
-          className={clsx(
-            isOpen ? "p-4" : "p-0",
-            "transition-[padding] duration-300"
-          )}
-        >
-          <p className="text-center text-xs text-paragraph">2025 ©</p>
-        </div>
-      </aside >
-
-      <aside
-        className={clsx(
-          "fixed md:hidden inset-0 bg-white-div border-r border-border flex flex-col justify-between p-6 z-30 transform transition-transform duration-300",
-          isMobileOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        <div className="flex flex-col gap-16">
-          <div className="h-16 flex items-center justify-between">
-            <img src="/logo-horizontal.png" alt="Logo da UFC" />
-            <button
-              className="p-1 rounded-md cursor-pointer hover:bg-gray-200"
+              key={item.label}
+              href={item.href}
               onClick={onCloseMobile}
+              className={clsx(
+                "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                !isOpen && "justify-center",
+                pathname.startsWith(item.href)
+                  ? "bg-primary text-white"
+                  : "text-primary hover:bg-gray-200"
+              )}
             >
-              <ChevronLeft className="h-5 w-5 text-paragraph" />
-            </button>
-          </div>
-
-          <nav className="flex flex-col gap-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={onCloseMobile}
-                className={clsx(
-                  "flex items-center gap-3 px-5 py-2.5 rounded-md text-sm font-medium transition-colors",
-                  pathname.startsWith(item.href)
-                    ? "bg-primary text-white"
-                    : "text-primary hover:bg-gray-200"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </Link>
-            ))}
-
-            <hr className="text-border" />
-
-            <Link
-              href="/logout"
-              onClick={onCloseMobile}
-              className="flex items-center gap-3 px-5 py-2.5 rounded-md text-sm font-medium text-primary hover:bg-gray-200 transition-colors"
-            >
-              <LogOut className="h-5 w-5" />
-              Sair
+              <item.icon className="h-5 w-5 flex-shrink-0" />
+              <span className={clsx(!isOpen && "md:hidden")}>{item.label}</span>
             </Link>
-          </nav>
-        </div>
+          ))}
 
-        <div className="p-4">
-          <p className="text-center text-xs text-paragraph">2025 ©</p>
-        </div>
-      </aside>
-    </>
+          <hr className="text-border" />
+
+          <Link
+            href="/logout"
+            onClick={onCloseMobile}
+            className={clsx(
+              "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-primary hover:bg-gray-200",
+              !isOpen && "justify-center"
+            )}
+          >
+            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <span className={clsx(!isOpen && "md:hidden")}>Sair</span>
+          </Link>
+        </nav>
+      </div>
+
+      <div className="p-4">
+        <p className="text-center text-xs text-paragraph">
+          2025 ©
+        </p>
+      </div>
+    </aside>
   );
 }
