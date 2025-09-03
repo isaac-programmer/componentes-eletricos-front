@@ -10,10 +10,17 @@ import {
 import { MoreHorizontal } from "lucide-react";
 
 const columns: ColumnDef<Componente>[] = [
-  { accessorKey: "nome", header: "Nome" },
-  { accessorKey: "referencia", header: "Referência" },
-  { accessorKey: "categoria", header: "Categoria" },
-  { accessorKey: "origem", header: "Origem" },
+  { accessorKey: "name", header: "Nome" },
+  { accessorKey: "reference", header: "Referência" },
+  { 
+    accessorKey: "description",
+    header: "Descrição",
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? value : "-";
+    }
+  },
+  { accessorKey: "origin", header: "Origem" },
   {
     id: "acoes",
     header: "Ações",
@@ -41,7 +48,7 @@ export function ComponentesTable({ data, isLoading }: ComponentesTableProps) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-sm">
-        <thead className="border-b text-gray-500 font-medium">
+        <thead className="border-b border-border text-paragraph font-semibold">
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
@@ -52,11 +59,11 @@ export function ComponentesTable({ data, isLoading }: ComponentesTableProps) {
             </tr>
           ))}
         </thead>
-        <tbody className="divide-y">
+        <tbody>
           {table.getRowModel().rows.map(row => (
             <tr key={row.id} className="hover:bg-gray-50">
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="py-3 px-4 text-gray-600">
+                <td key={cell.id} className="py-3 px-4 text-paragraph">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

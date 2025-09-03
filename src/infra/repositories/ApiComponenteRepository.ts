@@ -1,4 +1,3 @@
-import { Componente } from "@/domain/entities/componente";
 import { 
     ComponenteRepository,
     GetAllComponentesResponse, 
@@ -15,11 +14,14 @@ class ApiComponenteRepository implements ComponenteRepository {
         throw new Error("Falha ao buscar os componentes");
       }
 
-      const data: Componente[] = await response.json();
-      return { data };
+      const responseJson: GetAllComponentesResponse = await response.json();
+      return responseJson;
     } catch (error) {
       console.error("Erro ao buscar componentes:", error);
-      return { data: [] };
+      return { 
+        data: [], 
+        meta: { totalItems: 0, itemCount: 0, itemsPerPage: 10, totalPages: 1, currentPage: 1 } 
+      };
     }
   }
 }
