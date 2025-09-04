@@ -47,7 +47,7 @@ export function Sidebar({
         "flex flex-col justify-between bg-white-div border-r border-border transition-all duration-300 ease-in-out",
         "fixed inset-y-0 left-0 z-20",
         isMobileOpen ? "translate-x-0" : "-translate-x-full",
-        "w-64",
+        "w-full",
         "md:relative md:translate-x-0",
         isOpen ? "md:w-64" : "md:w-auto"
       )}
