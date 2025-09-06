@@ -15,4 +15,5 @@ export interface GetAllComponentesResponse {
 
 export interface ComponenteRepository {
   getAll(): Promise<GetAllComponentesResponse>;
+  delete(id: string): Promise<void>;
 }

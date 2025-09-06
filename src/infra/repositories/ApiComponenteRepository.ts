@@ -1,27 +1,32 @@
 import { 
-    ComponenteRepository,
-    GetAllComponentesResponse, 
+  GetAllComponentesResponse, 
+  ComponenteRepository 
 } from "@/domain/repositories/ComponenteRepository";
+import { api } from "../services/api";
+import { handleApiError } from "../utils/handleApiError";
 
 class ApiComponenteRepository implements ComponenteRepository {
-  private readonly baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
+  
   async getAll(): Promise<GetAllComponentesResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/components`);
-
-      if (!response.ok) {
-        throw new Error("Falha ao buscar os componentes");
-      }
-
-      const responseJson: GetAllComponentesResponse = await response.json();
-      return responseJson;
+      const response = await api.get<GetAllComponentesResponse>("/components");
+      return response.data;
     } catch (error) {
       console.error("Erro ao buscar componentes:", error);
-      return { 
-        data: [], 
-        meta: { totalItems: 0, itemCount: 0, itemsPerPage: 10, totalPages: 1, currentPage: 1 } 
-      };
+
+      const errorMessage = handleApiError(error, "Não foi possível carregar os componentes. Tente recarregar a página");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await api.delete(`/components/${id}`);
+    } catch (error) {
+      console.error(`Erro ao deletar componente:`, error);
+      
+      const errorMessage = handleApiError(error, "Falha ao deletar componente. Tente novamente");
+      throw new Error(errorMessage);
     }
   }
 }
