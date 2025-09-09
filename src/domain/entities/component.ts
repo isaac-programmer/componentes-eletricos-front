@@ -1,4 +1,4 @@
-export interface Componente {
+export interface Component {
   id: string;
   name: string;
   reference: string;

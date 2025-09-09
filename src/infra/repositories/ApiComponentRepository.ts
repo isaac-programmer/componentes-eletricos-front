@@ -1,15 +1,21 @@
 import { 
-  GetAllComponentesResponse, 
-  ComponenteRepository 
-} from "@/domain/repositories/ComponenteRepository";
+  GetAllComponentsResponse, 
+  ComponentRepository 
+} from "@/domain/repositories/ComponentRepository";
 import { api } from "../services/api";
 import { handleApiError } from "../utils/handleApiError";
 
-class ApiComponenteRepository implements ComponenteRepository {
-  
-  async getAll(): Promise<GetAllComponentesResponse> {
+class ApiComponentRepository implements ComponentRepository {
+
+  async getAll(search?: string): Promise<GetAllComponentsResponse> {
     try {
-      const response = await api.get<GetAllComponentesResponse>("/components");
+      const params = new URLSearchParams();
+      
+      if (search) {
+        params.append("search", search);
+      }
+
+      const response = await api.get<GetAllComponentsResponse>(`/components?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar componentes:", error);
@@ -31,4 +37,4 @@ class ApiComponenteRepository implements ComponenteRepository {
   }
 }
 
-export const apiComponenteRepository = new ApiComponenteRepository();
+export const apiComponentRepository = new ApiComponentRepository();
