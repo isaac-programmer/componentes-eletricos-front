@@ -1,6 +1,6 @@
 "use client";
 
-import { Componente } from "@/domain/entities/componente";
+import { Component } from "@/domain/entities/component";
 import {
   useReactTable,
   getCoreRowModel,
@@ -10,25 +10,18 @@ import {
 import { ActionsMenu } from "../molecules/ActionsMenu";
 import { LoadingSpinner } from "../molecules/LoadingSpinner";
 
-interface ComponentesTableProps {
-  data: Componente[];
+interface ComponentsTableProps {
+  data: Component[];
   isLoading: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function ComponentesTable({ data, isLoading, onEdit, onDelete }: ComponentesTableProps) {
-  const columns: ColumnDef<Componente>[] = [
+export function ComponentsTable({ data, isLoading, onEdit, onDelete }: ComponentsTableProps) {
+  const columns: ColumnDef<Component>[] = [
     { accessorKey: "name", header: "Nome" },
     { accessorKey: "reference", header: "Referência" },
-    {
-      accessorKey: "description",
-      header: "Descrição",
-      cell: ({ getValue }) => {
-        const value = getValue<string>();
-        return value ? value : "-";
-      }
-    },
+    { accessorKey: "category.name", header: "Categoria" },
     { accessorKey: "origin", header: "Origem" },
     {
       id: "acoes",
@@ -52,7 +45,7 @@ export function ComponentesTable({ data, isLoading, onEdit, onDelete }: Componen
   });
 
   if (isLoading) return <LoadingSpinner text="Buscando os componentes..." />;
-  if (data.length === 0) return <p>Nenhum componente encontrado</p>;
+  if (data.length === 0) return <p className="text-paragraph text-center">Nenhum componente encontrado</p>;
 
   return (
     <table className="w-full min-w-[700px] text-left text-sm">

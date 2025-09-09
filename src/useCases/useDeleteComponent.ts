@@ -1,12 +1,12 @@
 import { toast } from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiComponenteRepository } from "@/infra/repositories/ApiComponenteRepository";
+import { apiComponentRepository } from "@/infra/repositories/ApiComponentRepository";
 
-export function useDeleteComponente() {
+export function useDeleteComponent() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => apiComponenteRepository.delete(id),
+    mutationFn: (id: string) => apiComponentRepository.delete(id),
     onSuccess: () => {
       toast.success("Componente excluído com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["componentes"] });
