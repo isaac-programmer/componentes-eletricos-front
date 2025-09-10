@@ -1,19 +1,22 @@
 import { 
   GetAllComponentsResponse, 
-  ComponentRepository 
+  ComponentRepository, 
+  ComponentFilters
 } from "@/domain/repositories/ComponentRepository";
 import { api } from "../services/api";
 import { handleApiError } from "../utils/handleApiError";
 
 class ApiComponentRepository implements ComponentRepository {
 
-  async getAll(search?: string): Promise<GetAllComponentsResponse> {
+  async getAll(filters: ComponentFilters = {}): Promise<GetAllComponentsResponse> {
     try {
       const params = new URLSearchParams();
-      
-      if (search) {
-        params.append("search", search);
-      }
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          params.append(key, value);
+        }
+      });
 
       const response = await api.get<GetAllComponentsResponse>(`/components?${params.toString()}`);
       return response.data;

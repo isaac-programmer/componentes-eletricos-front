@@ -2,23 +2,57 @@
 
 import { ConfirmationContent } from "@/components/molecules/ConfirmationContent";
 import { Modal } from "@/components/molecules/Modal";
+import { ComponentFilter } from "@/components/organisms/ComponentFilter";
 import { ComponentsTable } from "@/components/organisms/ComponentsTable";
+import { ComponentFilters } from "@/domain/repositories/ComponentRepository";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteComponent } from "@/useCases/useDeleteComponent";
 import { useGetComponents } from "@/useCases/useGetComponents";
-import { Filter, Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 
 export default function Componentes() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({});
   const [componentToDelete, setComponentToDelete] = useState<string | null>(null);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { data: response, isLoading, isError } = useGetComponents(debouncedSearchTerm);
+  const filters: ComponentFilters = {
+    search: debouncedSearchTerm,
+    ...appliedFilters,
+  };
+
+  const { data: response, isLoading, isError } = useGetComponents(filters);
 
   const { mutate: deleteComponente, isPending: isDeleting } = useDeleteComponent();
+
+  const handleApplyFilters = (formFilters: any) => {
+    const newFilters: ComponentFilters = {};
+
+    if (formFilters.name && formFilters.nameValue) {
+      newFilters.name = formFilters.nameValue;
+    }
+
+    if (formFilters.reference && formFilters.referenceValue) {
+      newFilters.reference = formFilters.referenceValue;
+    }
+
+    if (formFilters.origin && formFilters.originValue) {
+      newFilters.origin = formFilters.originValue;
+    }
+
+    if (formFilters.category && formFilters.categoryId) {
+      newFilters.categoryId = formFilters.categoryId;
+    }
+
+    if (formFilters.laboratory && formFilters.laboratoryId) {
+      newFilters.laboratoryId = formFilters.laboratoryId;
+    }
+
+    setAppliedFilters(newFilters);
+  };
 
   const handleOpenDeleteModal = (id: string) => {
     setComponentToDelete(id);
@@ -41,7 +75,13 @@ export default function Componentes() {
   };
 
   if (isError) {
-    return <div className="text-red-500 text-center">Ocorreu um erro ao buscar os componentes.</div>
+    return (
+      <div
+        className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-red-500 bg-white text-center"
+      >
+        Ocorreu um erro ao buscar os componentes
+      </div>
+    );
   }
 
   const componentes = response?.data || [];
@@ -65,10 +105,9 @@ export default function Componentes() {
               className="w-full sm:w-auto pl-10 pr-4 py-2 border border-primary rounded-md text-sm focus:outline-none placeholder:text-primary"
             />
           </div>
-          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-primary border border-primary rounded-md text-sm font-medium bg-white hover:bg-gray-50">
-            <Filter className="h-4 w-4" />
-            Filtro
-          </button>
+
+          <ComponentFilter onApplyFilters={handleApplyFilters} />
+          
           <button
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-md text-sm font-medium bg-primary text-white hover:bg-primary/90">
             <Plus className="h-4 w-4"

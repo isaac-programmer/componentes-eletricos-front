@@ -1,25 +1,36 @@
-'use client';
+"use client";
 
-import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
-import { Filter, X } from 'lucide-react';
-import { Fragment } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useGetCategories } from "@/useCases/useGetCategories";
+import { useGetLaboratories } from "@/useCases/useGetLaboratories";
+import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
+import { Filter } from "lucide-react";
+import { Fragment } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type FilterFormInputs = {
   name: boolean;
   nameValue: string;
   reference: boolean;
   referenceValue: string;
+  origin: boolean;
+  originValue: string;
+  category: boolean;
+  categoryId: string;
+  laboratory: boolean;
+  laboratoryId: string;
 };
 
-interface FiltroComponentesProps {
+interface ComponentFiltersProps {
   onApplyFilters: (filters: Partial<FilterFormInputs>) => void;
 }
 
-export function FiltroComponentes({ onApplyFilters }: FiltroComponentesProps) {
+export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
   const { register, handleSubmit, watch, reset } = useForm<FilterFormInputs>();
-  
+
   const watchedFields = watch();
+
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { data: laboratories, isLoading: isLoadingLaboratories } = useGetLaboratories();
 
   const onSubmit: SubmitHandler<FilterFormInputs> = (data) => {
     onApplyFilters(data);
@@ -32,7 +43,7 @@ export function FiltroComponentes({ onApplyFilters }: FiltroComponentesProps) {
 
   return (
     <Popover className="relative">
-      <PopoverButton className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-primary border border-primary rounded-md text-sm font-medium hover:bg-gray-50 focus:outline-none">
+      <PopoverButton className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-primary border border-primary rounded-md text-sm font-medium bg-white hover:bg-gray-50 focus:outline-none">
         <Filter className="h-4 w-4" />
         <span>Filtro</span>
       </PopoverButton>
@@ -48,40 +59,103 @@ export function FiltroComponentes({ onApplyFilters }: FiltroComponentesProps) {
         <PopoverPanel className="absolute right-0 z-10 mt-2 w-screen max-w-xs transform px-4 sm:px-0">
           <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
             <form onSubmit={handleSubmit(onSubmit)} className="relative bg-white p-6 space-y-4">
-              <h3 className="text-lg font-medium">Opções de Filtro</h3>
-              
               <div className="space-y-4">
-                {/* Filtro por Nome */}
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="name" {...register('name')} className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"/>
+                  <input
+                    type="checkbox"
+                    id="name"
+                    {...register("name")}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                  />
                   <label htmlFor="name" className="text-sm">Nome</label>
                 </div>
                 {watchedFields.name && (
-                  <input 
-                    type="text" 
-                    placeholder="Informe o nome" 
-                    {...register('nameValue')}
-                    className="w-full mt-1 pl-3 pr-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  <input
+                    type="text"
+                    placeholder="Informe o nome"
+                    {...register("nameValue")}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 )}
 
-                {/* Filtro por Referência */}
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="reference" {...register('reference')} className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"/>
+                  <input
+                    type="checkbox"
+                    id="reference"
+                    {...register("reference")}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary bg-primary cursor-pointer"
+                  />
                   <label htmlFor="reference" className="text-sm">Referência</label>
                 </div>
                 {watchedFields.reference && (
-                  <input 
-                    type="text" 
-                    placeholder="Informe a referência" 
-                    {...register('referenceValue')}
-                    className="w-full mt-1 pl-3 pr-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  <input
+                    type="text"
+                    placeholder="Informe a referência"
+                    {...register("referenceValue")}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 )}
-                {/* Adicione outros checkboxes (Categoria, Origem, etc.) seguindo o mesmo padrão */}
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="origin"
+                    {...register("origin")}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary bg-primary cursor-pointer"
+                  />
+                  <label htmlFor="origin" className="text-sm">Origem</label>
+                </div>
+                {watchedFields.origin && (
+                  <input
+                    type="text"
+                    placeholder="Informe a origem"
+                    {...register("originValue")}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                )}
+
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="category" {...register("category")} className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                  <label htmlFor="category" className="text-sm">Categoria</label>
+                </div>
+                {watchedFields.category && (
+                  <select
+                    id="categoryId"
+                    {...register("categoryId")}
+                    disabled={isLoadingCategories}
+                    className="w-full mt-1 pl-3 pr-8 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="">{isLoadingCategories ? "Carregando..." : "Selecione uma categoria"}</option>
+                    {categories?.data?.map(category => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="laboratory" {...register("laboratory")} className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                  <label htmlFor="laboratory" className="text-sm">Laboratório</label>
+                </div>
+                {watchedFields.laboratory && (
+                  <select
+                    id="laboratoryId"
+                    {...register("laboratoryId")}
+                    disabled={isLoadingLaboratories}
+                    className="w-full mt-1 pl-3 pr-8 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="">{isLoadingLaboratories ? "Carregando..." : "Selecione um laboratório"}</option>
+                    {laboratories?.data?.map(laboratory => (
+                      <option key={laboratory.id} value={laboratory.id}>
+                        {laboratory.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
+              <div className="flex justify-center gap-2 pt-4">
                 <button type="button" onClick={handleClearFilters} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
                   Limpar
                 </button>
@@ -92,7 +166,7 @@ export function FiltroComponentes({ onApplyFilters }: FiltroComponentesProps) {
             </form>
           </div>
         </PopoverPanel>
-      </Transition>
-    </Popover>
+      </Transition >
+    </Popover >
   );
 }
