@@ -37,7 +37,7 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
       }
     },
   ];
-  
+
   const table = useReactTable({
     data,
     columns,
@@ -45,18 +45,20 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
   });
 
   if (isLoading) return <LoadingSpinner text="Buscando os componentes..." />;
-  if (data.length === 0) return <p className="text-paragraph text-center">Nenhum componente encontrado</p>;
+  if (data.length === 0) {
+    return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhum componente encontrado</p>;
+  }
 
   return (
     <table className="w-full min-w-[700px] text-left text-sm">
       <thead className="border-b border-border text-paragraph font-semibold">
         {table.getHeaderGroups().map(headerGroup => (
-          <tr 
+          <tr
             key={headerGroup.id}
           >
             {headerGroup.headers.map(header => (
-              <th 
-                key={header.id} 
+              <th
+                key={header.id}
                 className="py-3 px-4 text-paragraph whitespace-nowrap"
               >
                 {flexRender(header.column.columnDef.header, header.getContext())}
@@ -67,13 +69,13 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
       </thead>
       <tbody>
         {table.getRowModel().rows.map(row => (
-          <tr 
-            key={row.id} 
+          <tr
+            key={row.id}
             className="hover:bg-gray-50"
           >
             {row.getVisibleCells().map(cell => (
-              <td 
-                key={cell.id} 
+              <td
+                key={cell.id}
                 className="py-3 px-4 text-paragraph whitespace-nowrap"
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

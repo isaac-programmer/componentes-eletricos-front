@@ -8,12 +8,21 @@ interface PaginationMeta {
   currentPage: number;
 }
 
+export interface ComponentFilters {
+  search?: string;
+  name?: string;
+  reference?: string;
+  origin?: string;
+  categoryId?: string;
+  laboratoryId?: string;
+}
+
 export interface GetAllComponentsResponse {
   data: Component[];
   meta: PaginationMeta;
 }
 
 export interface ComponentRepository {
-  getAll(search?: string): Promise<GetAllComponentsResponse>;
+  getAll(filters?: ComponentFilters): Promise<GetAllComponentsResponse>;
   delete(id: string): Promise<void>;
 }

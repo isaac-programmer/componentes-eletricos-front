@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { ComponentFilters } from "@/domain/repositories/ComponentRepository";
 import { apiComponentRepository } from "@/infra/repositories/ApiComponentRepository";
 
-export function useGetComponents(search?: string) {
+export function useGetComponents(filters?: ComponentFilters) {
   return useQuery({
-    queryKey: ["componentes", search],
-    queryFn: () => apiComponentRepository.getAll(search),
+    queryKey: ["componentes", filters],
+    queryFn: () => apiComponentRepository.getAll(filters),
   });
 }
