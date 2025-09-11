@@ -9,6 +9,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteComponent } from "@/useCases/useDeleteComponent";
 import { useGetComponents } from "@/useCases/useGetComponents";
 import { Plus, Search } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Componentes() {
@@ -107,13 +108,14 @@ export default function Componentes() {
           </div>
 
           <ComponentFilter onApplyFilters={handleApplyFilters} />
-          
-          <button
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-md text-sm font-medium bg-primary text-white hover:bg-primary/90">
-            <Plus className="h-4 w-4"
-            />
-            Adicionar
-          </button>
+
+          <Link
+            href="/componentes/novo"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-md text-sm font-medium bg-primary text-white hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Adicionar</span>
+          </Link>
         </div>
       </div>
 

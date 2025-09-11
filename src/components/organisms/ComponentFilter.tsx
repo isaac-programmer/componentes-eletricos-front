@@ -65,7 +65,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     type="checkbox"
                     id="name"
                     {...register("name")}
-                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                    className="h-4 w-4 rounded accent-primary cursor-pointer"
                   />
                   <label htmlFor="name" className="text-sm">Nome</label>
                 </div>
@@ -74,7 +74,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     type="text"
                     placeholder="Informe o nome"
                     {...register("nameValue")}
-                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
                   />
                 )}
 
@@ -83,7 +83,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     type="checkbox"
                     id="reference"
                     {...register("reference")}
-                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary bg-primary cursor-pointer"
+                    className="h-4 w-4 rounded accent-primary cursor-pointer"
                   />
                   <label htmlFor="reference" className="text-sm">Referência</label>
                 </div>
@@ -92,7 +92,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     type="text"
                     placeholder="Informe a referência"
                     {...register("referenceValue")}
-                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
                   />
                 )}
 
@@ -101,7 +101,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     type="checkbox"
                     id="origin"
                     {...register("origin")}
-                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary bg-primary cursor-pointer"
+                    className="h-4 w-4 rounded accent-primary cursor-pointer"
                   />
                   <label htmlFor="origin" className="text-sm">Origem</label>
                 </div>
@@ -110,12 +110,12 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     type="text"
                     placeholder="Informe a origem"
                     {...register("originValue")}
-                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
                   />
                 )}
 
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="category" {...register("category")} className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                  <input type="checkbox" id="category" {...register("category")} className="h-4 w-4 rounded accent-primary cursor-pointer" />
                   <label htmlFor="category" className="text-sm">Categoria</label>
                 </div>
                 {watchedFields.category && (
@@ -123,7 +123,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     id="categoryId"
                     {...register("categoryId")}
                     disabled={isLoadingCategories}
-                    className="w-full mt-1 pl-3 pr-8 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1 cursor-pointer"
                   >
                     <option value="">{isLoadingCategories ? "Carregando..." : "Selecione uma categoria"}</option>
                     {categories?.data?.map(category => (
@@ -135,7 +135,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                 )}
 
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="laboratory" {...register("laboratory")} className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                  <input type="checkbox" id="laboratory" {...register("laboratory")} className="h-4 w-4 rounded accent-primary cursor-pointer" />
                   <label htmlFor="laboratory" className="text-sm">Laboratório</label>
                 </div>
                 {watchedFields.laboratory && (
@@ -143,7 +143,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                     id="laboratoryId"
                     {...register("laboratoryId")}
                     disabled={isLoadingLaboratories}
-                    className="w-full mt-1 pl-3 pr-8 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1 cursor-pointer"
                   >
                     <option value="">{isLoadingLaboratories ? "Carregando..." : "Selecione um laboratório"}</option>
                     {laboratories?.data?.map(laboratory => (

@@ -1,4 +1,5 @@
 import { Component } from "@/domain/entities/component";
+import { ComponentFormData } from "../schemas/componentSchema";
 
 interface PaginationMeta {
   totalItems: number;
@@ -24,5 +25,6 @@ export interface GetAllComponentsResponse {
 
 export interface ComponentRepository {
   getAll(filters?: ComponentFilters): Promise<GetAllComponentsResponse>;
+  create(data: ComponentFormData): Promise<Component>;
   delete(id: string): Promise<void>;
 }
