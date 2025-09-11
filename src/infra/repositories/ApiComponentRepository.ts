@@ -5,6 +5,8 @@ import {
 } from "@/domain/repositories/ComponentRepository";
 import { api } from "../services/api";
 import { handleApiError } from "../utils/handleApiError";
+import { ComponentFormData } from "@/domain/schemas/componentSchema";
+import { Component } from "@/domain/entities/component";
 
 class ApiComponentRepository implements ComponentRepository {
 
@@ -24,6 +26,26 @@ class ApiComponentRepository implements ComponentRepository {
       console.error("Erro ao buscar componentes:", error);
 
       const errorMessage = handleApiError(error, "Não foi possível carregar os componentes. Tente recarregar a página");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async create(data: ComponentFormData): Promise<Component> {
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+
+    try {
+      const response = await api.post<Component>("/components", formData);
+      return response.data;
+    } catch (error) {
+      console.error(`Erro ao cadastrar componente:`, error);
+
+      const errorMessage = handleApiError(error, "Não foi possível cadastrar o componente");
       throw new Error(errorMessage);
     }
   }
