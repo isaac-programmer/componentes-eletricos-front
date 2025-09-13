@@ -33,11 +33,17 @@ class ApiComponentRepository implements ComponentRepository {
   async create(data: ComponentFormData): Promise<Component> {
     const formData = new FormData();
 
-    Object.entries(data).forEach(([key, value]) => {
+    const { image, ...restOfData } = data;
+
+    Object.entries(restOfData).forEach(([key, value]) => {
       if (value) {
         formData.append(key, value);
       }
     });
+
+    if (image instanceof FileList && image.length > 0) {
+      formData.append("image", image[0]);
+    }
 
     try {
       const response = await api.post<Component>("/components", formData);

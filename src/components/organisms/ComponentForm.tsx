@@ -2,10 +2,12 @@
 
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetCategories } from "@/useCases/useGetCategories";
 import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
+import { ImageUploader } from "../molecules/ImageUploader";
+import { useRouter } from "next/navigation";
 
 interface ComponentFormProps {
   onSubmit: (data: ComponentFormData) => Promise<void>;
@@ -13,9 +15,11 @@ interface ComponentFormProps {
 }
 
 export function ComponentForm({ onSubmit, isSubmitting }: ComponentFormProps) {
+  const router = useRouter();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors }
@@ -47,7 +51,7 @@ export function ComponentForm({ onSubmit, isSubmitting }: ComponentFormProps) {
           {errors.reference && <p className="text-xs text-red-600 mt-1">{errors.reference.message}</p>}
         </div>
         <div>
-          <label htmlFor="description">Descrição</label>
+          <label htmlFor="description">Descrição <span className="text-sm">&#40;opcional&#41;</span></label>
           <textarea
             id="description"
             {...register("description")}
@@ -85,12 +89,27 @@ export function ComponentForm({ onSubmit, isSubmitting }: ComponentFormProps) {
       </div>
 
       <div className="md:col-span-1">
-        <div className="w-full h-48 border-2 border-dashed rounded-md flex flex-col items-center justify-center text-paragraph">
-          <span>Clique para selecionar uma imagem</span>
-        </div>
+        <Controller
+          name="image"
+          control={control}
+          render={({ field }) => (
+            <ImageUploader
+              onChange={field.onChange}
+              value={field.value}
+            />
+          )}
+        />
+        {errors.image && <p className="text-xs text-red-600 mt-1">{errors.image.message as string}</p>}
       </div>
 
       <div className="md:col-span-3 flex justify-start gap-3 mt-4">
+        <button
+          type="button"
+          onClick={() => router.push("/componentes")}
+          className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium border border-primary text-primary bg-white rounded-md hover:bg-white"
+        >
+          Cancelar
+        </button>
         <button
           type="submit"
           className="relative inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary disabled:bg-primary/50 disabled:cursor-not-allowed"

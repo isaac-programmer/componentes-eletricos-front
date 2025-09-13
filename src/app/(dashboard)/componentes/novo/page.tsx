@@ -3,8 +3,7 @@
 import { ComponentForm } from "@/components/organisms/ComponentForm";
 import { ComponentFormData } from "@/domain/schemas/componentSchema";
 import { useCreateComponent } from "@/useCases/useCreateComponent";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -13,6 +12,8 @@ export default function NovoComponentePage() {
   const { mutateAsync: createComponente, isPending } = useCreateComponent();
 
   const handleCreateComponent = async (data: ComponentFormData) => {
+    console.log(data, "criação do componente");
+
     try {
       await createComponente(data);
       toast.success("Componente cadastrado com sucesso!");
@@ -29,9 +30,9 @@ export default function NovoComponentePage() {
           Informações do componente
         </h1>
       </div>
-      
+
       <div className="bg-white rounded-lg shadow-sm border border-border p-6">
-        <ComponentForm 
+        <ComponentForm
           isSubmitting={isPending}
           onSubmit={handleCreateComponent}
         />
