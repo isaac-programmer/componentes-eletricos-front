@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Onest } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/infra/providers/QueryProvider";
+import { BreadcrumbProvider } from "@/contexts/BreadcrumbContext";
 import "./globals.css";
 
 const onest = Onest({
@@ -40,7 +41,11 @@ export default function RootLayout({
             },
           }}
         />
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <BreadcrumbProvider>
+            {children}
+          </BreadcrumbProvider>
+        </QueryProvider>
       </body>
     </html>
   );

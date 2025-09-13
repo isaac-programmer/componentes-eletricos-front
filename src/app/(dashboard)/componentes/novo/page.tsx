@@ -1,19 +1,22 @@
 "use client";
 
 import { ComponentForm } from "@/components/organisms/ComponentForm";
+import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import { ComponentFormData } from "@/domain/schemas/componentSchema";
 import { useCreateComponent } from "@/useCases/useCreateComponent";
+import { Cpu } from "lucide-react";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function NovoComponentePage() {
   const router = useRouter();
+  const { setBreadcrumbs } = useBreadcrumbs();
+
   const { mutateAsync: createComponente, isPending } = useCreateComponent();
 
   const handleCreateComponent = async (data: ComponentFormData) => {
-    console.log(data, "criação do componente");
-
     try {
       await createComponente(data);
       toast.success("Componente cadastrado com sucesso!");
@@ -22,6 +25,16 @@ export default function NovoComponentePage() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    setBreadcrumbs({
+      icon: Cpu,
+      items: [
+        { href: "/componentes", label: "Componentes" },
+        { href: "/componentes/novo", label: "Novo componente" },
+      ]
+    });
+  }, [setBreadcrumbs]);
 
   return (
     <div className="space-y-6">

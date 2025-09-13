@@ -4,20 +4,22 @@ import { ConfirmationContent } from "@/components/molecules/ConfirmationContent"
 import { Modal } from "@/components/molecules/Modal";
 import { ComponentFilter } from "@/components/organisms/ComponentFilter";
 import { ComponentsTable } from "@/components/organisms/ComponentsTable";
+import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import { ComponentFilters } from "@/domain/repositories/ComponentRepository";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteComponent } from "@/useCases/useDeleteComponent";
 import { useGetComponents } from "@/useCases/useGetComponents";
-import { Plus, Search } from "lucide-react";
+import { Cpu, Plus, Search } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Componentes() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({});
   const [componentToDelete, setComponentToDelete] = useState<string | null>(null);
-
+  
+  const { setBreadcrumbs } = useBreadcrumbs();
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const filters: ComponentFilters = {
@@ -74,6 +76,15 @@ export default function Componentes() {
       });
     }
   };
+
+  useEffect(() => {
+    setBreadcrumbs({
+      icon: Cpu,
+      items: [
+        { href: "/componentes", label: "Componentes" },
+      ]
+    });
+  }, [setBreadcrumbs]);
 
   if (isError) {
     return (
