@@ -1,26 +1,45 @@
-import { 
+import {
     Menu,
     ChevronDown,
     Cpu,
+    ChevronRight,
 } from "lucide-react";
+import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
+import Link from "next/link";
 
 interface HeaderProps {
-  onMenuClick: () => void;
+    onMenuClick: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
+    const { breadcrumbs } = useBreadcrumbs();
+
+    const { items, icon: Icon } = breadcrumbs
+
     return (
         <header className="bg-white-div border-b border-border flex items-center justify-between p-6 flex-shrink-0">
             <div className="flex items-center gap-3">
-                <button 
-                  onClick={onMenuClick} 
-                  className="md:hidden p-1 text-gray-600 hover:text-primary"
+                <button
+                    onClick={onMenuClick}
+                    className="md:hidden p-1 text-gray-600 hover:text-primary"
                 >
-                  <Menu className="h-6 w-6" />
+                    <Menu className="h-6 w-6" />
                 </button>
 
-                <Cpu className="h-6 w-6 hidden md:block text-primary" />
-                <h2 className="text-xl hidden md:block text-primary">Componentes</h2>
+                {Icon && <Icon className="h-6 w-6 hidden md:block text-primary" />}
+
+                {items.map((crumb, index) => (
+                    <div key={crumb.href} className="hidden md:flex items-center gap-2 text-primary">
+                        {index > 0 && <span className="text-xl hidden md:block text-primary">/</span>}
+                        {index === items.length - 1 ? (
+                            <span className="text-xl hidden md:block text-primary">{crumb.label}</span>
+                        ) : (
+                            <Link href={crumb.href} className="text-xl hidden md:block text-primary">
+                                {crumb.label}
+                            </Link>
+                        )}
+                    </div>
+                ))}
             </div>
 
             <div className="flex items-center gap-3">
