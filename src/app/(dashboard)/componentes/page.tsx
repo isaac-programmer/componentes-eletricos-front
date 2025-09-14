@@ -1,7 +1,9 @@
 'use client';
 
+import Link from "next/link";
 import { ConfirmationContent } from "@/components/molecules/ConfirmationContent";
 import { Modal } from "@/components/molecules/Modal";
+import { Pagination } from "@/components/molecules/Pagination";
 import { ComponentFilter } from "@/components/organisms/ComponentFilter";
 import { ComponentsTable } from "@/components/organisms/ComponentsTable";
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
@@ -10,29 +12,31 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteComponent } from "@/useCases/useDeleteComponent";
 import { useGetComponents } from "@/useCases/useGetComponents";
 import { Cpu, Plus, Search } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Componentes() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({});
+  const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({ page: 1, limit: 10 });
   const [componentToDelete, setComponentToDelete] = useState<string | null>(null);
-  
+
   const { setBreadcrumbs } = useBreadcrumbs();
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const filters: ComponentFilters = {
-    search: debouncedSearchTerm,
+  const filtersToFetch: ComponentFilters = useMemo(() => ({
     ...appliedFilters,
-  };
+    search: debouncedSearchTerm,
+  }), [debouncedSearchTerm, appliedFilters]);
 
-  const { data: response, isLoading, isError } = useGetComponents(filters);
+  const { data: response, isLoading, isError } = useGetComponents(filtersToFetch);
 
   const { mutate: deleteComponente, isPending: isDeleting } = useDeleteComponent();
 
   const handleApplyFilters = (formFilters: any) => {
-    const newFilters: ComponentFilters = {};
+    const newFilters: ComponentFilters = {
+      page: 1,
+      limit: 10,
+    };
 
     if (formFilters.name && formFilters.nameValue) {
       newFilters.name = formFilters.nameValue;
@@ -77,6 +81,13 @@ export default function Componentes() {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    setAppliedFilters(prevFilters => ({
+      ...prevFilters,
+      page: newPage,
+    }));
+  };
+
   useEffect(() => {
     setBreadcrumbs({
       icon: Cpu,
@@ -97,9 +108,10 @@ export default function Componentes() {
   }
 
   const componentes = response?.data || [];
+  const meta = response?.meta;
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col space-y-6">
       <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between md:gap-4">
         <h2 className="text-2xl text-paragraph md:text-lg">
           Componentes cadastrados
@@ -138,6 +150,14 @@ export default function Componentes() {
           onEdit={(id) => console.log('Editar ID:', id)}
         />
       </div>
+
+      {meta && (
+        <Pagination
+          currentPage={meta.currentPage}
+          totalPages={meta.totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       <Modal
         isOpen={isDeleteModalOpen}

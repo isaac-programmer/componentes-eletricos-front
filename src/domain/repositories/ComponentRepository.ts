@@ -16,6 +16,8 @@ export interface ComponentFilters {
   origin?: string;
   categoryId?: string;
   laboratoryId?: string;
+  page?: number;
+  limit?: number;
 }
 
 export interface GetAllComponentsResponse {
