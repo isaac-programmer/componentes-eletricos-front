@@ -26,7 +26,9 @@ export interface GetAllComponentsResponse {
 }
 
 export interface ComponentRepository {
+  getById(id: string): Promise<Component>;
   getAll(filters?: ComponentFilters): Promise<GetAllComponentsResponse>;
   create(data: ComponentFormData): Promise<Component>;
+  update(id: string, data: ComponentFormData): Promise<Component>;
   delete(id: string): Promise<void>;
 }

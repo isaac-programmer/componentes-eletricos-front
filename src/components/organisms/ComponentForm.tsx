@@ -8,24 +8,47 @@ import { useGetCategories } from "@/useCases/useGetCategories";
 import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
 import { ImageUploader } from "../molecules/ImageUploader";
 import { useRouter } from "next/navigation";
+import { Component } from "@/domain/entities/component";
+import { useEffect } from "react";
 
 interface ComponentFormProps {
   onSubmit: (data: ComponentFormData) => Promise<void>;
   isSubmitting?: boolean;
+  initialData?: Component;
 }
 
-export function ComponentForm({ onSubmit, isSubmitting }: ComponentFormProps) {
+export function ComponentForm({ onSubmit, isSubmitting, initialData }: ComponentFormProps) {
   const router = useRouter();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
   const {
+    reset,
     control,
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<ComponentFormData>({
     resolver: zodResolver(componentSchema),
+    defaultValues: {
+      name: initialData?.name || "",
+      reference: initialData?.reference || "",
+      description: initialData?.description || "",
+      origin: initialData?.origin || "",
+      categoryId: initialData?.category?.id || "",
+    }
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.name,
+        reference: initialData.reference,
+        description: initialData.description || "",
+        origin: initialData.origin,
+        categoryId: initialData.category.id,
+      });
+    }
+  }, [initialData, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -96,13 +119,14 @@ export function ComponentForm({ onSubmit, isSubmitting }: ComponentFormProps) {
             <ImageUploader
               onChange={field.onChange}
               value={field.value}
+              initialImageUrl={initialData?.imageUrl}
             />
           )}
         />
         {errors.image && <p className="text-xs text-red-600 mt-1">{errors.image.message as string}</p>}
       </div>
 
-      <div className="md:col-span-3 flex justify-start gap-3 mt-4">
+      <div className="md:col-span-3 flex justify-center md:justify-start gap-3 mt-4">
         <button
           type="button"
           onClick={() => router.push("/componentes")}
@@ -122,7 +146,7 @@ export function ComponentForm({ onSubmit, isSubmitting }: ComponentFormProps) {
           )}
 
           <span className={clsx({ "invisible": isSubmitting })}>
-            Cadastrar
+            {isSubmitting ? "Salvando..." : (initialData ? "Salvar Alterações" : "Cadastrar")}
           </span>
         </button>
       </div>

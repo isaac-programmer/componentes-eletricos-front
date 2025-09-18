@@ -6,9 +6,10 @@ import { useState, useRef, useEffect } from "react";
 interface ImageUploaderProps {
     value: FileList | null | undefined;
     onChange: (files: FileList | null) => void;
+    initialImageUrl?: string | null;
 }
 
-export function ImageUploader({ value, onChange }: ImageUploaderProps) {
+export function ImageUploader({ value, onChange, initialImageUrl }: ImageUploaderProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -31,16 +32,21 @@ export function ImageUploader({ value, onChange }: ImageUploaderProps) {
     };
 
     useEffect(() => {
-        const file = value?.[0];
+        const newFile = value?.[0];
 
-        if (file && file.type.startsWith("image/")) {
-            const url = URL.createObjectURL(file);
+        if (newFile && newFile.type.startsWith("image/")) {
+            const url = URL.createObjectURL(newFile);
             setPreview(url);
             return () => URL.revokeObjectURL(url);
         }
 
+        if (initialImageUrl) {
+            setPreview(initialImageUrl);
+            return;
+        }
+
         setPreview(null);
-    }, [value]);
+    }, [value, initialImageUrl]);
 
     return (
         <div className="w-full">
