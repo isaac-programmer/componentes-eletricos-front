@@ -13,14 +13,17 @@ import { useDeleteComponent } from "@/useCases/useDeleteComponent";
 import { useGetComponents } from "@/useCases/useGetComponents";
 import { Cpu, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Componentes() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({ page: 1, limit: 10 });
   const [componentToDelete, setComponentToDelete] = useState<string | null>(null);
 
   const { setBreadcrumbs } = useBreadcrumbs();
+  
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const filtersToFetch: ComponentFilters = useMemo(() => ({
@@ -31,6 +34,10 @@ export default function Componentes() {
   const { data: response, isLoading, isError } = useGetComponents(filtersToFetch);
 
   const { mutate: deleteComponente, isPending: isDeleting } = useDeleteComponent();
+
+  const handleEdit = (id: string) => {
+    router.push(`/componentes/${id}/editar`);
+  };
 
   const handleApplyFilters = (formFilters: any) => {
     const newFilters: ComponentFilters = {
@@ -107,7 +114,7 @@ export default function Componentes() {
     );
   }
 
-  const componentes = response?.data || [];
+  const components = response?.data || [];
   const meta = response?.meta;
 
   return (
@@ -144,10 +151,10 @@ export default function Componentes() {
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-0 md:p-6 space-y-6">
         <ComponentsTable
-          data={componentes}
+          data={components}
           isLoading={isLoading}
           onDelete={handleOpenDeleteModal}
-          onEdit={(id) => console.log('Editar ID:', id)}
+          onEdit={handleEdit}
         />
       </div>
 

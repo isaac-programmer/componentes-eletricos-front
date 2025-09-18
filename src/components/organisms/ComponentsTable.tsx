@@ -71,7 +71,8 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
         {table.getRowModel().rows.map(row => (
           <tr
             key={row.id}
-            className="hover:bg-gray-50"
+            className="cursor-pointer hover:bg-gray-50"
+            onClick={() => onEdit(row.original.id)}
           >
             {row.getVisibleCells().map(cell => (
               <td

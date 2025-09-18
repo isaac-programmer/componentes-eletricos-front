@@ -9,6 +9,17 @@ import { ComponentFormData } from "@/domain/schemas/componentSchema";
 import { Component } from "@/domain/entities/component";
 
 class ApiComponentRepository implements ComponentRepository {
+  async getById(id: string): Promise<Component> {
+    try {
+      const response = await api.get<Component>(`/components/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar componente:", error);
+
+      const errorMessage = handleApiError(error, "Não foi possível encontrar o componente");
+      throw new Error(errorMessage);
+    }
+  }
 
   async getAll(filters: ComponentFilters = {}): Promise<GetAllComponentsResponse> {
     try {
@@ -47,6 +58,30 @@ class ApiComponentRepository implements ComponentRepository {
 
     try {
       const response = await api.post<Component>("/components", formData);
+      return response.data;
+    } catch (error) {
+      console.error(`Erro ao cadastrar componente:`, error);
+
+      const errorMessage = handleApiError(error, "Não foi possível cadastrar o componente");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async update(id: string, data: ComponentFormData): Promise<Component> {
+    const formData = new FormData();
+
+    const { image, ...restOfData } = data;
+
+    Object.entries(restOfData).forEach(([key, value]) => {
+      if (value) formData.append(key, value);
+    });
+
+    if (image instanceof FileList && image.length > 0) {
+      formData.append("image", image[0]);
+    }
+
+    try {
+      const response = await api.patch<Component>(`/components/${id}`, formData);
       return response.data;
     } catch (error) {
       console.error(`Erro ao cadastrar componente:`, error);
