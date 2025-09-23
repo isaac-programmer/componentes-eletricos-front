@@ -14,6 +14,7 @@ export const componentSchema = z.object({
   origin: z.string().min(1, "A origem é obrigatória"),
   description: z.string().optional(),
   categoryId: z.string().min(1, "Selecione uma categoria"),
+  imageUrl: z.url().optional().nullable(),
   image: z.any()
     .optional()
     .refine(
