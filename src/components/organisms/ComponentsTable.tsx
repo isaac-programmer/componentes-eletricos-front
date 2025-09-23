@@ -72,7 +72,10 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
           <tr
             key={row.id}
             className="cursor-pointer hover:bg-gray-50"
-            onClick={() => onEdit(row.original.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(row.original.id);
+            }}
           >
             {row.getVisibleCells().map(cell => (
               <td

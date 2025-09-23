@@ -67,13 +67,15 @@ class ApiComponentRepository implements ComponentRepository {
     }
   }
 
-  async update(id: string, data: ComponentFormData): Promise<Component> {
+  async update(id: string, data: Partial<ComponentFormData>): Promise<Component> {
     const formData = new FormData();
 
     const { image, ...restOfData } = data;
 
     Object.entries(restOfData).forEach(([key, value]) => {
-      if (value) formData.append(key, value);
+      if (value !== null && value !== undefined) {
+        formData.append(key, value as string);
+      }
     });
 
     if (image instanceof FileList && image.length > 0) {

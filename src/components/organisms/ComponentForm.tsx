@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetCategories } from "@/useCases/useGetCategories";
 import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
@@ -12,12 +12,18 @@ import { Component } from "@/domain/entities/component";
 import { useEffect } from "react";
 
 interface ComponentFormProps {
-  onSubmit: (data: ComponentFormData) => Promise<void>;
+  onSubmit: (data: ComponentFormData, dirtyFields: FieldNamesMarkedBoolean<ComponentFormData>) => Promise<void>;
   isSubmitting?: boolean;
   initialData?: Component;
+  onRemoveImage?: () => void;
 }
 
-export function ComponentForm({ onSubmit, isSubmitting, initialData }: ComponentFormProps) {
+export function ComponentForm({ 
+  onSubmit, 
+  isSubmitting, 
+  initialData,
+  onRemoveImage,
+}: ComponentFormProps) {
   const router = useRouter();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
@@ -26,7 +32,7 @@ export function ComponentForm({ onSubmit, isSubmitting, initialData }: Component
     control,
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, dirtyFields }
   } = useForm<ComponentFormData>({
     resolver: zodResolver(componentSchema),
     defaultValues: {
@@ -51,7 +57,7 @@ export function ComponentForm({ onSubmit, isSubmitting, initialData }: Component
   }, [initialData, reset]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <form onSubmit={handleSubmit((data) => onSubmit(data, dirtyFields))} className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="md:col-span-2 space-y-4">
         <div>
           <label htmlFor="name">Nome*</label>
@@ -119,6 +125,7 @@ export function ComponentForm({ onSubmit, isSubmitting, initialData }: Component
             <ImageUploader
               onChange={field.onChange}
               value={field.value}
+              onRemoveInitial={onRemoveImage}
               initialImageUrl={initialData?.imageUrl}
             />
           )}
@@ -146,7 +153,7 @@ export function ComponentForm({ onSubmit, isSubmitting, initialData }: Component
           )}
 
           <span className={clsx({ "invisible": isSubmitting })}>
-            {isSubmitting ? "Salvando..." : (initialData ? "Salvar Alterações" : "Cadastrar")}
+            {initialData ? "Salvar Alterações" : "Cadastrar"}
           </span>
         </button>
       </div>

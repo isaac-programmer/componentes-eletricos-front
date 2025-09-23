@@ -14,6 +14,7 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <MenuButton
+          onClick={(e) => e.stopPropagation()}
           className="inline-flex w-full justify-center rounded-md p-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           <MoreHorizontal className="h-5 w-5" aria-hidden="true" />

@@ -6,7 +6,7 @@ import { apiComponentRepository } from "@/infra/repositories/ApiComponentReposit
 
 interface UpdateParams {
   id: string;
-  data: ComponentFormData;
+  data: Partial<ComponentFormData>;
 }
 
 export function useUpdateComponent() {
@@ -15,7 +15,6 @@ export function useUpdateComponent() {
   return useMutation({
     mutationFn: ({ id, data }: UpdateParams) => apiComponentRepository.update(id, data),
     onSuccess: (updatedComponent) => {
-      toast.success("Componente atualizado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["componentes"] });
       queryClient.setQueryData(["componente", updatedComponent.id], updatedComponent);
     },

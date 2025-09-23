@@ -8,25 +8,59 @@ import { useGetComponentById } from "@/useCases/useGetComponentById";
 import { useUpdateComponent } from "@/useCases/useUpdateComponent";
 import { CircuitBoard } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FieldNamesMarkedBoolean } from "react-hook-form";
 import toast from "react-hot-toast";
 
-export default function EditarComponentePage() {
+export default function EditComponentPage() {
   const router = useRouter();
   const params = useParams();
   const { setBreadcrumbs } = useBreadcrumbs();
   const id = params.id as string;
 
-  const { data: component, isLoading, isError } = useGetComponentById(id); 
+  const { data: component, isLoading, isError } = useGetComponentById(id);
   const { mutateAsync: updateComponent, isPending } = useUpdateComponent();
 
-  const handleUpdateComponent = async (data: ComponentFormData) => {
+  const [imageRemoved, setImageRemoved] = useState(false);
+
+  const buildPayload = (
+    data: ComponentFormData,
+    dirtyFields: FieldNamesMarkedBoolean<ComponentFormData>
+  ): Partial<ComponentFormData> => {
+    return Object.keys(dirtyFields).reduce<Partial<ComponentFormData>>(
+      (acc, key) => {
+        if (key in data) {
+          acc[key as keyof ComponentFormData] = data[key as keyof ComponentFormData];
+        }
+        return acc;
+      },
+      {}
+    );
+  };
+
+  const handleUpdateComponent = async (
+    data: ComponentFormData,
+    dirtyFields: FieldNamesMarkedBoolean<ComponentFormData>
+  ) => {
+    const payload: Partial<ComponentFormData> = buildPayload(data, dirtyFields);
+
+    if (imageRemoved && !payload.image) {
+      console.log("Imagem removida");
+      payload.image = null;
+      payload.imageUrl = null;
+    }
+
+    if (Object.keys(payload).length === 0) {
+      toast.error("Nenhuma alteração foi feita.");
+      return;
+    }
+
     try {
-      await updateComponent({ id, data });
+      await updateComponent({ id, data: payload });
       toast.success("Componente atualizado com sucesso!");
       router.push("/componentes");
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao atualizar componente:", error);
     }
   };
 
@@ -61,6 +95,7 @@ export default function EditarComponentePage() {
           initialData={component}
           onSubmit={handleUpdateComponent}
           isSubmitting={isPending}
+          onRemoveImage={() => setImageRemoved(true)}
         />
       </div>
 
