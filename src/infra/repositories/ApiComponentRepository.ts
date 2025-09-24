@@ -73,8 +73,8 @@ class ApiComponentRepository implements ComponentRepository {
     const { image, ...restOfData } = data;
 
     Object.entries(restOfData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        formData.append(key, value as string);
+      if (value !== undefined) {
+        formData.append(key, value as any);
       }
     });
 
@@ -86,9 +86,9 @@ class ApiComponentRepository implements ComponentRepository {
       const response = await api.patch<Component>(`/components/${id}`, formData);
       return response.data;
     } catch (error) {
-      console.error(`Erro ao cadastrar componente:`, error);
+      console.error(`Erro ao atualizar componente:`, error);
 
-      const errorMessage = handleApiError(error, "Não foi possível cadastrar o componente");
+      const errorMessage = handleApiError(error, "Não foi possível atualizar o componente");
       throw new Error(errorMessage);
     }
   }
