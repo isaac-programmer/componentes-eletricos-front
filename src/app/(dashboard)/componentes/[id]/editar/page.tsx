@@ -45,8 +45,6 @@ export default function EditComponentPage() {
     const payload: Partial<ComponentFormData> = buildPayload(data, dirtyFields);
 
     if (imageRemoved && !payload.image) {
-      console.log("Imagem removida");
-      payload.image = null;
       payload.imageUrl = null;
     }
 
@@ -73,6 +71,8 @@ export default function EditComponentPage() {
       ]
     });
   }, [setBreadcrumbs, id, component?.name]);
+
+  console.log(component, "component data");
 
   if (isLoading) {
     return <LoadingSpinner text="Carregando componente..." />;

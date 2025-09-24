@@ -20,6 +20,10 @@ export function ImageUploader({
     const inputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
 
+    // console.log(initialImageUrl, "initialImageUrl prop");
+
+    // console.log(preview, "preview state");
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         const file = files?.[0];
@@ -47,6 +51,7 @@ export function ImageUploader({
     };
 
     const handleRemoveImage = () => {
+        setPreview(null);
         onChange(null);
 
         if (onRemoveInitial) {
@@ -63,21 +68,21 @@ export function ImageUploader({
     };
 
     useEffect(() => {
-        const newFile = value?.[0];
+        if (value === null) {
+            setPreview(null);
+            return;
+        }
 
+        const newFile = value?.[0];
         if (newFile) {
             const fileUrl = URL.createObjectURL(newFile);
             setPreview(fileUrl);
-            
             return () => URL.revokeObjectURL(fileUrl);
         }
 
         if (initialImageUrl) {
             setPreview(initialImageUrl);
-            return;
         }
-
-        setPreview(null);
     }, [value, initialImageUrl]);
 
     return (
