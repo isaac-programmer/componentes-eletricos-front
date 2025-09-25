@@ -4,9 +4,7 @@ import { CategoryFilters, CategoryRepository, GetAllCategoriesResponse } from "@
 import { handleApiError } from "../utils/handleApiError";
 
 class ApiCategoryRepository implements CategoryRepository {
-
-  async getAll(filters: CategoryFilters
-     = {}): Promise<GetAllCategoriesResponse> {
+  async getAll(filters: CategoryFilters = {}): Promise<GetAllCategoriesResponse> {
     try {
       const params = new URLSearchParams();
 
