@@ -1,17 +1,22 @@
 "use client";
 
-import { Stock } from "@/domain/entities/stock";
+import { ComponentStockByLaboratory } from "@/domain/entities/stock";
 import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from "@tanstack/react-table";
 import { ActionsMenu } from "../molecules/ActionsMenu";
 import { LoadingSpinner } from "../molecules/LoadingSpinner";
 
-interface StockTableProps {
-    data: Stock[];
+interface ComponentStockByLaboratoryTableProps {
+    data?: ComponentStockByLaboratory[];
     isLoading: boolean;
 }
 
-export function StockTable({ data, isLoading }: StockTableProps) {
-    const columns: ColumnDef<Stock>[] = [
+export function ComponentStockByLaboratoryTable({ data, isLoading }: ComponentStockByLaboratoryTableProps) {
+    if (isLoading) return <LoadingSpinner text="Buscando estoque..." />;
+    if (!data || data.length === 0) {
+        return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhuma quantidade lançada para este componente</p>;
+    }
+
+    const columns: ColumnDef<ComponentStockByLaboratory>[] = [
         { accessorKey: "laboratoryName", header: "Laboratório" },
         { accessorKey: "quantity", header: "Quantidade" },
         {
@@ -29,11 +34,6 @@ export function StockTable({ data, isLoading }: StockTableProps) {
     ];
 
     const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
-
-    if (isLoading) return <LoadingSpinner text="Buscando estoque..." />;
-    if (data.length === 0) {
-        return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhuma quantidade lançada para este componente</p>;
-    }
 
     return (
         <div className="overflow-x-auto">

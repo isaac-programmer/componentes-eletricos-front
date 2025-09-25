@@ -1,16 +1,19 @@
 "use client";
 
 import { LoadingSpinner } from "@/components/molecules/LoadingSpinner";
+import { ComponentStockByLaboratoryTable } from "@/components/organisms/ComponentStockByLaboratoryTable";
 import { ComponentForm } from "@/components/organisms/ComponentForm";
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import { ComponentFormData } from "@/domain/schemas/componentSchema";
 import { useGetComponentById } from "@/useCases/useGetComponentById";
 import { useUpdateComponent } from "@/useCases/useUpdateComponent";
+import { useGetComponentStockByLaboratory } from "@/useCases/useGetComponentStockByLaboratory";
 import { CircuitBoard } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldNamesMarkedBoolean } from "react-hook-form";
 import toast from "react-hot-toast";
+
 
 export default function EditComponentPage() {
   const router = useRouter();
@@ -19,6 +22,7 @@ export default function EditComponentPage() {
   const id = params.id as string;
 
   const { data: component, isLoading, isError } = useGetComponentById(id);
+  const { data: componentStockByLaboratory, isLoading: isLoadingComponentStockByLaboratory } = useGetComponentStockByLaboratory(id);
   const { mutateAsync: updateComponent, isPending } = useUpdateComponent();
 
   const [imageRemoved, setImageRemoved] = useState(false);
@@ -72,7 +76,6 @@ export default function EditComponentPage() {
     });
   }, [setBreadcrumbs, id, component?.name]);
 
-  console.log(component, "component data");
 
   if (isLoading) {
     return <LoadingSpinner text="Carregando componente..." />;
@@ -101,7 +104,10 @@ export default function EditComponentPage() {
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-6">
         <h2 className="text-lg font-semibold text-paragraph mb-4">Quantidade por laboratório</h2>
-        <p>Carregando dados de estoque...</p>
+        <ComponentStockByLaboratoryTable 
+          data={componentStockByLaboratory}
+          isLoading={isLoadingComponentStockByLaboratory}
+        />
       </div>
     </div>
   );
