@@ -3,6 +3,8 @@
 @theme {
   --font-display: "Onest", "sans-serif";
   --color-primary: #0378A6;
+  --color-black: #252126;
+  --color-gray: #D9D9D9;
   --color-border: #25212633;
   --color-white-div: #F4F4F4;
   --color-paragraph: #525252;
@@ -10,4 +12,8 @@
 
 body {
   font-family: var(--font-display);
+}
+
+button {
+  cursor: pointer;
 }
