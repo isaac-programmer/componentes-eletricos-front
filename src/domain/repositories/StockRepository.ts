@@ -1,5 +1,6 @@
-import { Stock } from "../entities/stock";
+import { ComponentStockByLaboratory, Stock } from "../entities/stock";
 
 export interface StockRepository {
-  getByComponentId(componentId: string): Promise<Stock[]>;
+  getStockComponent(): Promise<Stock[]>;
+  getComponentStockByLaboratory(componentId: string): Promise<ComponentStockByLaboratory[]>;
 }
