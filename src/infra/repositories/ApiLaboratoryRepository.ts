@@ -5,9 +5,7 @@ import { handleApiError } from "../utils/handleApiError";
 import { GetAllLaboratoriesResponse, LaboratoryFilters, LaboratoryRepository } from "@/domain/repositories/LaboratoryRepository";
 
 class ApiLaboratoryRepository implements LaboratoryRepository {
-
-  async getAll(filters: LaboratoryFilters
-     = {}): Promise<GetAllLaboratoriesResponse> {
+  async getAll(filters: LaboratoryFilters = {}): Promise<GetAllLaboratoriesResponse> {
     try {
       const params = new URLSearchParams();
 
