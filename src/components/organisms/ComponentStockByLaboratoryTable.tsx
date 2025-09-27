@@ -23,6 +23,7 @@ export function ComponentStockByLaboratoryTable({ data, isLoading }: ComponentSt
             id: "acoes",
             header: "Ações",
             cell: ({ row }) => {
+                const laboratoryId = row.original.laboratoryId;
                 return (
                     <ActionsMenu
                         onDelete={() => console.log("Deletar estoque")}

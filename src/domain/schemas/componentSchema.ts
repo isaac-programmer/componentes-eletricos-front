@@ -36,7 +36,7 @@ export const componentSchema = z.object({
         if (!files || files.length === 0) return true;
         return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
       },
-      "Apenas os formatos .jpg, .jpeg, .png e .webp são aceitos."
+      "Apenas os formatos .jpg, .jpeg, .png e .webp são aceitos"
     ),
 });
 
