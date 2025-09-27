@@ -13,17 +13,26 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldNamesMarkedBoolean } from "react-hook-form";
 import toast from "react-hot-toast";
+import { Modal } from "@/components/molecules/Modal";
+import { useStockTransactions } from "@/useCases/useStockTransactions";
+import { AddStockForm } from "@/components/organisms/AddStockForm";
 
 
 export default function EditComponentPage() {
   const router = useRouter();
   const params = useParams();
+
   const { setBreadcrumbs } = useBreadcrumbs();
+
   const id = params.id as string;
 
   const { data: component, isLoading, isError } = useGetComponentById(id);
   const { data: componentStockByLaboratory, isLoading: isLoadingComponentStockByLaboratory } = useGetComponentStockByLaboratory(id);
   const { mutateAsync: updateComponent, isPending } = useUpdateComponent();
+
+  const [addModalData, setAddModalData] = useState({ isOpen: false, laboratoryId: "" });
+  
+  const { addStock } = useStockTransactions(id);
 
   const [imageRemoved, setImageRemoved] = useState(false);
 
@@ -40,6 +49,17 @@ export default function EditComponentPage() {
       },
       {}
     );
+  };
+
+  const handleOpenAddModal = (laboratoryId: string) => setAddModalData({ isOpen: true, laboratoryId: laboratoryId });
+  const handleCloseAddModal = () => setAddModalData({ isOpen: false, laboratoryId: '' });
+
+  const handleAddStock = (formData: { quantity: string }) => {
+    addStock.mutate({
+      componentId: id,
+      laboratoryId: addModalData.laboratoryId,
+      quantity: Number(formData.quantity),
+    }, { onSuccess: handleCloseAddModal });
   };
 
   const handleUpdateComponent = async (
@@ -107,8 +127,21 @@ export default function EditComponentPage() {
         <ComponentStockByLaboratoryTable 
           data={componentStockByLaboratory}
           isLoading={isLoadingComponentStockByLaboratory}
+          onAddStock={handleOpenAddModal}
         />
       </div>
+
+      <Modal 
+        isOpen={addModalData.isOpen} 
+        title="Adicionar Quantidade"
+        onClose={handleCloseAddModal} 
+      >
+        <AddStockForm 
+          onSubmit={handleAddStock}
+          onCancel={handleCloseAddModal}
+          isSubmitting={addStock.isPending}
+        />
+      </Modal>
     </div>
   );
 }

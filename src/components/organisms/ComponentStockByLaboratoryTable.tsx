@@ -2,15 +2,16 @@
 
 import { ComponentStockByLaboratory } from "@/domain/entities/stock";
 import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from "@tanstack/react-table";
-import { ActionsMenu } from "../molecules/ActionsMenu";
 import { LoadingSpinner } from "../molecules/LoadingSpinner";
+import { ActionsMenuStockTransactions } from "../molecules/ActionsMenuStockTransactions";
 
 interface ComponentStockByLaboratoryTableProps {
     data?: ComponentStockByLaboratory[];
     isLoading: boolean;
+    onAddStock: (laboratoryId: string) => void;
 }
 
-export function ComponentStockByLaboratoryTable({ data, isLoading }: ComponentStockByLaboratoryTableProps) {
+export function ComponentStockByLaboratoryTable({ data, isLoading, onAddStock }: ComponentStockByLaboratoryTableProps) {
     if (isLoading) return <LoadingSpinner text="Buscando estoque..." />;
     if (!data || data.length === 0) {
         return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhuma quantidade lançada para este componente</p>;
@@ -25,9 +26,8 @@ export function ComponentStockByLaboratoryTable({ data, isLoading }: ComponentSt
             cell: ({ row }) => {
                 const laboratoryId = row.original.laboratoryId;
                 return (
-                    <ActionsMenu
-                        onDelete={() => console.log("Deletar estoque")}
-                        onEdit={() => console.log("Editar estoque")}
+                    <ActionsMenuStockTransactions
+                        onAddStock={() => onAddStock(laboratoryId)}
                     />
                 )
             }
