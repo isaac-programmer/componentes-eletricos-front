@@ -1,6 +1,6 @@
 import { api } from "../services/api";
 import { ComponentStockByLaboratory, Stock } from "@/domain/entities/stock";
-import { StockRepository } from "@/domain/repositories/StockRepository";
+import { AddStockDTO, ConsumeStockDTO, StockRepository, TransferStockDTO } from "@/domain/repositories/StockRepository";
 
 class ApiStockRepository implements StockRepository {
   async getStockComponent(): Promise<Stock[]> {
@@ -22,6 +22,31 @@ class ApiStockRepository implements StockRepository {
     } catch (error) {
       console.error("Erro ao buscar estoque de componente por laboratório:", error);
       return [];
+    }
+  }
+
+
+  async add(data: AddStockDTO): Promise<void> {
+    try {
+      await api.post('/transactions/add', data);
+    } catch (error) {
+      console.error("Erro ao adicionar estoque de componente:", error);
+    }
+  }
+
+  async consume(data: ConsumeStockDTO): Promise<void> {
+    try {
+      await api.post('/transactions/consume', data);
+    } catch (error) {
+      console.error("Erro ao consumir estoque de componente:", error);
+    }
+  }
+  
+  async transfer(data: TransferStockDTO): Promise<void> {
+    try {
+      await api.post('/transactions/transfer', data);
+    } catch (error) {
+      console.error("Erro ao transferir estoque de componente:", error);
     }
   }
 }
