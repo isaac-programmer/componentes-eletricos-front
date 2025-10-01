@@ -6,9 +6,15 @@ import { Fragment } from "react";
 
 interface ActionsMenuProps {
   onAddStock: () => void;
+  onConsumeStock: () => void;
+  onTransferStock: () => void;
 }
 
-export function ActionsMenuStockTransactions({ onAddStock }: ActionsMenuProps) {
+export function ActionsMenuStockTransactions({ 
+  onAddStock, 
+  onConsumeStock, 
+  onTransferStock 
+}: ActionsMenuProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -31,7 +37,7 @@ export function ActionsMenuStockTransactions({ onAddStock }: ActionsMenuProps) {
         <MenuItems
           className="absolute right-0 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-10"
         >
-          <div className="px-1 py-1 ">
+          <div className="px-1 py-1">
             <MenuItem>
               <button
                 onClick={(e) => {
@@ -41,6 +47,30 @@ export function ActionsMenuStockTransactions({ onAddStock }: ActionsMenuProps) {
                 className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
               >
                 Adicionar quantidade
+              </button>
+            </MenuItem>
+
+            <MenuItem>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onConsumeStock();
+                }}
+                className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+              >
+                Consumir quantidade
+              </button>
+            </MenuItem>
+
+            <MenuItem>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTransferStock();
+                }}
+                className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+              >
+                Transferir quantidade
               </button>
             </MenuItem>
           </div>

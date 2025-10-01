@@ -2,20 +2,21 @@ import { ComponentStockByLaboratory, Stock } from "../entities/stock";
 
 export interface AddStockDTO { 
   componentId: string; 
-  laboratoryId: string; 
+  laboratoryDestinationId: string; 
   quantity: number; 
 }
 
 export interface ConsumeStockDTO { 
   componentId: string; 
-  laboratoryId: string; 
+  laboratoryOriginId: string; 
   quantity: number; 
+  motive: string;
 }
 
 export interface TransferStockDTO { 
   componentId: string; 
-  fromLaboratoryId: string; 
-  toLaboratoryId: string; 
+  laboratoryOriginId: string; 
+  laboratoryDestinationId: string; 
   quantity: number; 
 }
 

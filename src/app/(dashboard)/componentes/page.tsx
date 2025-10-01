@@ -23,7 +23,7 @@ export default function Componentes() {
   const [componentToDelete, setComponentToDelete] = useState<string | null>(null);
 
   const { setBreadcrumbs } = useBreadcrumbs();
-  
+
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const filtersToFetch: ComponentFilters = useMemo(() => ({
