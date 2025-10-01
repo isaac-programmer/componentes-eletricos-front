@@ -32,7 +32,7 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
         <MenuItems
           className="absolute right-0 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-10"
         >
-          <div className="px-1 py-1 ">
+          <div className="px-1 py-1">
             <MenuItem>
               <button
                 onClick={(e) => {

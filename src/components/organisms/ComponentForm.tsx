@@ -18,9 +18,9 @@ interface ComponentFormProps {
   onRemoveImage?: () => void;
 }
 
-export function ComponentForm({ 
-  onSubmit, 
-  isSubmitting, 
+export function ComponentForm({
+  onSubmit,
+  isSubmitting,
   initialData,
   onRemoveImage,
 }: ComponentFormProps) {

@@ -1,6 +1,7 @@
 import { api } from "../services/api";
 import { ComponentStockByLaboratory, Stock } from "@/domain/entities/stock";
 import { AddStockDTO, ConsumeStockDTO, StockRepository, TransferStockDTO } from "@/domain/repositories/StockRepository";
+import { handleApiError } from "../utils/handleApiError";
 
 class ApiStockRepository implements StockRepository {
   async getStockComponent(): Promise<Stock[]> {
@@ -30,7 +31,10 @@ class ApiStockRepository implements StockRepository {
     try {
       await api.post('/transactions/add', data);
     } catch (error) {
-      console.error("Erro ao adicionar estoque de componente:", error);
+      console.error("Erro ao adicionar quantidade do componente:", error);
+
+      const errorMessage = handleApiError(error, "Não foi possível adicionar quantidade do componente");
+      throw new Error(errorMessage);
     }
   }
 
@@ -38,7 +42,10 @@ class ApiStockRepository implements StockRepository {
     try {
       await api.post('/transactions/consume', data);
     } catch (error) {
-      console.error("Erro ao consumir estoque de componente:", error);
+      console.error("Erro ao consumir quantidade do componente:", error);
+
+      const errorMessage = handleApiError(error, "Não foi possível consumir quantidade do componente");
+      throw new Error(errorMessage);
     }
   }
   
@@ -46,7 +53,10 @@ class ApiStockRepository implements StockRepository {
     try {
       await api.post('/transactions/transfer', data);
     } catch (error) {
-      console.error("Erro ao transferir estoque de componente:", error);
+      console.error("Erro ao transferir quantidade do componente:", error);
+
+      const errorMessage = handleApiError(error, "Não foi possível transferir quantidade do componente");
+      throw new Error(errorMessage);
     }
   }
 }

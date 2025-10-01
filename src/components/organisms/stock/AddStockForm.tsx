@@ -1,9 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { addStockSchema, AddStockFormData } from "@/domain/schemas/transactionSchema";
+import { addStockSchema } from "@/domain/schemas/transactionSchema";
 import { Loader2 } from "lucide-react";
 import clsx from "clsx";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type AddStockFormData = z.infer<typeof addStockSchema>;
 
 interface AddStockFormProps {
     onSubmit: (data: AddStockFormData) => void;
@@ -20,9 +23,9 @@ export function AddStockForm({ onSubmit, isSubmitting }: AddStockFormProps) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
                 <input
-                    type="number"
-                    min={0}
                     {...register("quantity", { valueAsNumber: true })}
+                    min={0}
+                    type="number"
                     placeholder="Informe a quantidade a ser adicionada"
                     className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
                 />
