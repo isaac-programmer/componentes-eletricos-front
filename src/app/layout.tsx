@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Onest } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import QueryProvider from "@/infra/providers/QueryProvider";
+import { BreadcrumbProvider } from "@/contexts/BreadcrumbContext";
 import "./globals.css";
 
 const onest = Onest({
@@ -20,7 +23,29 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={onest.variable}>
       <body>
-        {children}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            success: {
+              style: {
+                background: "#28a745",
+                color: "white",
+              },
+            },
+            error: {
+              style: {
+                background: "#dc3545",
+                color: "white",
+              },
+            },
+          }}
+        />
+        <QueryProvider>
+          <BreadcrumbProvider>
+            {children}
+          </BreadcrumbProvider>
+        </QueryProvider>
       </body>
     </html>
   );
