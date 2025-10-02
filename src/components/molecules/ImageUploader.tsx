@@ -20,10 +20,6 @@ export function ImageUploader({
     const inputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
 
-    // console.log(initialImageUrl, "initialImageUrl prop");
-
-    // console.log(preview, "preview state");
-
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         const file = files?.[0];

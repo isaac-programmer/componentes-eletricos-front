@@ -1,15 +1,20 @@
 "use client";
 
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Fragment } from "react";
 
 interface ActionsMenuProps {
-  onEdit: () => void;
-  onDelete: () => void;
+  onAddStock: () => void;
+  onConsumeStock: () => void;
+  onTransferStock: () => void;
 }
 
-export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
+export function ActionsMenuStockTransactions({ 
+  onAddStock, 
+  onConsumeStock, 
+  onTransferStock 
+}: ActionsMenuProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -37,24 +42,35 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onEdit();
+                  onAddStock();
                 }}
                 className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
               >
-                <Pencil className="w-4 h-4" />
-                Editar
+                Adicionar quantidade
               </button>
             </MenuItem>
+
             <MenuItem>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete();
+                  onConsumeStock();
                 }}
-                className={"data-[active]:bg-red-500 data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+                className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
               >
-                <Trash2 className="w-4 h-4" />
-                Excluir
+                Consumir quantidade
+              </button>
+            </MenuItem>
+
+            <MenuItem>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTransferStock();
+                }}
+                className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+              >
+                Transferir quantidade
               </button>
             </MenuItem>
           </div>

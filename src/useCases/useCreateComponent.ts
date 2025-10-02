@@ -15,7 +15,7 @@ export function useCreateComponent() {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error("Ocorreu um erro desconhecido.");
+        toast.error("Ocorreu um erro desconhecido");
       }
     }
   });
