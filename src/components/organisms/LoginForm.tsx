@@ -1,57 +1,55 @@
 "use client";
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
 import clsx from "clsx";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginFormData, loginSchema } from "@/domain/schemas/authenticateSchema";
 
-const loginSchema = z.object({
-  email: z.email("Por favor, informe um e-mail válido").min(1, "O e-mail é obrigatório"),
-  password: z.string().min(1, "A senha é obrigatória"),
-});
+interface LoginFormProps {
+  onSubmit: (data: LoginFormData) => Promise<void>;
+  isSubmitting?: boolean;
+}
 
-type LoginFormData = z.infer<typeof loginSchema>;
-
-export function LoginForm() {
+export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
   });
 
-  const handleLogin = async (data: LoginFormData) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  };
-
   return (
-    <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-1">
-        <label htmlFor="email">E-mail ou Usuário</label>
-        <input 
-          id="email" 
-          type="email" 
-          {...register("email")}
+        <label htmlFor="login">E-mail ou Usuário</label>
+        <input
+          id="login"
+          type="text"
+          {...register("login")}
           placeholder="Informe o seu e-mail ou usuário"
-          className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1" 
+          className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
         />
-        {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email.message}</p>}
+        {errors.login && <p className="text-red-600 text-xs mt-1">{errors.login.message}</p>}
       </div>
       <div className="space-y-1">
         <label htmlFor="password">Senha</label>
         <div className="relative">
-          <input 
-            id="password" 
-            type={showPassword ? "text" : "password"}  
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
             {...register("password")}
             placeholder="Informe a sua senha"
-            className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1" 
+            className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
           />
-          <button 
-            type="button" 
-            className="absolute inset-y-0 right-0 flex items-center pr-3" 
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 flex items-center pr-3"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? <EyeOff className="h-5 w-5 text-placeholder" /> : <Eye className="h-5 w-5 text-placeholder" />}
