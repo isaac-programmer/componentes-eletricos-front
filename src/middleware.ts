@@ -5,7 +5,6 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get("access_token")?.value;
-  // const refreshToken = request.cookies.get("refresh_token")?.value;
 
   if (token && (pathname === "/login")) {
     return NextResponse.redirect(new URL("/componentes", request.url));
