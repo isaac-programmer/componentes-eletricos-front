@@ -1,15 +1,15 @@
-import { apiAuthRepository } from "@/infra/repositories/ApiAuthRepository";
+import { apiAuthenticationRepository } from "@/infra/repositories/ApiAuthenticationRepository";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LoginRequest } from "@/domain/schemas/authenticateSchema";
+import { LoginRequest } from "@/domain/schemas/authenticationSchema";
 import toast from "react-hot-toast";
 
-export function useAuthenticate() {
+export function useAuthenticateSignIn() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: LoginRequest) => apiAuthRepository.signIn(data),
+    mutationFn: (data: LoginRequest) => apiAuthenticationRepository.signIn(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["auth"] });
+      queryClient.invalidateQueries({ queryKey: ["authentication"] });
     },
     onError: (error) => {
       if (error instanceof Error) {

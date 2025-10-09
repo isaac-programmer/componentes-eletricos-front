@@ -1,15 +1,15 @@
 "use client";
 
 import { LoginForm } from "@/components/organisms/LoginForm";
-import { LoginFormData, LoginRequest } from "@/domain/schemas/authenticateSchema";
-import { useAuthenticate } from "@/useCases/useAuthenticate";
+import { LoginFormData, LoginRequest } from "@/domain/schemas/authenticationSchema";
+import { useAuthenticateSignIn } from "@/useCases/useAuthentication";
 import { useRouter } from "next/navigation";
-import { saveTokensToCookies } from "../actions/authActions";
+import { setCookie } from "@/infra/utils/cookies";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { mutateAsync: login, isPending } = useAuthenticate();
+  const { mutateAsync: login, isPending } = useAuthenticateSignIn();
 
   const handleLogin = async (data: LoginFormData) => {
     const isEmail = data.login.includes("@");
@@ -22,7 +22,8 @@ export default function LoginPage() {
     try {
       const tokens = await login(updatedData);
 
-      await saveTokensToCookies(tokens);
+      setCookie({ key: process.env.NEXT_PUBLIC_TOKEN_KEY as string, value: tokens.accessToken, expires: 1/60 });
+      setCookie({ key: process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY as string, value: tokens.refreshToken, expires: 3/60 });
 
       toast.success("Login realizado com sucesso!");
       router.push("/componentes");

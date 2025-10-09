@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormData, loginSchema } from "@/domain/schemas/authenticateSchema";
+import { LoginFormData, loginSchema } from "@/domain/schemas/authenticationSchema";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void>;

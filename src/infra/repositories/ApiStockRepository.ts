@@ -29,7 +29,7 @@ class ApiStockRepository implements StockRepository {
 
   async add(data: AddStockDTO): Promise<void> {
     try {
-      await api.post('/transactions/add', data);
+      await api.post("/transactions/add", data);
     } catch (error) {
       console.error("Erro ao adicionar quantidade do componente:", error);
 
@@ -40,7 +40,7 @@ class ApiStockRepository implements StockRepository {
 
   async consume(data: ConsumeStockDTO): Promise<void> {
     try {
-      await api.post('/transactions/consume', data);
+      await api.post("/transactions/consume", data);
     } catch (error) {
       console.error("Erro ao consumir quantidade do componente:", error);
 
@@ -51,7 +51,7 @@ class ApiStockRepository implements StockRepository {
   
   async transfer(data: TransferStockDTO): Promise<void> {
     try {
-      await api.post('/transactions/transfer', data);
+      await api.post("/transactions/transfer", data);
     } catch (error) {
       console.error("Erro ao transferir quantidade do componente:", error);
 
