@@ -106,11 +106,11 @@ export default function Componentes() {
 
   if (isError) {
     return (
-      <div
-        className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-red-500 bg-white text-center"
+      <p
+        className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
       >
         Ocorreu um erro ao buscar os componentes
-      </div>
+      </p>
     );
   }
 

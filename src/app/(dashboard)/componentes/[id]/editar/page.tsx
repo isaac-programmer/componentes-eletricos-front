@@ -148,7 +148,13 @@ export default function EditComponentPage() {
   }
 
   if (isError || !component) {
-    return <p>Componente não encontrado ou erro ao carregar</p>;
+    return (
+      <p
+        className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
+      >
+        Componente não encontrado
+      </p>
+    );
   }
 
   return (
