@@ -2,14 +2,12 @@
 
 import { LoginForm } from "@/components/organisms/LoginForm";
 import { LoginFormData, LoginRequest } from "@/domain/schemas/authenticationSchema";
-import { useAuthenticateSignIn } from "@/useCases/useAuthentication";
 import { useRouter } from "next/navigation";
-import { setCookie } from "@/infra/utils/cookies";
-import toast from "react-hot-toast";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { mutateAsync: login, isPending } = useAuthenticateSignIn();
+  const { signIn, isLoading, setIsLoading } = useAuthentication();
 
   const handleLogin = async (data: LoginFormData) => {
     const isEmail = data.login.includes("@");
@@ -20,15 +18,11 @@ export default function LoginPage() {
     };
 
     try {
-      const tokens = await login(updatedData);
-
-      setCookie({ key: process.env.NEXT_PUBLIC_TOKEN_KEY as string, value: tokens.accessToken, expires: 1/60 });
-      setCookie({ key: process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY as string, value: tokens.refreshToken, expires: 3/60 });
-
-      toast.success("Login realizado com sucesso!");
-      router.push("/componentes");
+      await signIn(updatedData);
     } catch (error) {
-      console.error(error);
+      console.error("Falha no login (tratada pelo contexto):", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,7 +38,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
         <h1 className="text-2xl font-bold text-center text-paragraph">Login</h1>
         <LoginForm
-          isSubmitting={isPending}
+          isSubmitting={isLoading}
           onSubmit={handleLogin}
         />
       </div>

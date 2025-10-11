@@ -37,10 +37,10 @@ api.interceptors.response.use(
   async (error) => {
     const originalConfig = error.config;
 
-    const tokenKey: string = process.env.NEXT_PUBLIC_TOKEN_KEY as string;
-    const refreshTokenKey: string = process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY as string;
+    const tokenCookieKey = "inventario.token";
+    const refreshTokenCookieKey = "inventario.refreshToken";
 
-    const refreshTokenCookie = getCookieValue(refreshTokenKey) as string | undefined;
+    const refreshTokenCookie = await getCookieValue(refreshTokenCookieKey);
 
     if (!refreshTokenCookie) {
       return Promise.reject(error);
@@ -64,8 +64,8 @@ api.interceptors.response.use(
 
           const { accessToken, refreshToken: newRefreshToken } = response.data;
           
-          setCookie({ key: tokenKey as string, value: accessToken, expires: 1/60 });
-          setCookie({ key: refreshTokenKey, value: newRefreshToken, expires: 3/60 });
+          setCookie({ key: tokenCookieKey as string, value: accessToken, expires: 1/60 });
+          setCookie({ key: refreshTokenCookieKey, value: newRefreshToken, expires: 3/60 });
 
           api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
           originalConfig.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -74,8 +74,8 @@ api.interceptors.response.use(
         } catch (refreshError) {
           console.error("Falha ao renovar o token:", refreshError);
 
-          removeCookie(tokenKey);
-          removeCookie(refreshTokenKey);
+          removeCookie(tokenCookieKey);
+          removeCookie(refreshTokenCookieKey);
 
           window.location.replace("/login");
           
