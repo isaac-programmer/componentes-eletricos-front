@@ -13,8 +13,8 @@ export default function DashboardLayout({ children }: {
 
   return (
     <div className="flex h-screen bg-white-div text-paragraph">
-      <Sidebar 
-        isOpen={isSidebarOpen} 
+      <Sidebar
+        isOpen={isSidebarOpen}
         isMobileOpen={isMobileSidebarOpen}
         onCloseMobile={() => setMobileSidebarOpen(false)}
         onToggleDesktop={() => setSidebarOpen(!isSidebarOpen)}
