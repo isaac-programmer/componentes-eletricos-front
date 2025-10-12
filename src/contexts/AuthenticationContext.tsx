@@ -40,8 +40,8 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
             const tokenCookieKey = "inventario.token";
             const refreshTokenCookieKey = "inventario.refreshToken";
 
-            setCookie({ key: tokenCookieKey, value: accessToken, expires: 1 / 60 });
-            setCookie({ key: refreshTokenCookieKey, value: refreshToken, expires: 3 / 60 });
+            setCookie({ key: tokenCookieKey, value: accessToken, expires: 24 });
+            setCookie({ key: refreshTokenCookieKey, value: refreshToken, expires: 48 });
 
             api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
