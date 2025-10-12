@@ -16,6 +16,7 @@ import {
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 
 const navItems = [
   { href: "/home", label: "Home", icon: Home },
@@ -40,6 +41,7 @@ export function Sidebar({
   onCloseMobile,
 }: SidebarProps) {
   const pathname = usePathname();
+  const { signOut } = useAuthentication();
 
   return (
     <aside
@@ -108,17 +110,16 @@ export function Sidebar({
 
           <hr className="text-border" />
 
-          <Link
-            href="/logout"
-            onClick={onCloseMobile}
+          <span
+            onClick={signOut}
             className={clsx(
-              "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-primary hover:bg-gray-200",
+              "flex items-center cursor-pointer gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-primary hover:bg-gray-200",
               !isOpen && "justify-center"
             )}
           >
             <LogOut className="h-5 w-5 flex-shrink-0" />
             <span className={clsx(!isOpen && "md:hidden")}>Sair</span>
-          </Link>
+          </span>
         </nav>
       </div>
 

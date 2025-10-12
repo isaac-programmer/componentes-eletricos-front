@@ -80,17 +80,17 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
                 return;
             }
 
-            const tokenData = JSON.parse(tokenCookie);
-            const token = decodeURIComponent(tokenData?.value);
+            const token = tokenCookie;
 
             if (token) {
                 try {
-                    const response = await api.get("/auth/profile");
+                    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+                    const response = await api.get("/profile");
 
                     setUser(response.data);
-                    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
                 } catch (error) {
-                    signOut();
+                    console.error("Falha ao buscar perfil do usuário:", error);
                 }
             }
 
