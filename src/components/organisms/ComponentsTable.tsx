@@ -9,6 +9,9 @@ import {
 } from "@tanstack/react-table";
 import { ActionsMenu } from "../molecules/ActionsMenu";
 import { LoadingSpinner } from "../molecules/LoadingSpinner";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
+import { useMemo } from "react";
+import clsx from "clsx";
 
 interface ComponentsTableProps {
   data: Component[];
@@ -18,12 +21,19 @@ interface ComponentsTableProps {
 }
 
 export function ComponentsTable({ data, isLoading, onEdit, onDelete }: ComponentsTableProps) {
+  const { user } = useAuthentication();
+
+  const isAdmin = useMemo(() => user?.group?.isAdmin ?? false, [user]);
+
   const columns: ColumnDef<Component>[] = [
     { accessorKey: "name", header: "Nome" },
     { accessorKey: "reference", header: "Referência" },
     { accessorKey: "category.name", header: "Categoria" },
     { accessorKey: "origin", header: "Origem" },
-    {
+  ];
+
+  if (isAdmin) {
+    columns.push({
       id: "acoes",
       header: "Ações",
       cell: ({ row }) => {
@@ -35,8 +45,8 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
           />
         )
       }
-    },
-  ];
+    })
+  };
 
   const table = useReactTable({
     data,
@@ -71,11 +81,14 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
         {table.getRowModel().rows.map(row => (
           <tr
             key={row.id}
-            className="cursor-pointer hover:bg-gray-50"
-            onClick={(e) => {
+            className={clsx(
+              "hover:bg-gray-50",
+              isAdmin && "cursor-pointer"
+            )}
+            onClick={isAdmin ? (e) => {
               e.stopPropagation();
               onEdit(row.original.id);
-            }}
+            } : undefined}
           >
             {row.getVisibleCells().map(cell => (
               <td
