@@ -17,14 +17,15 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthentication } from "@/contexts/AuthenticationContext";
+import { useMemo } from "react";
 
 const navItems = [
   { href: "/home", label: "Home", icon: Home },
   { href: "/componentes", label: "Componentes", icon: Cpu },
-  { href: "/laboratorios", label: "Laboratórios", icon: Airplay },
-  { href: "/categorias", label: "Categorias", icon: List },
+  { href: "/laboratorios", label: "Laboratórios", icon: Airplay, adminOnly: true },
+  { href: "/categorias", label: "Categorias", icon: List, adminOnly: true },
   { href: "/relatorios", label: "Relatórios", icon: FileText },
-  { href: "/usuarios", label: "Usuários", icon: Users },
+  { href: "/usuarios", label: "Usuários", icon: Users, adminOnly: true },
 ];
 
 interface SidebarProps {
@@ -41,7 +42,14 @@ export function Sidebar({
   onCloseMobile,
 }: SidebarProps) {
   const pathname = usePathname();
-  const { signOut } = useAuthentication();
+  
+  const { user, signOut } = useAuthentication();
+
+  const filteredNavItems = useMemo(() => {
+    return user?.group?.isAdmin
+      ? navItems
+      : navItems.filter(navItem => !navItem.adminOnly);
+  }, [user]);
 
   return (
     <aside
@@ -90,21 +98,21 @@ export function Sidebar({
         </div>
 
         <nav className="flex flex-col gap-4">
-          {navItems.map((item) => (
+          {filteredNavItems.map((navItem) => (
             <Link
-              key={item.label}
-              href={item.href}
+              key={navItem.label}
+              href={navItem.href}
               onClick={onCloseMobile}
               className={clsx(
                 "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                 !isOpen && "justify-center",
-                pathname.startsWith(item.href)
+                pathname.startsWith(navItem.href)
                   ? "bg-primary text-white"
                   : "text-primary hover:bg-gray-200"
               )}
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span className={clsx(!isOpen && "md:hidden")}>{item.label}</span>
+              <navItem.icon className="h-5 w-5 flex-shrink-0" />
+              <span className={clsx(!isOpen && "md:hidden")}>{navItem.label}</span>
             </Link>
           ))}
 
