@@ -72,6 +72,8 @@ export default function EditComponentPage() {
         quantity: data.quantity,
       });
 
+      toast.success("Quantidade de componente adicionada com sucesso!");
+
       handleCloseAddModal();
     } catch (error) {
       console.error("Erro ao adicionar quantidade de componente:", error);
@@ -87,6 +89,8 @@ export default function EditComponentPage() {
         motive: data.motive,
       });
 
+      toast.success("Quantidade de componente consumida com sucesso!");
+
       handleCloseConsumeModal();
     } catch (error) {
       console.error("Erro ao consumir quantidade de componente:", error);
@@ -101,6 +105,8 @@ export default function EditComponentPage() {
         laboratoryDestinationId: data.laboratoryDestinationId,
         quantity: data.quantity,
       });
+
+      toast.success("Quantidade de componente transferida com sucesso!");
 
       handleCloseTransferModal();
     } catch (error) {
