@@ -1,17 +1,18 @@
 import {
     Menu,
     ChevronDown,
-    Cpu,
-    ChevronRight,
+    User,
 } from "lucide-react";
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import Link from "next/link";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 
 interface HeaderProps {
     onMenuClick: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
+    const { user } = useAuthentication();
     const { breadcrumbs } = useBreadcrumbs();
 
     const { items, icon: Icon } = breadcrumbs
@@ -44,8 +45,10 @@ export function Header({ onMenuClick }: HeaderProps) {
 
             <div className="flex items-center gap-3">
                 <div className="flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-gray-200" />
-                    <span className="text-sm text-gray-600">Olá, João</span>
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200">
+                        <User className="h-4 w-4 text-gray-500" />
+                    </div>
+                    <span className="text-sm text-gray-600">Olá, {user?.name}</span>
                 </div>
                 <button className="p-1 rounded-md cursor-pointer hover:bg-gray-200">
                     <ChevronDown className="h-4 w-4 text-gray-500" />

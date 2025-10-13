@@ -72,6 +72,8 @@ export default function EditComponentPage() {
         quantity: data.quantity,
       });
 
+      toast.success("Quantidade de componente adicionada com sucesso!");
+
       handleCloseAddModal();
     } catch (error) {
       console.error("Erro ao adicionar quantidade de componente:", error);
@@ -87,6 +89,8 @@ export default function EditComponentPage() {
         motive: data.motive,
       });
 
+      toast.success("Quantidade de componente consumida com sucesso!");
+
       handleCloseConsumeModal();
     } catch (error) {
       console.error("Erro ao consumir quantidade de componente:", error);
@@ -101,6 +105,8 @@ export default function EditComponentPage() {
         laboratoryDestinationId: data.laboratoryDestinationId,
         quantity: data.quantity,
       });
+
+      toast.success("Quantidade de componente transferida com sucesso!");
 
       handleCloseTransferModal();
     } catch (error) {
@@ -148,7 +154,13 @@ export default function EditComponentPage() {
   }
 
   if (isError || !component) {
-    return <p>Componente não encontrado ou erro ao carregar</p>;
+    return (
+      <p
+        className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
+      >
+        Componente não encontrado
+      </p>
+    );
   }
 
   return (
