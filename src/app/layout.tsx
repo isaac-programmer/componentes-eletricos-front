@@ -3,6 +3,7 @@ import { Onest } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/infra/providers/QueryProvider";
 import { BreadcrumbProvider } from "@/contexts/BreadcrumbContext";
+import { AuthenticationProvider } from "@/contexts/AuthenticationContext";
 import "./globals.css";
 
 const onest = Onest({
@@ -42,9 +43,11 @@ export default function RootLayout({
           }}
         />
         <QueryProvider>
-          <BreadcrumbProvider>
-            {children}
-          </BreadcrumbProvider>
+          <AuthenticationProvider>
+            <BreadcrumbProvider>
+              {children}
+            </BreadcrumbProvider>
+          </AuthenticationProvider>
         </QueryProvider>
       </body>
     </html>

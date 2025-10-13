@@ -17,7 +17,7 @@ interface TransferStockFormProps {
 
 export function TransferStockForm({ onSubmit, isSubmitting }: TransferStockFormProps) {
     const { data: laboratories, isLoading: isLoadingLaboratories } = useGetLaboratories();
-    
+
     const { register, handleSubmit, formState: { errors } } = useForm<TransferStockFormData>({
         resolver: zodResolver(transferStockSchema),
     });
@@ -38,7 +38,7 @@ export function TransferStockForm({ onSubmit, isSubmitting }: TransferStockFormP
                 <select
                     {...register("laboratoryDestinationId")}
                     disabled={isLoadingLaboratories}
-                    className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1"
+                    className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1 text-gray-500 data-[valid]:text-paragraph"
                 >
                     <option value="">{isLoadingLaboratories ? "Carregando..." : "Selecione o laboratório de destino"}</option>
                     {laboratories?.data.map(laboratory => (

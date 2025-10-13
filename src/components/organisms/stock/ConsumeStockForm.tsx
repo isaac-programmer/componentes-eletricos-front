@@ -34,7 +34,7 @@ export function ConsumeStockForm({ onSubmit, isSubmitting }: ConsumeStockFormPro
             <div>
                 <select
                     {...register("motive")}
-                    className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1 text-gray-400 data-[valid]:text-paragraph"
+                    className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1 text-gray-500 data-[valid]:text-paragraph"
                 >
                     <option value="">Selecione o motivo do consumo</option>
                     <option value="Queima do Componente">Queima do Componente</option>
