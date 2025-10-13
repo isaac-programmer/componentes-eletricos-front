@@ -14,9 +14,11 @@ import { useGetComponents } from "@/useCases/useGetComponents";
 import { Cpu, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 
 export default function Componentes() {
   const router = useRouter();
+  const { user } = useAuthentication();
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({ page: 1, limit: 10 });
@@ -31,7 +33,7 @@ export default function Componentes() {
     search: debouncedSearchTerm,
   }), [debouncedSearchTerm, appliedFilters]);
 
-  const { data: response, isLoading, isError } = useGetComponents(filtersToFetch);
+  const { data: listComponents, isLoading, isError } = useGetComponents(filtersToFetch);
 
   const { mutate: deleteComponente, isPending: isDeleting } = useDeleteComponent();
 
@@ -114,8 +116,8 @@ export default function Componentes() {
     );
   }
 
-  const components = response?.data || [];
-  const meta = response?.meta;
+  const components = useMemo(() => listComponents?.data || [], [listComponents]);
+  const meta = useMemo(() => listComponents?.meta, [listComponents]);
 
   return (
     <div className="flex flex-col space-y-6">
@@ -139,13 +141,15 @@ export default function Componentes() {
 
           <ComponentFilter onApplyFilters={handleApplyFilters} />
 
-          <Link
-            href="/componentes/novo"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-md text-sm font-medium bg-primary text-white hover:bg-primary/90"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Adicionar</span>
-          </Link>
+          {user?.group?.isAdmin && (
+            <Link
+              href="/componentes/novo"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-md text-sm font-medium bg-primary text-white hover:bg-primary/90"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Adicionar</span>
+            </Link>
+          )}
         </div>
       </div>
 
