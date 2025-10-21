@@ -1,5 +1,4 @@
 import { api } from "../services/api";
-import { Category } from "@/domain/entities/category";
 import { CategoryFilters, CategoryRepository, GetAllCategoriesResponse } from "@/domain/repositories/CategoryRepository";
 import { handleApiError } from "../utils/handleApiError";
 

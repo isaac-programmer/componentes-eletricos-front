@@ -15,9 +15,10 @@ import { apiAuthenticationRepository } from "@/infra/repositories/ApiAuthenticat
 import { removeCookie, setCookie } from "@/infra/utils/cookies";
 import { LoginRequest } from "@/domain/schemas/authenticationSchema";
 import toast from "react-hot-toast";
+import { UserAuthentication } from "@/domain/entities/user";
 
 interface AuthenticationContextType {
-    user: User | null;
+    user: UserAuthentication | null;
     signIn: (credentials: LoginRequest) => Promise<void>;
     signOut: () => void;
     isLoading: boolean;
@@ -28,7 +29,7 @@ const AuthenticationContext = createContext<AuthenticationContextType | undefine
 
 export function AuthenticationProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserAuthentication | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const signIn = async (data: LoginRequest) => {
