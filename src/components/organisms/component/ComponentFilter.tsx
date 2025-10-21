@@ -25,7 +25,20 @@ interface ComponentFiltersProps {
 }
 
 export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
-  const { register, handleSubmit, watch, reset } = useForm<FilterFormInputs>();
+  const { register, handleSubmit, watch, reset } = useForm<FilterFormInputs>({
+    defaultValues: {
+      name: false,
+      nameValue: "",
+      reference: false,
+      referenceValue: "",
+      origin: false,
+      originValue: "",
+      category: false,
+      categoryId: "",
+      laboratory: false,
+      laboratoryId: "",
+    }
+  });
 
   const watchedFields = watch();
 

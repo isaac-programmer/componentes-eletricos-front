@@ -12,6 +12,7 @@ interface PaginationMeta {
 export interface UserFilters {
   search?: string;
   name?: string;
+  username?: string;
   cpf?: string;
   email?: string;
   phone?: string;

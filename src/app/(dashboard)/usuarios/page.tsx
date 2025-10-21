@@ -19,10 +19,14 @@ import { UserFilter } from "@/components/organisms/user/UserFilter";
 type FilterFormInputs = {
   name: boolean;
   nameValue: string;
+  username: boolean;
+  usernameValue: string;
   group: boolean;
   groupId: string;
   phone: boolean;
   phoneValue: string;
+  email: boolean;
+  emailValue: string;
 };
 
 export default function Usuarios() {
@@ -60,12 +64,20 @@ export default function Usuarios() {
       newFilters.name = formFilters.nameValue;
     }
 
+    if (formFilters.username && formFilters.usernameValue) {
+      newFilters.username = formFilters.usernameValue;
+    }
+
     if (formFilters.group && formFilters.groupId) {
       newFilters.groupId = formFilters.groupId;
     }
 
     if (formFilters.phone && formFilters.phoneValue) {
       newFilters.phone = formFilters.phoneValue.replace(/\D/g, '');
+    }
+
+    if (formFilters.email && formFilters.emailValue) {
+      newFilters.email = formFilters.emailValue;
     }
 
     setAppliedFilters(newFilters);
