@@ -1,36 +1,35 @@
 "use client";
 
-import { useGetCategories } from "@/useCases/useGetCategories";
-import { useGetLaboratories } from "@/useCases/useGetLaboratories";
+import { useGetGroups } from "@/useCases/group/useGetGroups";
 import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
 import { Filter } from "lucide-react";
 import { Fragment } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { mask } from "remask";
 
 type FilterFormInputs = {
   name: boolean;
   nameValue: string;
-  reference: boolean;
-  referenceValue: string;
-  origin: boolean;
-  originValue: string;
-  category: boolean;
-  categoryId: string;
-  laboratory: boolean;
-  laboratoryId: string;
+  username: boolean;
+  usernameValue: string;
+  group: boolean;
+  groupId: string;
+  phone: boolean;
+  phoneValue: string;
+  email: boolean;
+  emailValue: string;
 };
 
-interface ComponentFiltersProps {
+interface UserFiltersProps {
   onApplyFilters: (filters: Partial<FilterFormInputs>) => void;
 }
 
-export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
-  const { register, handleSubmit, watch, reset } = useForm<FilterFormInputs>();
+export function UserFilter({ onApplyFilters }: UserFiltersProps) {
+  const { control, register, handleSubmit, watch, reset } = useForm<FilterFormInputs>();
 
   const watchedFields = watch();
 
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
-  const { data: laboratories, isLoading: isLoadingLaboratories } = useGetLaboratories();
+  const { data: groups, isLoading: isLoadingGroups } = useGetGroups();
 
   const onSubmit: SubmitHandler<FilterFormInputs> = (data) => {
     onApplyFilters(data);
@@ -81,79 +80,88 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                 <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    id="reference"
-                    {...register("reference")}
+                    id="username"
+                    {...register("username")}
                     className="h-4 w-4 rounded accent-primary cursor-pointer"
                   />
-                  <label htmlFor="reference" className="text-sm">Referência</label>
+                  <label htmlFor="username" className="text-sm">Usuário</label>
                 </div>
-                {watchedFields.reference && (
+                {watchedFields.username && (
                   <input
                     type="text"
-                    placeholder="Informe a referência"
-                    {...register("referenceValue")}
+                    placeholder="Informe o usuário"
+                    {...register("usernameValue")}
                     className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
                   />
                 )}
 
                 <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="origin"
-                    {...register("origin")}
-                    className="h-4 w-4 rounded accent-primary cursor-pointer"
-                  />
-                  <label htmlFor="origin" className="text-sm">Origem</label>
+                  <input type="checkbox" id="group" {...register("group")} className="h-4 w-4 rounded accent-primary cursor-pointer" />
+                  <label htmlFor="group" className="text-sm">Grupo</label>
                 </div>
-                {watchedFields.origin && (
-                  <input
-                    type="text"
-                    placeholder="Informe a origem"
-                    {...register("originValue")}
-                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
-                  />
-                )}
-
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="category" {...register("category")} className="h-4 w-4 rounded accent-primary cursor-pointer" />
-                  <label htmlFor="category" className="text-sm">Categoria</label>
-                </div>
-                {watchedFields.category && (
+                {watchedFields.group && (
                   <select
-                    id="categoryId"
-                    {...register("categoryId")}
-                    disabled={isLoadingCategories}
+                    id="groupId"
+                    {...register("groupId")}
+                    disabled={isLoadingGroups}
                     className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1 cursor-pointer"
                   >
-                    <option value="">{isLoadingCategories ? "Carregando..." : "Selecione uma categoria"}</option>
-                    {categories?.data?.map(category => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                )}
-
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="laboratory" {...register("laboratory")} className="h-4 w-4 rounded accent-primary cursor-pointer" />
-                  <label htmlFor="laboratory" className="text-sm">Laboratório</label>
-                </div>
-                {watchedFields.laboratory && (
-                  <select
-                    id="laboratoryId"
-                    {...register("laboratoryId")}
-                    disabled={isLoadingLaboratories}
-                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1 cursor-pointer"
-                  >
-                    <option value="">{isLoadingLaboratories ? "Carregando..." : "Selecione um laboratório"}</option>
-                    {laboratories?.data?.map(laboratory => (
-                      <option key={laboratory.id} value={laboratory.id}>
-                        {laboratory.name}
+                    <option value="">{isLoadingGroups ? "Carregando..." : "Selecione um grupo"}</option>
+                    {groups?.map(group => (
+                      <option key={group.id} value={group.id}>
+                        {group.name}
                       </option>
                     ))}
                   </select>
                 )}
               </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="phone"
+                  {...register("phone")}
+                  className="h-4 w-4 rounded accent-primary cursor-pointer"
+                />
+                <label htmlFor="phone" className="text-sm">Telefone</label>
+              </div>
+              {watchedFields.phone && (
+                <Controller
+                  control={control}
+                  name="phoneValue"
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      type="text"
+                      placeholder="Informe o telefone"
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const masked = mask(e.target.value, ["(99) 9 9999-9999"]);
+                        field.onChange(masked);
+                      }}
+                      className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
+                    />
+                  )}
+                />
+              )}
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="email"
+                  {...register("email")}
+                  className="h-4 w-4 rounded accent-primary cursor-pointer"
+                />
+                <label htmlFor="email" className="text-sm">E-mail</label>
+              </div>
+              {watchedFields.email && (
+                <input
+                  type="email"
+                  placeholder="Informe o e-mail"
+                  {...register("emailValue")}
+                  className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
+                />
+              )}
 
               <div className="flex justify-center gap-2 pt-4">
                 <button type="button" onClick={handleClearFilters} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
