@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useAuthentication } from "@/contexts/AuthenticationContext";
 
 export default function LoginPage() {
-  const router = useRouter();
   const { signIn, isLoading, setIsLoading } = useAuthentication();
 
   const handleLogin = async (data: LoginFormData) => {
