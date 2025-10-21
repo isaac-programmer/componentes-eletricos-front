@@ -2,19 +2,19 @@
 
 import { LoadingSpinner } from "@/components/molecules/LoadingSpinner";
 import { ComponentStockByLaboratoryTable } from "@/components/organisms/stock/ComponentStockByLaboratoryTable";
-import { ComponentForm } from "@/components/organisms/ComponentForm";
+import { ComponentForm } from "@/components/organisms/component/ComponentForm";
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import { ComponentFormData } from "@/domain/schemas/componentSchema";
-import { useGetComponentById } from "@/useCases/useGetComponentById";
-import { useUpdateComponent } from "@/useCases/useUpdateComponent";
-import { useGetComponentStockByLaboratory } from "@/useCases/useGetComponentStockByLaboratory";
+import { useGetComponentById } from "@/useCases/component/useGetComponentById";
+import { useUpdateComponent } from "@/useCases/component/useUpdateComponent";
+import { useGetComponentStockByLaboratory } from "@/useCases/stock/useGetComponentStockByLaboratory";
 import { CircuitBoard } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldNamesMarkedBoolean } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Modal } from "@/components/molecules/Modal";
-import { useStockTransactions } from "@/useCases/useStockTransactions";
+import { useStockTransactions } from "@/useCases/stock/useStockTransactions";
 import { AddStockForm } from "@/components/organisms/stock/AddStockForm";
 import { ConsumeStockForm } from "@/components/organisms/stock/ConsumeStockForm";
 import { AddStockFormData, ConsumeStockFormData, TransferStockFormData } from "@/domain/schemas/transactionSchema";
@@ -125,7 +125,7 @@ export default function EditComponentPage() {
     }
 
     if (Object.keys(payload).length === 0) {
-      toast.error("Nenhuma alteração realizada");
+      toast.error("Nenhuma alteração foi realizada");
       return;
     }
 

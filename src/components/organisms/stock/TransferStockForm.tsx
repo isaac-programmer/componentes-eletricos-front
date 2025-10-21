@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import clsx from "clsx";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGetLaboratories } from "@/useCases/useGetLaboratories";
+import { useGetLaboratories } from "@/useCases/laboratory/useGetLaboratories";
 
 type TransferStockFormData = z.infer<typeof transferStockSchema>;
 

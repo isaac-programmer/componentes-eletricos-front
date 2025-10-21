@@ -1,61 +1,61 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { ConfirmationContent } from "@/components/molecules/ConfirmationContent";
 import { Modal } from "@/components/molecules/Modal";
 import { Pagination } from "@/components/molecules/Pagination";
-import { ComponentFilter } from "@/components/organisms/component/ComponentFilter";
-import { ComponentsTable } from "@/components/organisms/component/ComponentsTable";
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
-import { ComponentFilters } from "@/domain/repositories/ComponentRepository";
+import { UserFilters } from "@/domain/repositories/UserRepository";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useDeleteComponent } from "@/useCases/component/useDeleteComponent";
-import { useGetComponents } from "@/useCases/component/useGetComponents";
-import { Cpu, Plus, Search } from "lucide-react";
+import { Plus, Search, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthentication } from "@/contexts/AuthenticationContext";
+import { useDeleteUser } from "@/useCases/user/useDeleteUser";
+import { useGetUsers } from "@/useCases/user/useGetUsers";
+import { UsersTable } from "@/components/organisms/user/UsersTable";
+import { UserFilter } from "@/components/organisms/user/UserFilter";
 
 type FilterFormInputs = {
   name: boolean;
   nameValue: string;
-  reference: boolean;
-  referenceValue: string;
-  origin: boolean;
-  originValue: string;
-  category: boolean;
-  categoryId: string;
-  laboratory: boolean;
-  laboratoryId: string;
+  username: boolean;
+  usernameValue: string;
+  group: boolean;
+  groupId: string;
+  phone: boolean;
+  phoneValue: string;
+  email: boolean;
+  emailValue: string;
 };
 
-export default function Componentes() {
+export default function Usuarios() {
   const router = useRouter();
   const { user } = useAuthentication();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>({ page: 1, limit: 10 });
-  const [componentToDelete, setComponentToDelete] = useState<string | null>(null);
+  const [appliedFilters, setAppliedFilters] = useState<UserFilters>({ page: 1, limit: 10 });
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
 
   const { setBreadcrumbs } = useBreadcrumbs();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const filtersToFetch: ComponentFilters = useMemo(() => ({
+  const filtersToFetch: UserFilters = useMemo(() => ({
     ...appliedFilters,
     search: debouncedSearchTerm,
   }), [debouncedSearchTerm, appliedFilters]);
 
-  const { data: listComponents, isLoading, isError } = useGetComponents(filtersToFetch);
+  const { data: listUsers, isLoading, isError } = useGetUsers(filtersToFetch);
 
-  const { mutate: deleteComponente, isPending: isDeleting } = useDeleteComponent();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
 
   const handleEdit = (id: string) => {
-    router.push(`/componentes/${id}/editar`);
+    router.push(`/usuarios/${id}/editar`);
   };
 
-  const handleApplyFilters = (formFilters: Partial<FilterFormInputs>)=> {
-    const newFilters: ComponentFilters = {
+  const handleApplyFilters = (formFilters: Partial<FilterFormInputs>) => {
+    const newFilters: UserFilters = {
       page: 1,
       limit: 10,
     };
@@ -64,38 +64,38 @@ export default function Componentes() {
       newFilters.name = formFilters.nameValue;
     }
 
-    if (formFilters.reference && formFilters.referenceValue) {
-      newFilters.reference = formFilters.referenceValue;
+    if (formFilters.username && formFilters.usernameValue) {
+      newFilters.username = formFilters.usernameValue;
     }
 
-    if (formFilters.origin && formFilters.originValue) {
-      newFilters.origin = formFilters.originValue;
+    if (formFilters.group && formFilters.groupId) {
+      newFilters.groupId = formFilters.groupId;
     }
 
-    if (formFilters.category && formFilters.categoryId) {
-      newFilters.categoryId = formFilters.categoryId;
+    if (formFilters.phone && formFilters.phoneValue) {
+      newFilters.phone = formFilters.phoneValue.replace(/\D/g, '');
     }
 
-    if (formFilters.laboratory && formFilters.laboratoryId) {
-      newFilters.laboratoryId = formFilters.laboratoryId;
+    if (formFilters.email && formFilters.emailValue) {
+      newFilters.email = formFilters.emailValue;
     }
 
     setAppliedFilters(newFilters);
   };
 
   const handleOpenDeleteModal = (id: string) => {
-    setComponentToDelete(id);
+    setUserToDelete(id);
     setDeleteModalOpen(true);
   };
 
   const handleCloseDeleteModal = () => {
-    setComponentToDelete(null);
+    setUserToDelete(null);
     setDeleteModalOpen(false);
   };
 
   const handleConfirmDelete = () => {
-    if (componentToDelete) {
-      deleteComponente(componentToDelete, {
+    if (userToDelete) {
+      deleteUser(userToDelete, {
         onSuccess: () => {
           handleCloseDeleteModal();
         }
@@ -112,9 +112,9 @@ export default function Componentes() {
 
   useEffect(() => {
     setBreadcrumbs({
-      icon: Cpu,
+      icon: Users,
       items: [
-        { href: "/componentes", label: "Componentes" },
+        { href: "/usuarios", label: "Usuários" },
       ]
     });
   }, [setBreadcrumbs]);
@@ -124,19 +124,19 @@ export default function Componentes() {
       <p
         className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
       >
-        Ocorreu um erro ao buscar os componentes
+        Ocorreu um erro ao buscar os usuários
       </p>
     );
   }
 
-  const components = useMemo(() => listComponents?.data || [], [listComponents]);
-  const meta = useMemo(() => listComponents?.meta, [listComponents]);
+  const users = useMemo(() => listUsers?.data || [], [listUsers]);
+  const meta = useMemo(() => listUsers?.meta, [listUsers]);
 
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between md:gap-4">
         <h2 className="text-2xl text-paragraph md:text-lg">
-          Componentes cadastrados
+          Usuários cadastrados
         </h2>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <div className="relative w-full sm:w-auto bg-white">
@@ -152,11 +152,11 @@ export default function Componentes() {
             />
           </div>
 
-          <ComponentFilter onApplyFilters={handleApplyFilters} />
+          <UserFilter onApplyFilters={handleApplyFilters} />
 
           {user?.group?.isAdmin && (
             <Link
-              href="/componentes/novo"
+              href="/usuarios/novo"
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-md text-sm font-medium bg-primary text-white hover:bg-primary/90"
             >
               <Plus className="h-4 w-4" />
@@ -167,8 +167,8 @@ export default function Componentes() {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-0 md:p-6 space-y-6">
-        <ComponentsTable
-          data={components}
+        <UsersTable
+          data={users}
           isLoading={isLoading}
           onDelete={handleOpenDeleteModal}
           onEdit={handleEdit}
@@ -186,13 +186,13 @@ export default function Componentes() {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
-        title="Deletar Componente"
+        title="Deletar Usuário"
       >
         <ConfirmationContent
           isLoading={isDeleting}
           onCancel={handleCloseDeleteModal}
           onConfirm={handleConfirmDelete}
-          text="Você deseja realmente deletar este componente?"
+          text="Você deseja realmente deletar este usuário?"
         />
       </Modal>
     </div>
