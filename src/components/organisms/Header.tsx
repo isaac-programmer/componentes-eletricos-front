@@ -48,7 +48,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200">
                         <User className="h-4 w-4 text-gray-500" />
                     </div>
-                    <span className="text-sm text-gray-600">Olá, {user?.name}</span>
+                    <span className="text-sm text-gray-600">Olá, <strong>{user?.name}</strong></span>
                 </div>
                 <button className="p-1 rounded-md cursor-pointer hover:bg-gray-200">
                     <ChevronDown className="h-4 w-4 text-gray-500" />

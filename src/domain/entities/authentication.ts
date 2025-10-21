@@ -1,7 +1,9 @@
+import { UserAuthentication } from "@/domain/entities/user";
+
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
-  user: User;
+  user: UserAuthentication;
 }
 
 export interface RefreshToken {

@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -74,9 +73,9 @@ export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
             Acessar
           </span>
         </button>
-        <Link href="/recuperar-senha" className="text-sm text-primary hover:underline">
+        {/* <Link href="/recuperar-senha" className="text-sm text-primary hover:underline">
           Esqueceu a senha?
-        </Link>
+        </Link> */}
       </div>
     </form>
   );
