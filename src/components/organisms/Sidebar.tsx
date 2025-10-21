@@ -20,11 +20,11 @@ import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { useMemo } from "react";
 
 const navItems = [
-  { href: "/home", label: "Home", icon: Home },
+  // { href: "/home", label: "Home", icon: Home },
   { href: "/componentes", label: "Componentes", icon: Cpu },
-  { href: "/laboratorios", label: "Laboratórios", icon: Airplay, adminOnly: true },
-  { href: "/categorias", label: "Categorias", icon: List, adminOnly: true },
-  { href: "/relatorios", label: "Relatórios", icon: FileText },
+  // { href: "/laboratorios", label: "Laboratórios", icon: Airplay, adminOnly: true },
+  // { href: "/categorias", label: "Categorias", icon: List, adminOnly: true },
+  // { href: "/relatorios", label: "Relatórios", icon: FileText },
   { href: "/usuarios", label: "Usuários", icon: Users, adminOnly: true },
 ];
 

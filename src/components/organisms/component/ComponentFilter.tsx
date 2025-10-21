@@ -1,7 +1,7 @@
 "use client";
 
-import { useGetCategories } from "@/useCases/useGetCategories";
-import { useGetLaboratories } from "@/useCases/useGetLaboratories";
+import { useGetCategories } from "@/useCases/category/useGetCategories";
+import { useGetLaboratories } from "@/useCases/laboratory/useGetLaboratories";
 import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
 import { Filter } from "lucide-react";
 import { Fragment } from "react";
@@ -25,7 +25,20 @@ interface ComponentFiltersProps {
 }
 
 export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
-  const { register, handleSubmit, watch, reset } = useForm<FilterFormInputs>();
+  const { register, handleSubmit, watch, reset } = useForm<FilterFormInputs>({
+    defaultValues: {
+      name: false,
+      nameValue: "",
+      reference: false,
+      referenceValue: "",
+      origin: false,
+      originValue: "",
+      category: false,
+      categoryId: "",
+      laboratory: false,
+      laboratoryId: "",
+    }
+  });
 
   const watchedFields = watch();
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { ComponentForm } from "@/components/organisms/ComponentForm";
+import { ComponentForm } from "@/components/organisms/component/ComponentForm";
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import { ComponentFormData } from "@/domain/schemas/componentSchema";
-import { useCreateComponent } from "@/useCases/useCreateComponent";
+import { useCreateComponent } from "@/useCases/component/useCreateComponent";
 import { Cpu } from "lucide-react";
 
 import { useRouter } from "next/navigation";

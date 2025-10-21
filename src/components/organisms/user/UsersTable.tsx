@@ -1,35 +1,57 @@
 "use client";
 
-import { Component } from "@/domain/entities/component";
+import { User } from "@/domain/entities/user";
 import {
   useReactTable,
   getCoreRowModel,
   ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-import { ActionsMenu } from "../molecules/ActionsMenu";
-import { LoadingSpinner } from "../molecules/LoadingSpinner";
+import { ActionsMenu } from "../../molecules/ActionsMenu";
+import { LoadingSpinner } from "../../molecules/LoadingSpinner";
 import { useAuthentication } from "@/contexts/AuthenticationContext";
-import { useMemo } from "react";
 import clsx from "clsx";
+import { useMemo } from "react";
+import { formatPhoneNumber } from "@/utils/maskPhoneNumber";
 
-interface ComponentsTableProps {
-  data: Component[];
+interface UsersTableProps {
+  data: User[];
   isLoading: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function ComponentsTable({ data, isLoading, onEdit, onDelete }: ComponentsTableProps) {
+export function UsersTable({ data, isLoading, onEdit, onDelete }: UsersTableProps) {
   const { user } = useAuthentication();
 
   const isAdmin = useMemo(() => user?.group?.isAdmin ?? false, [user]);
 
-  const columns: ColumnDef<Component>[] = [
-    { accessorKey: "name", header: "Nome" },
-    { accessorKey: "reference", header: "Referência" },
-    { accessorKey: "category.name", header: "Categoria" },
-    { accessorKey: "origin", header: "Origem" },
+  const columns: ColumnDef<User>[] = [
+    {
+      accessorFn: (row) => `${row.name} ${row.surname}`,
+      header: "Nome",
+      id: "fullName",
+    },
+    { accessorKey: "username", header: "Usuário" },
+    { accessorKey: "group.name", header: "Grupo" },
+    {
+      accessorFn: (row) => row.phones?.[0] ?? "",
+      header: "Telefone",
+      id: "telefone",
+      cell: (info) => {
+        const phoneNumber = info.getValue() as string;
+        return formatPhoneNumber(phoneNumber);
+      },
+    },
+    {
+      accessorFn: (row) => row.emails?.[0] ?? "",
+      header: "E-mail",
+      id: "email",
+      cell: (info) => {
+        const email = info.getValue() as string;
+        return email || "-";
+      },
+    },
   ];
 
   if (isAdmin) {
@@ -54,9 +76,9 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoading) return <LoadingSpinner text="Buscando os componentes..." />;
+  if (isLoading) return <LoadingSpinner text="Buscando os usuários..." />;
   if (data.length === 0) {
-    return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhum componente encontrado</p>;
+    return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhum usuário encontrado</p>;
   }
 
   return (

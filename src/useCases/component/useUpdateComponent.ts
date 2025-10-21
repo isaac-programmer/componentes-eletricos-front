@@ -18,9 +18,12 @@ export function useUpdateComponent() {
       queryClient.invalidateQueries({ queryKey: ["componentes"] });
       queryClient.setQueryData(["componente", updatedComponent.id], updatedComponent);
     },
-    onError: (error) => {
-      const errorMessage = handleApiError(error, "Falha ao atualizar o componente");
-      toast.error(errorMessage);
+     onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Ocorreu um erro desconhecido");
+      }
     }
   });
 }
