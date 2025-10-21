@@ -25,7 +25,20 @@ interface UserFiltersProps {
 }
 
 export function UserFilter({ onApplyFilters }: UserFiltersProps) {
-  const { control, register, handleSubmit, watch, reset } = useForm<FilterFormInputs>();
+  const { control, register, handleSubmit, watch, reset } = useForm<FilterFormInputs>({
+    defaultValues: {
+      name: false,
+      nameValue: "",
+      username: false,
+      usernameValue: "",
+      group: false,
+      groupId: "",
+      phone: false,
+      phoneValue: "",
+      email: false,
+      emailValue: "",
+    }
+  });
 
   const watchedFields = watch();
 
@@ -136,7 +149,19 @@ export function UserFilter({ onApplyFilters }: UserFiltersProps) {
                       placeholder="Informe o telefone"
                       value={field.value || ""}
                       onChange={(e) => {
-                        const masked = mask(e.target.value, ["(99) 9 9999-9999"]);
+                        const newValue = e.target.value;
+                        const oldValue = field.value || "";
+
+                        let digits = newValue.replace(/\D/g, "");
+
+                        if (newValue.length < oldValue.length) {
+                          const oldDigits = oldValue.replace(/\D/g, "");
+                          if (oldDigits === digits && digits.length > 0) {
+                            digits = digits.slice(0, -1);
+                          }
+                        }
+
+                        const masked = mask(digits, ["(99) 9 9999-9999"]);
                         field.onChange(masked);
                       }}
                       className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
