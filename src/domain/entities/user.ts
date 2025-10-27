@@ -24,3 +24,16 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  surname: string;
+  cpf: string;
+  emails?: string[];
+  phones?: string[];
+  imageUrl?: string;
+  inactive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
