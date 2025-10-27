@@ -72,9 +72,9 @@ export default function EditUserPage() {
       payload.imageUrl = null;
     }
 
-    if (payload.confirmPassword) {
-      delete payload.confirmPassword;
-    }
+    // if (payload.confirmPassword) {
+    //   delete payload.confirmPassword;
+    // }
 
     try {
       await updateUser({ id, data: payload });
