@@ -5,28 +5,26 @@ import clsx from "clsx";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UpdateUserFormData, updateUserSchema, UserFormData, userSchema } from "@/domain/schemas/userSchema";
+import { UpdateMyProfileFormData, updateMyProfileSchema } from "@/domain/schemas/userSchema";
 import { useRouter } from "next/navigation";
-import { User } from "@/domain/entities/user";
+import { UserProfile } from "@/domain/entities/user";
 import { useEffect, useState } from "react";
-import { useGetGroups } from "@/useCases/group/useGetGroups";
 import { ImageUploaderRounded } from "@/components/molecules/ImageUploaderRounded";
 
-interface UserFormProps {
-  onSubmit: (data: UpdateUserFormData, dirtyFields: FieldNamesMarkedBoolean<UpdateUserFormData>) => Promise<void>;
+interface UpdateMyProfileFormProps {
+  onSubmit: (data: UpdateMyProfileFormData, dirtyFields: FieldNamesMarkedBoolean<UpdateMyProfileFormData>) => Promise<void>;
   isSubmitting?: boolean;
-  initialData?: User;
+  profileData?: UserProfile;
   onRemoveImage?: () => void;
 }
 
-export function UpdateUserForm({
+export function UpdateMyProfileForm({
   onSubmit,
   isSubmitting,
-  initialData,
+  profileData,
   onRemoveImage,
-}: UserFormProps) {
+}: UpdateMyProfileFormProps) {
   const router = useRouter();
-  const { data: groups, isLoading: isLoadingGroups } = useGetGroups();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -37,30 +35,28 @@ export function UpdateUserForm({
     register,
     handleSubmit,
     formState: { errors, dirtyFields }
-  } = useForm<UpdateUserFormData>({
-    resolver: zodResolver(updateUserSchema),
+  } = useForm<UpdateMyProfileFormData>({
+    resolver: zodResolver(updateMyProfileSchema),
     defaultValues: {
-      name: initialData?.name || "",
-      surname: initialData?.surname || "",
-      cpf: mask(initialData?.cpf || "", ["999.999.999-99"]),
-      phone: mask(initialData?.phones?.[0] || "", ["(99) 9 9999-9999"]),
-      email: initialData?.emails?.[0] || "",
-      groupId: initialData?.group?.id || "",
+      name: profileData?.name || "",
+      surname: profileData?.surname || "",
+      cpf: mask(profileData?.cpf || "", ["999.999.999-99"]),
+      phone: mask(profileData?.phones?.[0] || "", ["(99) 9 9999-9999"]),
+      email: profileData?.emails?.[0] || "",
     }
   });
 
   useEffect(() => {
-    if (initialData) {
+    if (profileData) {
       reset({
-        name: initialData.name,
-        surname: initialData.surname,
-        cpf: mask(initialData.cpf || "", ["999.999.999-99"]),
-        phone: mask(initialData.phones?.[0] || "", ["(99) 9 9999-9999"]),
-        email: initialData.emails?.[0] || "",
-        groupId: initialData.group.id,
+        name: profileData.name,
+        surname: profileData.surname,
+        cpf: mask(profileData.cpf || "", ["999.999.999-99"]),
+        phone: mask(profileData.phones?.[0] || "", ["(99) 9 9999-9999"]),
+        email: profileData.emails?.[0] || "",
       });
     }
-  }, [initialData, reset]);
+  }, [profileData, reset]);
 
   return (
     <form
@@ -77,7 +73,7 @@ export function UpdateUserForm({
               onChange={field.onChange}
               value={field.value}
               onRemoveInitial={onRemoveImage}
-              initialImageUrl={initialData?.imageUrl}
+              initialImageUrl={profileData?.imageUrl}
             />
           )}
         />
@@ -157,28 +153,13 @@ export function UpdateUserForm({
           />
           {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
         </div>
-        <div>
-          <label htmlFor="groupId">Grupo de Usuário <span className="text-sm">&#40;opcional&#41;</span></label>
-          <select
-            id="groupId"
-            {...register("groupId")}
-            disabled={isLoadingGroups}
-            className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1"
-          >
-            <option value="">{isLoadingGroups ? "Carregando..." : "Selecione um grupo"}</option>
-            {groups?.map((group) => (
-              <option key={group.id} value={group.id}>{group.name}</option>
-            ))}
-          </select>
-          {errors.groupId && <p className="text-xs text-red-600 mt-1">{errors.groupId.message}</p>}
-        </div>
         <div className="space-y-1">
-          <label htmlFor="password">Senha <span className="text-sm">&#40;opcional&#41;</span></label>
+          <label htmlFor="password">Nova Senha <span className="text-sm">&#40;opcional&#41;</span></label>
           <div className="relative">
             <input
               id="password"
               type={showPassword ? "text" : "password"}
-              {...register("password")}
+              {...register("newPassword")}
               autoComplete="new-password"
               placeholder="Informe a sua senha"
               className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
@@ -191,7 +172,7 @@ export function UpdateUserForm({
               {showPassword ? <EyeOff className="h-5 w-5 text-placeholder" /> : <Eye className="h-5 w-5 text-placeholder" />}
             </button>
           </div>
-          {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password.message}</p>}
+          {errors.newPassword && <p className="text-red-600 text-xs mt-1">{errors.newPassword.message}</p>}
         </div>
         <div className="space-y-1">
           <label htmlFor="password">Confirmação de Senha</label>
