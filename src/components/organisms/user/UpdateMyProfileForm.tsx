@@ -199,13 +199,6 @@ export function UpdateMyProfileForm({
 
       <div className="flex justify-center gap-3 mt-4">
         <button
-          type="button"
-          onClick={() => router.push("/usuarios")}
-          className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium border border-primary text-primary bg-white rounded-md hover:bg-white"
-        >
-          Cancelar
-        </button>
-        <button
           type="submit"
           className="relative inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary disabled:bg-primary/50 disabled:cursor-not-allowed"
           disabled={isSubmitting}

@@ -2,13 +2,11 @@
 
 import { mask } from "remask";
 import clsx from "clsx";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserFormData, userSchema } from "@/domain/schemas/userSchema";
 import { useRouter } from "next/navigation";
-import { User } from "@/domain/entities/user";
-import { useState } from "react";
 import { useGetGroups } from "@/useCases/group/useGetGroups";
 import { ImageUploaderRounded } from "@/components/molecules/ImageUploaderRounded";
 
@@ -26,11 +24,11 @@ export function CreateUserForm({
   const router = useRouter();
   const { data: groups, isLoading: isLoadingGroups } = useGetGroups();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
-    reset,
+    // reset,
     control,
     register,
     handleSubmit,
@@ -156,7 +154,7 @@ export function CreateUserForm({
           </select>
           {errors.groupId && <p className="text-xs text-red-600 mt-1">{errors.groupId.message}</p>}
         </div>
-        <div className="space-y-1">
+        {/* <div className="space-y-1">
           <label htmlFor="password">Senha*</label>
           <div className="relative">
             <input
@@ -197,7 +195,7 @@ export function CreateUserForm({
             </button>
           </div>
           {errors.confirmPassword && <p className="text-red-600 text-xs mt-1">{errors.confirmPassword.message}</p>}
-        </div>
+        </div> */}
       </div>
 
       <div className="flex justify-center gap-3 mt-4">
