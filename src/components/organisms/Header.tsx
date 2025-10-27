@@ -6,6 +6,7 @@ import {
 import { useBreadcrumbs } from "@/contexts/BreadcrumbContext";
 import Link from "next/link";
 import { useAuthentication } from "@/contexts/AuthenticationContext";
+import { AccountMenu } from "../molecules/AccountMenu";
 
 interface HeaderProps {
     onMenuClick: () => void;
@@ -50,9 +51,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                     </div>
                     <span className="text-sm text-gray-600">Olá, <strong>{user?.name}</strong></span>
                 </div>
-                <button className="p-1 rounded-md cursor-pointer hover:bg-gray-200">
-                    <ChevronDown className="h-4 w-4 text-gray-500" />
-                </button>
+                <AccountMenu />
             </div>
         </header>
     )

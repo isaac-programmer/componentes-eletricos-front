@@ -84,7 +84,6 @@ export const updateUserSchema = z
   })
   .refine(
     (data) => {
-      // Só valida se a senha foi informada
       if (!data.password && !data.confirmPassword) return true;
       return data.password === data.confirmPassword;
     },
@@ -94,5 +93,68 @@ export const updateUserSchema = z
     }
   );
 
+export const updateMyProfileSchema = z
+  .object({
+    cpf: z.string().min(1, "O CPF é obrigatório"),
+    name: z.string().min(1, "O nome é obrigatório"),
+    surname: z.string().min(1, "O sobrenome é obrigatório"),
+    phone: z.string().optional(),
+    email: z.email("O e-mail é inválido").or(z.literal("")).optional(),
+    imageUrl: z.url().optional().nullable(),
+    newPassword: z.string().optional(),
+    confirmPassword: z.string().optional(),
+    avatar: z
+      .any()
+      .optional()
+      .refine(
+        (files) => {
+          if (!files || files.length === 0) return true;
+          return files instanceof FileList;
+        },
+        "Formato de arquivo inválido"
+      )
+      .refine(
+        (files) => {
+          if (!files || files.length === 0) return true;
+          return files[0].size <= MAX_FILE_SIZE;
+        },
+        "O tamanho máximo da imagem é 10MB"
+      )
+      .refine(
+        (files) => {
+          if (!files || files.length === 0) return true;
+          return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
+        },
+        "Apenas os formatos .jpg, .jpeg, .png e .webp são aceitos"
+      ),
+  })
+  .refine(
+    (data) => {
+      if (!data.newPassword && !data.confirmPassword) return true;
+      return data.newPassword === data.confirmPassword;
+    },
+    {
+      message: "As senhas não coincidem",
+      path: ["confirmPassword"],
+    }
+  );
+
+export const changePasswordSchema = z.object({
+  newPassword: z.string().min(8, "A nova senha deve ter no mínimo 8 caracteres"),
+  confirmPassword: z.string().min(8, "A confirmação da nova senha deve ter no mínimo 8 caracteres"),
+})
+.refine(
+  (data) => {
+    if (!data.newPassword && !data.confirmPassword) return true;
+    return data.newPassword === data.confirmPassword;
+  },
+  {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  }
+);
+
 export type UserFormData = z.infer<typeof userSchema>;
 export type UpdateUserFormData = z.infer<typeof updateUserSchema>;
+export type UpdateMyProfileFormData = z.infer<typeof updateMyProfileSchema>;
+export type ChangePasswordData = z.infer<typeof changePasswordSchema>;
