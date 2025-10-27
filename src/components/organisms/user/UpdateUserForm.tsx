@@ -172,7 +172,7 @@ export function UpdateUserForm({
           </select>
           {errors.groupId && <p className="text-xs text-red-600 mt-1">{errors.groupId.message}</p>}
         </div>
-        <div className="space-y-1">
+        {/* <div className="space-y-1">
           <label htmlFor="password">Senha <span className="text-sm">&#40;opcional&#41;</span></label>
           <div className="relative">
             <input
@@ -213,7 +213,7 @@ export function UpdateUserForm({
             </button>
           </div>
           {errors.confirmPassword && <p className="text-red-600 text-xs mt-1">{errors.confirmPassword.message}</p>}
-        </div>
+        </div> */}
       </div>
 
       <div className="flex justify-center gap-3 mt-4">

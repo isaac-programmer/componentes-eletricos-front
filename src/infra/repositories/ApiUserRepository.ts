@@ -110,9 +110,9 @@ class ApiUserRepository implements UserRepository {
 
     const { 
       avatar, 
-      confirmPassword,
       email,
       phone,
+      // confirmPassword,
       ...restOfData 
     } = data;
 
@@ -132,6 +132,8 @@ class ApiUserRepository implements UserRepository {
     if (avatar instanceof FileList && avatar.length > 0) {
       formData.append("avatar", avatar[0]);
     }
+
+    formData.append("password", "ufc12345");
 
     try {
       const response = await api.post<User>("/admin/users", formData);
