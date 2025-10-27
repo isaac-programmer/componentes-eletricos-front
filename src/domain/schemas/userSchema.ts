@@ -16,8 +16,8 @@ export const userSchema = z.object({
   email: z.email("O e-mail é inválido").or(z.literal("")).optional(),
   groupId: z.string().min(1, "Selecione um grupo"),
   imageUrl: z.url().optional().nullable(),
-  password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres"),
-  confirmPassword: z.string().min(8, "A confirmação de senha deve ter no mínimo 8 caracteres"),
+  // password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres"),
+  // confirmPassword: z.string().min(8, "A confirmação de senha deve ter no mínimo 8 caracteres"),
   avatar: z.any()
     .optional()
     .refine(
@@ -41,10 +41,11 @@ export const userSchema = z.object({
       },
       "Apenas os formatos .jpg, .jpeg, .png e .webp são aceitos"
     ),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "As senhas não coincidem",
-  path: ["confirmPassword"],
-});
+})
+// .refine((data) => data.password === data.confirmPassword, {
+//   message: "As senhas não coincidem",
+//   path: ["confirmPassword"],
+// });
 
 export const updateUserSchema = z
   .object({
@@ -55,8 +56,8 @@ export const updateUserSchema = z
     email: z.email("O e-mail é inválido").or(z.literal("")).optional(),
     groupId: z.string().min(1, "Selecione um grupo"),
     imageUrl: z.url().optional().nullable(),
-    password: z.string().optional(),
-    confirmPassword: z.string().optional(),
+    // password: z.string().optional(),
+    // confirmPassword: z.string().optional(),
     avatar: z
       .any()
       .optional()
@@ -82,16 +83,16 @@ export const updateUserSchema = z
         "Apenas os formatos .jpg, .jpeg, .png e .webp são aceitos"
       ),
   })
-  .refine(
-    (data) => {
-      if (!data.password && !data.confirmPassword) return true;
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: "As senhas não coincidem",
-      path: ["confirmPassword"],
-    }
-  );
+  // .refine(
+  //   (data) => {
+  //     if (!data.password && !data.confirmPassword) return true;
+  //     return data.password === data.confirmPassword;
+  //   },
+  //   {
+  //     message: "As senhas não coincidem",
+  //     path: ["confirmPassword"],
+  //   }
+  // );
 
 export const updateMyProfileSchema = z
   .object({
