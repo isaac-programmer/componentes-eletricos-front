@@ -5,7 +5,7 @@ import {
 } from "@/domain/repositories/UserRepository";
 import { api } from "../services/api";
 import { handleApiError } from "../utils/handleApiError";
-import { UserFormData } from "@/domain/schemas/userSchema";
+import { ChangePasswordData, UpdateMyProfileFormData, UserFormData } from "@/domain/schemas/userSchema";
 import { User } from "@/domain/entities/user";
 
 class ApiUserRepository implements UserRepository {
@@ -17,6 +17,70 @@ class ApiUserRepository implements UserRepository {
       console.error("Erro ao buscar usuário:", error);
 
       const errorMessage = handleApiError(error, "Não foi possível encontrar o usuário");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async getMyProfile(): Promise<User> {
+    try {
+      const response = await api.get<User>(`/profile`);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar o perfil:", error);
+
+      const errorMessage = handleApiError(error, "Não foi possível encontrar o perfil");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async updateMyProfile(data: Partial<UpdateMyProfileFormData>): Promise<User> {
+    const formData = new FormData();
+
+    const { 
+      avatar,
+      email,
+      phone,
+      newPassword,
+      confirmPassword,
+      ...restOfData
+    } = data;
+
+    Object.entries(restOfData).forEach(([key, value]) => {
+      if (value !== undefined) {
+        formData.append(key, value as any);
+      }
+    });
+
+    if (email) {
+      formData.append("emails", JSON.stringify([email]));
+    }
+
+    if (phone) {
+      formData.append("phones", JSON.stringify([phone]));
+    }
+
+    if (avatar instanceof FileList && avatar.length > 0) {
+      formData.append("avatar", avatar[0]);
+    }
+
+    try {
+      const response = await api.patch<User>(`/profile`, formData);
+      return response.data;
+    } catch (error) {
+      console.error(`Erro ao atualizar o perfil:`, error);
+
+      const errorMessage = handleApiError(error, "Não foi possível atualizar o seu perfil");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async changeMyPassword(data: ChangePasswordData): Promise<void> {
+    try {
+      await api.patch('/profile/change-password', data);
+    } catch (error) {
+      console.error(`Erro ao alterar senha:`, error);
+
+      const errorMessage = handleApiError(error, "Não foi possível alterar a senha");
       throw new Error(errorMessage);
     }
   }
