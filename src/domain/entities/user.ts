@@ -1,7 +1,8 @@
 export interface UserAuthentication {
   id: string;
   name: string;
-  email: string;
+  email: string | null;  
+  username: string;
   group: { name: string; isAdmin: boolean };
 }
 
