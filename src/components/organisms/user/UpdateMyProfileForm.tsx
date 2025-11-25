@@ -1,15 +1,14 @@
 "use client";
 
-import { mask } from "remask";
+import { ImageUploaderRounded } from "@/components/molecules/ImageUploaderRounded";
+import { UserProfile } from "@/domain/entities/user";
+import { UpdateMyProfileFormData, updateMyProfileSchema } from "@/domain/schemas/userSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UpdateMyProfileFormData, updateMyProfileSchema } from "@/domain/schemas/userSchema";
-import { useRouter } from "next/navigation";
-import { UserProfile } from "@/domain/entities/user";
 import { useEffect, useState } from "react";
-import { ImageUploaderRounded } from "@/components/molecules/ImageUploaderRounded";
+import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
+import { mask } from "remask";
 
 interface UpdateMyProfileFormProps {
   onSubmit: (data: UpdateMyProfileFormData, dirtyFields: FieldNamesMarkedBoolean<UpdateMyProfileFormData>) => Promise<void>;
@@ -24,8 +23,6 @@ export function UpdateMyProfileForm({
   profileData,
   onRemoveImage,
 }: UpdateMyProfileFormProps) {
-  const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -175,7 +172,7 @@ export function UpdateMyProfileForm({
           {errors.newPassword && <p className="text-red-600 text-xs mt-1">{errors.newPassword.message}</p>}
         </div>
         <div className="space-y-1">
-          <label htmlFor="password">Confirmação de Senha</label>
+          <label htmlFor="password">Confirmação de Senha <span className="text-sm">&#40;opcional&#41;</span></label>
           <div className="relative">
             <input
               id="password"

@@ -19,7 +19,7 @@ export default function NewUserPage() {
   const handleCreateUser = async (data: UserFormData) => {
     try {
       await createUser(data);
-      toast.success("Usuário cadastrado com sucesso!");
+      toast.success("Usuário cadastrado com sucesso! Senha: ufc12345");
       router.push("/usuarios");
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
