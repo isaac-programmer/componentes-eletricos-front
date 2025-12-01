@@ -51,12 +51,20 @@ class ApiUserRepository implements UserRepository {
       }
     });
 
-    if (email) {
-      formData.append("emails", JSON.stringify([email]));
+    if (email != undefined) {
+      if(email === "") {
+        formData.append("emails", "null");
+      } else {
+        formData.append("emails", JSON.stringify([email]));
+      }
     }
 
-    if (phone) {
-      formData.append("phones", JSON.stringify([phone]));
+    if (phone != undefined) {
+      if(phone === "") {
+        formData.append("phones", "null");
+      } else {
+        formData.append("phones", JSON.stringify([phone]));
+      }
     }
 
     if (avatar instanceof FileList && avatar.length > 0) {
