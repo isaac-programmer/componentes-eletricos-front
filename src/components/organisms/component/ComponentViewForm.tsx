@@ -2,7 +2,6 @@
 
 import { Component } from "@/domain/entities/component";
 import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
-import { useGetCategories } from "@/useCases/category/useGetCategories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -76,7 +75,7 @@ export function ComponentViewForm({
             {...register("description")}
             disabled={true}
             rows={3}
-            
+
             className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1 resize-none"
           />
         </div>
@@ -97,7 +96,7 @@ export function ComponentViewForm({
             type="text"
             id="categoryName"
             disabled={true}
-            value={initialData?.category?.name || "Sem categoria"} 
+            value={initialData?.category?.name || "Sem categoria"}
             className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
           />
         </div>
