@@ -78,7 +78,7 @@ export function UpdateMyProfileForm({
       </div>
       <div className="space-y-4">
         <div>
-          <label htmlFor="name">Nome <span className="text-sm">&#40;opcional&#41;</span></label>
+          <label htmlFor="name">Nome*</label>
           <input
             type="text"
             {...register("name")}
@@ -88,7 +88,7 @@ export function UpdateMyProfileForm({
           {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>}
         </div>
         <div>
-          <label htmlFor="surname">Sobrenome <span className="text-sm">&#40;opcional&#41;</span></label>
+          <label htmlFor="surname">Sobrenome*</label>
           <input
             type="text"
             {...register("surname")}
@@ -98,7 +98,7 @@ export function UpdateMyProfileForm({
           {errors.surname && <p className="text-xs text-red-600 mt-1">{errors.surname.message}</p>}
         </div>
         <div>
-          <label htmlFor="cpf">CPF <span className="text-sm">&#40;opcional&#41;</span></label>
+          <label htmlFor="cpf">CPF*</label>
           <Controller
             control={control}
             name="cpf"
