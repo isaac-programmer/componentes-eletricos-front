@@ -54,6 +54,10 @@ export default function Componentes() {
     router.push(`/componentes/${id}/editar`);
   };
 
+  const handleView = (id: string) => {
+    router.push(`/componentes/${id}/visualizar`);
+  };
+
   const handleApplyFilters = (formFilters: Partial<FilterFormInputs>)=> {
     const newFilters: ComponentFilters = {
       page: 1,
@@ -172,6 +176,7 @@ export default function Componentes() {
           isLoading={isLoading}
           onDelete={handleOpenDeleteModal}
           onEdit={handleEdit}
+          onView={handleView}
         />
       </div>
 

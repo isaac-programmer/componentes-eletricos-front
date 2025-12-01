@@ -1,12 +1,14 @@
 "use client";
 
-import { Edit2, Image as ImageIcon, Trash2 } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import clsx from "clsx";
+import { Edit2, Image as ImageIcon, ImageOff, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 interface ImageUploaderProps {
     value: FileList | null | undefined;
     initialImageUrl?: string | null;
+    disabled?: boolean;
     onRemoveInitial?: () => void;
     onChange: (files: FileList | null) => void;
 }
@@ -16,11 +18,14 @@ export function ImageUploader({
     onChange,
     onRemoveInitial,
     initialImageUrl,
+    disabled = false,
 }: ImageUploaderProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (disabled) return;
+
         const files = event.target.files;
         const file = files?.[0];
 
@@ -90,30 +95,46 @@ export function ImageUploader({
                         alt="Pré-visualização"
                         className="w-full h-48 object-contain rounded-md"
                     />
-                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md">
-                        <button
-                            type="button"
-                            onClick={handleReplaceImage}
-                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-black/40 rounded-md hover:bg-black/60"
-                        >
-                            <Edit2 className="h-4 w-4 text-primary" />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleRemoveImage}
-                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-400 bg-black/40 rounded-md hover:bg-black/60"
-                        >
-                            <Trash2 className="h-4 w-4" />
-                        </button>
-                    </div>
+                    {!disabled && (
+                        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md">
+                            <button
+                                type="button"
+                                onClick={handleReplaceImage}
+                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-black/40 rounded-md hover:bg-black/60"
+                            >
+                                <Edit2 className="h-4 w-4 text-primary" />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleRemoveImage}
+                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-400 bg-black/40 rounded-md hover:bg-black/60"
+                            >
+                                <Trash2 className="h-4 w-4" />
+                            </button>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div
-                    onClick={() => inputRef.current?.click()}
-                    className="w-full h-48 border-2 border-dashed rounded-md flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-gray-50"
+                    onClick={() => !disabled && inputRef.current?.click()}
+                    className={clsx(
+                        "w-full h-48 border-2 border-dashed rounded-md flex flex-col items-center justify-center",
+                        disabled 
+                            ? "border-gray-200 bg-gray-50 cursor-not-allowed text-gray-400" 
+                            : "cursor-pointer hover:bg-gray-50 text-gray-400 border-gray-300"
+                    )}
                 >
-                    <ImageIcon className="h-12 w-12 text-gray-400 mb-2" />
-                    <span>Selecione uma imagem <span className="text-sm">&#40;opcional&#41;</span></span>
+                    {disabled ? (
+                        <>
+                            <ImageOff className="h-12 w-12 text-gray-300 mb-2" />
+                            <span className="text-sm text-gray-400">Sem imagem disponível</span>
+                        </>
+                    ) : (
+                        <>
+                            <ImageIcon className="h-12 w-12 text-gray-400 mb-2" />
+                            <span>Selecione uma imagem <span className="text-sm">&#40;opcional&#41;</span></span>
+                        </>
+                    )}
                 </div>
             )}
             <input
@@ -122,6 +143,7 @@ export function ImageUploader({
                 className="hidden"
                 ref={inputRef}
                 onChange={handleFileChange}
+                disabled={disabled}
             />
         </div>
     );
