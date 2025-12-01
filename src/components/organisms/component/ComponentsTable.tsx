@@ -1,29 +1,31 @@
 "use client";
 
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { Component } from "@/domain/entities/component";
 import {
-  useReactTable,
-  getCoreRowModel,
   ColumnDef,
   flexRender,
+  getCoreRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
+import clsx from "clsx";
+import { useMemo } from "react";
 import { ActionsMenu } from "../../molecules/ActionsMenu";
 import { LoadingSpinner } from "../../molecules/LoadingSpinner";
-import { useAuthentication } from "@/contexts/AuthenticationContext";
-import { useMemo } from "react";
-import clsx from "clsx";
+import { ActionsMenuViewComponent } from "@/components/molecules/ActionsMenuViewComponent";
 
 interface ComponentsTableProps {
   data: Component[];
   isLoading: boolean;
   onEdit: (id: string) => void;
+  onView: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function ComponentsTable({ data, isLoading, onEdit, onDelete }: ComponentsTableProps) {
+export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: ComponentsTableProps) {
   const { user } = useAuthentication();
-
   const isAdmin = useMemo(() => user?.group?.isAdmin ?? false, [user]);
+  const isMonitor = useMemo(() => user?.group?.name === "Monitor", [user]);
 
   const columns: ColumnDef<Component>[] = [
     { accessorKey: "name", header: "Nome" },
@@ -42,6 +44,21 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
           <ActionsMenu
             onDelete={() => onDelete(componentId)}
             onEdit={() => onEdit(componentId)}
+          />
+        )
+      }
+    })
+  };
+
+  if (isMonitor) {
+    columns.push({
+      id: "acoes",
+      header: "Ações",
+      cell: ({ row }) => {
+        const componentId = row.original.id;
+        return (
+          <ActionsMenuViewComponent
+            onView={() => onView(componentId)}
           />
         )
       }
@@ -83,11 +100,11 @@ export function ComponentsTable({ data, isLoading, onEdit, onDelete }: Component
             key={row.id}
             className={clsx(
               "hover:bg-gray-50",
-              isAdmin && "cursor-pointer"
+              (isAdmin || isMonitor) && "cursor-pointer"
             )}
-            onClick={isAdmin ? (e) => {
+            onClick={(isAdmin || isMonitor) ? (e) => {
               e.stopPropagation();
-              onEdit(row.original.id);
+              (isMonitor) ? onView(row.original.id) : onEdit(row.original.id);
             } : undefined}
           >
             {row.getVisibleCells().map(cell => (

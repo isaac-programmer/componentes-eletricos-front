@@ -1,15 +1,16 @@
 "use client";
 
+import { useAuthentication } from "@/contexts/AuthenticationContext";
+import { Component } from "@/domain/entities/component";
+import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
+import { useGetCategories } from "@/useCases/category/useGetCategories";
+import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useGetCategories } from "@/useCases/category/useGetCategories";
-import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
-import { ImageUploader } from "../../molecules/ImageUploader";
 import { useRouter } from "next/navigation";
-import { Component } from "@/domain/entities/component";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
+import { ImageUploader } from "../../molecules/ImageUploader";
 
 interface ComponentFormProps {
   onSubmit: (data: ComponentFormData, dirtyFields: FieldNamesMarkedBoolean<ComponentFormData>) => Promise<void>;
@@ -26,6 +27,9 @@ export function ComponentForm({
 }: ComponentFormProps) {
   const router = useRouter();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+
+  const { user } = useAuthentication();
+  const isAdmin = useMemo(() => user?.group?.isAdmin ?? false, [user]);
 
   const {
     reset,
@@ -133,30 +137,32 @@ export function ComponentForm({
         {errors.image && <p className="text-xs text-red-600 mt-1">{errors.image.message as string}</p>}
       </div>
 
-      <div className="md:col-span-3 flex justify-center md:justify-start gap-3 mt-4">
-        <button
-          type="button"
-          onClick={() => router.push("/componentes")}
-          className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium border border-primary text-primary bg-white rounded-md hover:bg-white"
-        >
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          className="relative inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary disabled:bg-primary/50 disabled:cursor-not-allowed"
-          disabled={isSubmitting}
-        >
-          {isSubmitting && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Loader2 className="h-4 w-4 animate-spin" />
-            </div>
-          )}
+      {isAdmin && (
+        <div className="md:col-span-3 flex justify-center md:justify-start gap-3 mt-4">
+          <button
+            type="button"
+            onClick={() => router.push("/componentes")}
+            className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium border border-primary text-primary bg-white rounded-md hover:bg-white"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="relative inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary disabled:bg-primary/50 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
+          >
+            {isSubmitting && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </div>
+            )}
 
-          <span className={clsx({ "invisible": isSubmitting })}>
-            {initialData ? "Salvar Alterações" : "Cadastrar"}
-          </span>
-        </button>
-      </div>
+            <span className={clsx({ "invisible": isSubmitting })}>
+              {initialData ? "Salvar Alterações" : "Cadastrar"}
+            </span>
+          </button>
+        </div>
+      )}
     </form>
   )
 }
