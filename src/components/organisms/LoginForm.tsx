@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData, loginSchema } from "@/domain/schemas/authenticationSchema";
 
@@ -73,9 +74,9 @@ export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
             Acessar
           </span>
         </button>
-        {/* <Link href="/recuperar-senha" className="text-sm text-primary hover:underline">
+        <Link href="/recuperar-senha" className="text-sm text-primary hover:underline">
           Esqueceu a senha?
-        </Link> */}
+        </Link>
       </div>
     </form>
   );
