@@ -47,7 +47,7 @@ export function ForgotPasswordForm({ onSubmit, isSubmitting }: ForgotPasswordFor
           )}
 
           <span className={clsx({ "invisible": isSubmitting })}>
-            Enviar link de recuperação
+            Enviar Nova Senha
           </span>
         </button>
       </div>
