@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
     try {
       await api.post("/auth/forgot-password", { email: data.email });
       
-      toast.success("Se o e-mail existir, um link de recuperação foi enviado");
+      toast.success("Se o e-mail existir, uma nova senha foi enviada para o seu e-mail.");
       router.push("/login");
     } catch (error: any) {
       console.error("Falha ao solicitar recuperação de senha:", error);
@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
       if (error.response?.status === 404) {
         toast.error("O e-mail informado não existe para nenhum usuário cadastrado.");
       } else {
-        toast.error("Ocorreu um erro ao tentar enviar o e-mail de recuperação.");
+        toast.error("Ocorreu um erro ao tentar enviar a nova senha para o seu e-mail.");
       }
     } finally {
       setIsLoading(false);
@@ -45,7 +45,7 @@ export default function ForgotPasswordPage() {
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-bold text-paragraph">Recuperar Senha</h1>
           <p className="text-sm text-placeholder">
-            Você receberá um link de redefinição de senha caso o e-mail exista no sistema
+            Você receberá uma nova senha de acesso caso o e-mail exista no sistema.
           </p>
         </div>
         
