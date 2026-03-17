@@ -58,6 +58,10 @@ export default function MyProfilePage() {
     if (!profileData) return;
 
     try {
+      await updateMyProfile({ data: payload });
+
+      let passwordChanged = false;
+
       if (data.newPassword && data.confirmPassword) {
         if (data.newPassword.length < 8) {
           toast.error("A nova senha deve ter no mínimo 8 caracteres");
@@ -79,15 +83,19 @@ export default function MyProfilePage() {
             newPassword: data.newPassword,
             confirmPassword: data.confirmPassword,
           });
+          
+          passwordChanged = true;
         } catch (error) {
           console.error("Erro ao alterar senha:", error);
           return;
         }
       }
 
-      await updateMyProfile({ data: payload });
-
-      toast.success("Perfil atualizado com sucesso!");
+      if (passwordChanged && (payload.email || (payload.email === undefined && profileData.emails && profileData.emails.length > 0))) {
+        toast.success("Perfil atualizado com sucesso! Nova senha enviada para o seu e-mail.");
+      } else {
+        toast.success("Perfil atualizado com sucesso!");
+      }
     } catch (error) {
       console.error("Erro ao atualizar o seu perfil:", error);
     }
