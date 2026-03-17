@@ -1,0 +1,68 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ForgotPasswordForm } from "@/components/organisms/ForgotPasswordForm";
+import { ForgotPasswordFormData } from "@/domain/schemas/passwordRecoverySchema";
+import { api } from "@/infra/services/api";
+import toast from "react-hot-toast";
+
+export default function ForgotPasswordPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleForgotPassword = async (data: ForgotPasswordFormData) => {
+    setIsLoading(true);
+
+    try {
+      await api.post("/auth/forgot-password", { email: data.email });
+      
+      toast.success("Se o e-mail existir, uma nova senha foi enviada para o seu e-mail.");
+      router.push("/login");
+    } catch (error: any) {
+      console.error("Falha ao solicitar recuperação de senha:", error);
+      
+      if (error.response?.status === 404) {
+        toast.error("O e-mail informado não existe para nenhum usuário cadastrado.");
+      } else {
+        toast.error("Ocorreu um erro ao tentar enviar a nova senha para o seu e-mail.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <div className="mb-12 cursor-pointer" onClick={() => router.push("/login")}>
+        <img
+          src="/logo-horizontal.png"
+          alt="Logo da Universidade Federal do Ceará"
+          className="w-[300px]"
+        />
+      </div>
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
+        <div className="space-y-2 text-center">
+          <h1 className="text-2xl font-bold text-paragraph">Recuperar Senha</h1>
+          <p className="text-sm text-placeholder">
+            Você receberá uma nova senha de acesso caso o e-mail exista no sistema.
+          </p>
+        </div>
+        
+        <ForgotPasswordForm
+          isSubmitting={isLoading}
+          onSubmit={handleForgotPassword}
+        />
+
+        <div className="text-center mt-4">
+          <button
+            onClick={() => router.push("/login")}
+            className="text-sm text-primary hover:underline"
+          >
+            Voltar para o Login
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
