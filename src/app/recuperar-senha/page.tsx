@@ -17,15 +17,15 @@ export default function ForgotPasswordPage() {
     try {
       await api.post("/auth/forgot-password", { email: data.email });
       
-      toast.success("Se o e-mail existir, uma nova senha foi enviada para o seu e-mail.");
+      toast.success("Uma nova senha foi enviada para o seu e-mail");
       router.push("/login");
     } catch (error: any) {
       console.error("Falha ao solicitar recuperação de senha:", error);
       
       if (error.response?.status === 404) {
-        toast.error("O e-mail informado não existe para nenhum usuário cadastrado.");
+        toast.error("O e-mail informado não existe para nenhum usuário cadastrado");
       } else {
-        toast.error("Ocorreu um erro ao tentar enviar a nova senha para o seu e-mail.");
+        toast.error("Ocorreu um erro ao tentar enviar a nova senha para o seu e-mail");
       }
     } finally {
       setIsLoading(false);
