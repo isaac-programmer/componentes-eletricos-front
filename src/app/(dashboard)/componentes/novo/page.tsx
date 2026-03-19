@@ -18,9 +18,9 @@ export default function NewComponentPage() {
 
   const handleCreateComponent = async (data: ComponentFormData) => {
     try {
-      await createComponente(data);
+      const createdComponent = await createComponente(data);
       toast.success("Componente cadastrado com sucesso!");
-      router.push("/componentes");
+      router.push(`/componentes/${createdComponent.id}/editar#estoque`);
     } catch (error) {
       console.error(error);
     }

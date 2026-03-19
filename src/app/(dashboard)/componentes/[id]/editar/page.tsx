@@ -148,6 +148,20 @@ export default function EditComponentPage() {
     });
   }, [setBreadcrumbs, id, component?.name]);
 
+  useEffect(() => {
+    if (!isLoading) {
+      const hash = window.location.hash;
+
+      if (hash === "#estoque") {
+        setTimeout(() => {
+          const element = document.getElementById("stock");
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 100);
+      }
+    }
+  }, [isLoading]);
 
   if (isLoading) {
     return <LoadingSpinner text="Carregando componente..." />;
@@ -180,7 +194,7 @@ export default function EditComponentPage() {
         />
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-6">
+      <div id="estoque" className="bg-white rounded-lg shadow-sm border border-border p-6">
         <h2 className="text-lg font-semibold text-paragraph mb-4">Quantidade por laboratório</h2>
         <ComponentStockByLaboratoryTable
           data={componentStockByLaboratory}
