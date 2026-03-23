@@ -95,7 +95,7 @@ Use o comando docker build para criar a imagem, passando os ARGs. Você deve apo
 
 ```bash
 docker build \
-  --build-arg NEXT_PUBLIC_API_URL="[https://inventario-componentes-api.vercel.app](https://inventario-componentes-api.vercel.app)" \
+  --build-arg NEXT_PUBLIC_API_URL="https://inventario-componentes-api.vercel.app" \
   --build-arg NEXT_PUBLIC_TOKEN_KEY="inventario.token" \
   --build-arg NEXT_PUBLIC_REFRESH_TOKEN_KEY="inventario.refresh" \
   -t seu_usuario_docker/nome_da_imagem:1.0.0 .
