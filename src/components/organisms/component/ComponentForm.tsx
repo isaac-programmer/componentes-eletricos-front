@@ -144,7 +144,7 @@ export function ComponentForm({
             onClick={() => router.push("/componentes")}
             className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium border border-primary text-primary bg-white rounded-md hover:bg-white"
           >
-            Cancelar
+            Voltar
           </button>
           <button
             type="submit"
