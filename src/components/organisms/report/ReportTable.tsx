@@ -22,7 +22,7 @@ export function ReportTable({ data, isLoading, startDateDisplay, endDateDisplay 
       cell: ({ row }) => (
         <div className="flex flex-col">
           <span className="font-semibold">{row.original.name}</span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 truncate max-w-xs block">
             Ref: {row.original.reference}
           </span>
           {row.original.description && (
