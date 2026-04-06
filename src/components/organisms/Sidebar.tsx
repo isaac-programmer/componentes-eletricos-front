@@ -24,7 +24,7 @@ const navItems = [
   { href: "/componentes", label: "Componentes", icon: Cpu },
   // { href: "/laboratorios", label: "Laboratórios", icon: Airplay, adminOnly: true },
   // { href: "/categorias", label: "Categorias", icon: List, adminOnly: true },
-  { href: "/relatorios", label: "Relatórios", icon: FileText },
+  { href: "/relatorio", label: "Relatório", icon: FileText },
   { href: "/usuarios", label: "Usuários", icon: Users, adminOnly: true },
 ];
 

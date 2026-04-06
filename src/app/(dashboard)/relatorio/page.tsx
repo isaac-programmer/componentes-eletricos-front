@@ -45,7 +45,7 @@ export default function RelatoriosPage() {
     setBreadcrumbs({
       icon: FileText,
       items: [
-        { href: "/relatorios", label: "Relatórios de Consumo" },
+        { href: "/relatorio", label: "Relatório" },
       ]
     });
   }, [setBreadcrumbs]);
@@ -69,7 +69,7 @@ export default function RelatoriosPage() {
       "Quantidade consumida no período": item.consumedInPeriod
     }));
 
-    exportToExcel(dataToExport, `Relatorio_Componentes_${new Date().toISOString().split('T')[0]}`);
+    exportToExcel(dataToExport, `Relatorio_Consumo_Componentes_${new Date().toISOString().split('T')[0]}`);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -99,7 +99,7 @@ export default function RelatoriosPage() {
     <div className="flex flex-col space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <h2 className="text-2xl text-paragraph md:text-lg font-regular">
-          Relatórios de Consumo
+          Relatório de Consumo
         </h2>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <div className="relative w-full sm:w-auto bg-white">
