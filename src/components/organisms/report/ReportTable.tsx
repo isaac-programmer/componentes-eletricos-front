@@ -58,7 +58,7 @@ export function ReportTable({ data, isLoading, startDateDisplay, endDateDisplay 
 
   if (isLoading) return <LoadingSpinner text="Buscando registro(s) de consumo de componente(s)..." />;
   if (data.length === 0) {
-    return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhum consumo foi registrado no período especificado</p>;
+    return <p className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 text-paragraph">Nenhum consumo de componente foi registrado no período especificado</p>;
   }
 
   return (
