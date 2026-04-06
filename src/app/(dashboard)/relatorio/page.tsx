@@ -11,6 +11,13 @@ import { Pagination } from "@/components/molecules/Pagination";
 
 import { ComponentFilters } from "@/domain/repositories/ComponentRepository";
 
+const getLocalISODate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export default function RelatoriosPage() {
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -22,8 +29,8 @@ export default function RelatoriosPage() {
     return {
       page: 1,
       limit: 10,
-      startDate: sixMonthsAgo.toISOString().split('T')[0],
-      endDate: today.toISOString().split('T')[0],
+      startDate: getLocalISODate(sixMonthsAgo),
+      endDate: getLocalISODate(today),
     };
   });
 
@@ -69,7 +76,10 @@ export default function RelatoriosPage() {
       "Quantidade consumida no período": item.consumedInPeriod
     }));
 
-    exportToExcel(dataToExport, `Relatorio_Consumo_Componentes_${new Date().toISOString().split('T')[0]}`);
+    const todayStr = getLocalISODate(new Date());
+    const [year, month, day] = todayStr.split('-');
+
+    exportToExcel(dataToExport, `Relatorio_Consumo_Componentes_${day}-${month}-${year}`);
   };
 
   const handlePageChange = (newPage: number) => {
