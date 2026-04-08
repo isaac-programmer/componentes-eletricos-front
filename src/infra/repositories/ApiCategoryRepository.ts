@@ -18,7 +18,7 @@ class ApiCategoryRepository implements CategoryRepository {
     } catch (error) {
       console.error("Erro ao buscar categorias:", error);
 
-      const errorMessage = handleApiError(error, "Não foi possível carregar as categorias. Tente recarregar a página");
+      const errorMessage = handleApiError(error, "Não foi possível obter as categorias. Tente recarregar a página");
       throw new Error(errorMessage);
     }
   }

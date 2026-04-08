@@ -19,7 +19,7 @@ class ApiGroupRepository implements GroupRepository {
     } catch (error) {
       console.error("Erro ao buscar grupos:", error);
 
-      const errorMessage = handleApiError(error, "Não foi possível carregar os grupos. Tente recarregar a página");
+      const errorMessage = handleApiError(error, "Não foi possível obter os grupos. Tente recarregar a página");
       throw new Error(errorMessage);
     }
   }

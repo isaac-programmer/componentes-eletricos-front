@@ -108,7 +108,7 @@ class ApiUserRepository implements UserRepository {
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
 
-      const errorMessage = handleApiError(error, "Não foi possível carregar os usuários. Tente recarregar a página");
+      const errorMessage = handleApiError(error, "Não foi possível obter os usuários. Tente recarregar a página");
       throw new Error(errorMessage);
     }
   }
