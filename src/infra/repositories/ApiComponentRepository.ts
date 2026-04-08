@@ -1,7 +1,9 @@
 import { 
   GetAllComponentsResponse, 
   ComponentRepository, 
-  ComponentFilters
+  ComponentFilters,
+  ComponentReportItem,
+  GetComponentReportResponse
 } from "@/domain/repositories/ComponentRepository";
 import { api } from "../services/api";
 import { handleApiError } from "../utils/handleApiError";
@@ -37,6 +39,24 @@ class ApiComponentRepository implements ComponentRepository {
       console.error("Erro ao buscar componentes:", error);
 
       const errorMessage = handleApiError(error, "Não foi possível carregar os componentes. Tente recarregar a página");
+      throw new Error(errorMessage);
+    }
+  }
+
+  async getReport(filters?: ComponentFilters): Promise<GetComponentReportResponse> {
+    try {
+      const params = new URLSearchParams();
+      if (filters?.startDate) params.append("startDate", filters.startDate);
+      if (filters?.endDate) params.append("endDate", filters.endDate);
+      if (filters?.search) params.append("search", filters.search);
+      if (filters?.page) params.append("page", filters.page.toString());
+      if (filters?.limit) params.append("limit", filters.limit.toString());
+
+      const response = await api.get<GetComponentReportResponse>(`/reports/components?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar relatório de componentes:", error);
+      const errorMessage = handleApiError(error, "Não foi possível carregar o relatório.");
       throw new Error(errorMessage);
     }
   }

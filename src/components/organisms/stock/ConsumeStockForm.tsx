@@ -38,6 +38,7 @@ export function ConsumeStockForm({ onSubmit, isSubmitting }: ConsumeStockFormPro
                 >
                     <option value="">Selecione o motivo do consumo</option>
                     <option value="Queima do Componente">Queima do Componente</option>
+                    <option value="Perda do Componente">Perda do Componente</option>
                     <option value="Uso Externo à UFC">Uso Externo à UFC</option>
                 </select>
                 {errors.motive && <p className="text-xs text-red-600 mt-1">{errors.motive.message}</p>}

@@ -29,7 +29,15 @@ export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: C
 
   const columns: ColumnDef<Component>[] = [
     { accessorKey: "name", header: "Nome" },
-    { accessorKey: "reference", header: "Referência" },
+    { 
+      accessorKey: "reference", 
+      header: "Referência",
+      cell: ({ row }) => (
+        <div className="max-w-[300px] truncate" title={row.original.reference}>
+          {row.original.reference || "-"}
+        </div>
+      ),
+    },
     { accessorKey: "category.name", header: "Categoria" },
     { accessorKey: "origin", header: "Origem" },
   ];

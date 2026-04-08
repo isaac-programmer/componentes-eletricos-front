@@ -132,7 +132,6 @@ export default function EditComponentPage() {
     try {
       await updateComponent({ id, data: payload });
       toast.success("Componente atualizado com sucesso!");
-      router.push("/componentes");
     } catch (error) {
       console.error("Erro ao atualizar componente:", error);
     }
