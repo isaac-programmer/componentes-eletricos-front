@@ -27,5 +27,8 @@ export const config = {
     "/login",
     "/componentes/:path*", 
     "/dashboard/:path*",
+    "/relatorio/:path*",
+    "/usuarios/:path*",
+    "/meu-perfil/:path*",
   ],
 };
