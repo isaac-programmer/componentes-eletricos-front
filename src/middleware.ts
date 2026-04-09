@@ -41,42 +41,33 @@ function getTokenPayload(token?: string) {
   }
 }
 
-function isAuthRoute(pathname: string) {
-  return pathname === "/login";
-}
-
-function isProtectedRoute(pathname: string) {
-  return pathname !== "/login";
-}
-
 function isAdminRoute(pathname: string) {
   return ["/laboratorios", "/usuarios"].some(route =>
     pathname.startsWith(route)
   );
 }
 
-function redirect(request: NextRequest, path: string) {
-  return NextResponse.redirect(new URL(path, request.url));
-}
-
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const token = request.cookies.get("inventario.token")?.value;
-  const refreshToken = request.cookies.get("inventario.refreshToken")?.value;
+  const tokenCookieKey = "inventario.token";
+  const refreshTokenCookieKey = "inventario.refreshToken";
+
+  const token = request.cookies.get(tokenCookieKey)?.value;
+  const refreshToken = request.cookies.get(refreshTokenCookieKey)?.value;
 
   const payload = getTokenPayload(token);
 
-  if (isAuthRoute(pathname) && token) {
-    return redirect(request, "/componentes");
+  if (token && (pathname === "/login")) {
+    return NextResponse.redirect(new URL("/componentes", request.url));
+  }
+  
+  if (!token && !refreshToken && (pathname !== "/login")) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (isProtectedRoute(pathname) && !token && !refreshToken) {
-    return redirect(request, "/login");
-  }
-
-  if (isAdminRoute(pathname) && !payload?.isAdmin) {
-    return redirect(request, "/componentes");
+  if (isAdminRoute(pathname) && payload && !payload.isAdmin) {
+    return NextResponse.redirect(new URL("/componentes", request.url));
   }
 
   return NextResponse.next();
@@ -87,8 +78,10 @@ export const config = {
     "/", 
     "/login",
     "/componentes/:path*", 
+    "/dashboard/:path*",
+    "/relatorio/:path*",
     "/laboratorios/:path*",
     "/usuarios/:path*",
-    "/dashboard/:path*",
+    "/meu-perfil/:path*",
   ],
 };

@@ -53,7 +53,8 @@ api.interceptors.response.use(
       if (
         error?.response?.status === 401 &&
         !originalConfig._retry &&
-        refreshToken
+        refreshToken &&
+        !originalConfig.url?.includes("/auth/refresh-token")
       ) {
         originalConfig._retry = true;
 
