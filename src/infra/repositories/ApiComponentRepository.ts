@@ -38,7 +38,7 @@ class ApiComponentRepository implements ComponentRepository {
     } catch (error) {
       console.error("Erro ao buscar componentes:", error);
 
-      const errorMessage = handleApiError(error, "Não foi possível carregar os componentes. Tente recarregar a página");
+      const errorMessage = handleApiError(error, "Não foi possível obter os componentes. Tente recarregar a página");
       throw new Error(errorMessage);
     }
   }

@@ -6,7 +6,7 @@ import { Fragment } from "react";
 
 interface ActionsMenuProps {
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
@@ -45,18 +45,20 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
                 Editar
               </button>
             </MenuItem>
-            <MenuItem>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete();
-                }}
-                className={"data-[active]:bg-red-500 data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
-              >
-                <Trash2 className="w-4 h-4" />
-                Excluir
-              </button>
-            </MenuItem>
+            {onDelete && (
+              <MenuItem>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete();
+                  }}
+                  className={"data-[active]:bg-red-500 data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Excluir
+                </button>
+              </MenuItem>
+            )}
           </div>
         </MenuItems>
       </Transition>

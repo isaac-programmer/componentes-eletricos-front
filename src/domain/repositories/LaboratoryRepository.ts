@@ -18,6 +18,13 @@ export interface GetAllLaboratoriesResponse {
   meta: PaginationMeta;
 }
 
+export interface LaboratoryFormData {
+  name: string;
+}
+
 export interface LaboratoryRepository {
   getAll(filters?: LaboratoryFilters): Promise<GetAllLaboratoriesResponse>;
+  create(data: LaboratoryFormData): Promise<Laboratory>;
+  update(id: string, data: Partial<LaboratoryFormData>): Promise<Laboratory>;
+  delete(id: string): Promise<void>;
 }
