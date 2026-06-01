@@ -153,7 +153,7 @@ export default function EditComponentPage() {
 
       if (hash === "#estoque") {
         setTimeout(() => {
-          const element = document.getElementById("stock");
+          const element = document.getElementById("estoque");
           if (element) {
             element.scrollIntoView({ behavior: "smooth", block: "start" });
           }

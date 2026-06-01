@@ -8,6 +8,7 @@ import { ReportTable } from "@/components/organisms/report/ReportTable";
 import { exportToExcel } from "@/utils/exportToExcel";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Pagination } from "@/components/molecules/Pagination";
+import toast from "react-hot-toast";
 
 import { ComponentFilters } from "@/domain/repositories/ComponentRepository";
 
@@ -20,12 +21,12 @@ const getLocalISODate = (date: Date) => {
 
 export default function RelatoriosPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const [appliedFilters, setAppliedFilters] = useState<ComponentFilters>(() => {
     const today = new Date();
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(today.getMonth() - 6);
-    
+
     return {
       page: 1,
       limit: 10,
@@ -39,6 +40,14 @@ export default function RelatoriosPage() {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handleApplyFilters = (formFilters: Partial<ComponentFilters>) => {
+    const startDateToCheck = formFilters.startDate !== undefined ? formFilters.startDate : appliedFilters.startDate;
+    const endDateToCheck = formFilters.endDate !== undefined ? formFilters.endDate : appliedFilters.endDate;
+
+    if (startDateToCheck && endDateToCheck && startDateToCheck > endDateToCheck) {
+      toast.error("A data inicial não pode ser maior que a data final.");
+      return;
+    }
+
     const newFilters: ComponentFilters = {
       ...appliedFilters,
       ...formFilters,
@@ -61,7 +70,13 @@ export default function RelatoriosPage() {
     handleApplyFilters({ search: debouncedSearchTerm });
   }, [debouncedSearchTerm]);
 
-  const { data: reportData, isLoading, isError } = useGetComponentReport(appliedFilters);
+  const { data: reportData, isLoading, isError, error } = useGetComponentReport(appliedFilters);
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(error.message || "Ocorreu um erro ao buscar os registros");
+    }
+  }, [isError, error]);
 
   const reports = useMemo(() => reportData?.data || [], [reportData]);
   const meta = useMemo(() => reportData?.meta, [reportData]);
@@ -95,15 +110,15 @@ export default function RelatoriosPage() {
     return date.toLocaleDateString("pt-BR");
   };
 
-  if (isError) {
-    return (
-      <p
-        className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
-      >
-        Ocorreu um erro ao buscar os registros de consumo de componentes
-      </p>
-    );
-  }
+  // if (isError) {
+  //   return (
+  //     <p
+  //       className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
+  //     >
+  //       Ocorreu um erro ao buscar os registros de consumo de componentes
+  //     </p>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col space-y-6">
@@ -125,21 +140,27 @@ export default function RelatoriosPage() {
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto bg-white border border-primary rounded-md px-4 py-2">
-            <label className="text-sm font-medium text-primary whitespace-nowrap">Período:</label>
-            <input 
-              type="date" 
-              value={appliedFilters.startDate || ''}
-              onChange={(e) => handleApplyFilters({ startDate: e.target.value })}
-              className="w-[105px] text-sm border-none bg-transparent focus:outline-none focus:ring-0 p-0 text-paragraph [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-            />
-            <span className="text-sm text-paragraph">até</span>
-            <input 
-              type="date" 
-              value={appliedFilters.endDate || ''}
-              onChange={(e) => handleApplyFilters({ endDate: e.target.value })}
-              className="w-[105px] text-sm border-none bg-transparent focus:outline-none focus:ring-0 p-0 text-paragraph [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-            />
+          <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+            <span className="text-sm font-medium text-primary whitespace-nowrap">Período:</span>
+            <div className="relative">
+              <input
+                type="date"
+                max={appliedFilters.endDate || undefined}
+                value={appliedFilters.startDate || ''}
+                onChange={(e) => handleApplyFilters({ startDate: e.target.value })}
+                className="relative z-10 w-[120px] text-sm border border-primary bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary py-2 rounded-md text-paragraph cursor-pointer transition-colors hover:bg-gray-50 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-datetime-edit]:flex [&::-webkit-datetime-edit]:justify-center [&::-webkit-clear-button]:hidden"
+              />
+            </div>
+            <span className="text-sm text-paragraph font-medium">até</span>
+            <div className="relative">
+              <input
+                type="date"
+                min={appliedFilters.startDate || undefined}
+                value={appliedFilters.endDate || ''}
+                onChange={(e) => handleApplyFilters({ endDate: e.target.value })}
+                className="relative z-10 w-[120px] text-sm border border-primary bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary py-2 rounded-md text-paragraph cursor-pointer transition-colors hover:bg-gray-50 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-datetime-edit]:flex [&::-webkit-datetime-edit]:justify-center [&::-webkit-clear-button]:hidden"
+              />
+            </div>
           </div>
 
           <button
@@ -154,9 +175,9 @@ export default function RelatoriosPage() {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-0 md:p-6 space-y-6">
-        <ReportTable 
-          data={reports} 
-          isLoading={isLoading} 
+        <ReportTable
+          data={reports}
+          isLoading={isLoading}
           startDateDisplay={getDisplayDate(appliedFilters.startDate)}
           endDateDisplay={getDisplayDate(appliedFilters.endDate)}
         />
