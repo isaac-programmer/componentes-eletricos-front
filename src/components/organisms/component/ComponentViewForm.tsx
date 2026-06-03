@@ -28,7 +28,7 @@ export function ComponentViewForm({
       name: initialData?.name || "",
       reference: initialData?.reference || "",
       description: initialData?.description || "Nenhuma descrição fornecida",
-      origin: initialData?.origin || "",
+      origin: initialData?.origin || undefined,
       categoryId: initialData?.category?.id || "",
     }
   });

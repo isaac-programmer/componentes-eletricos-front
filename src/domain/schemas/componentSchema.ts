@@ -8,12 +8,15 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ];
 
+import { ComponentOrigin } from "../enums/ComponentOrigin";
+
 export const componentSchema = z.object({
   name: z.string().min(3, "O nome deve ter no mínimo 3 caracteres"),
   reference: z.string().min(1, "A referência é obrigatória"),
-  origin: z.string().min(1, "A origem é obrigatória"),
+  origin: z.enum(ComponentOrigin, { message: "A origem selecionada é inválida" }),
   description: z.string().optional(),
   categoryId: z.string().min(1, "Selecione uma categoria"),
+  laboratoryId: z.string().min(1, "Selecione um local"),
   imageUrl: z.url().optional().nullable(),
   image: z.any()
     .optional()

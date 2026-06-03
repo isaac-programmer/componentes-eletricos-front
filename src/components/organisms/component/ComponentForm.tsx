@@ -2,8 +2,10 @@
 
 import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { Component } from "@/domain/entities/component";
+import { ComponentOrigin } from "@/domain/enums/ComponentOrigin";
 import { ComponentFormData, componentSchema } from "@/domain/schemas/componentSchema";
 import { useGetCategories } from "@/useCases/category/useGetCategories";
+import { useGetLaboratories } from "@/useCases/laboratory/useGetLaboratories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
@@ -27,6 +29,7 @@ export function ComponentForm({
 }: ComponentFormProps) {
   const router = useRouter();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { data: laboratories, isLoading: isLoadingLaboratories } = useGetLaboratories();
 
   const { user } = useAuthentication();
   const isAdmin = useMemo(() => user?.group?.isAdmin ?? false, [user]);
@@ -43,8 +46,9 @@ export function ComponentForm({
       name: initialData?.name || "",
       reference: initialData?.reference || "",
       description: initialData?.description || "",
-      origin: initialData?.origin || "",
+      origin: initialData?.origin || undefined,
       categoryId: initialData?.category?.id || "",
+      laboratoryId: initialData?.laboratory?.id || "",
     }
   });
 
@@ -55,7 +59,8 @@ export function ComponentForm({
         reference: initialData.reference,
         description: initialData.description || "",
         origin: initialData.origin,
-        categoryId: initialData.category.id,
+        categoryId: initialData.category?.id || "",
+        laboratoryId: initialData.laboratory?.id || "",
       });
     }
   }, [initialData, reset]);
@@ -95,13 +100,16 @@ export function ComponentForm({
         </div>
         <div>
           <label htmlFor="origin">Origem*</label>
-          <input
-            type="text"
+          <select
             id="origin"
             {...register("origin")}
-            placeholder="Informe a origem do componente"
-            className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
-          />
+            className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1"
+          >
+            <option value="">Selecione a origem</option>
+            {Object.values(ComponentOrigin).map((originValue) => (
+              <option key={originValue} value={originValue}>{originValue}</option>
+            ))}
+          </select>
           {errors.origin && <p className="text-xs text-red-600 mt-1">{errors.origin.message}</p>}
         </div>
         <div>
@@ -118,6 +126,21 @@ export function ComponentForm({
             ))}
           </select>
           {errors.categoryId && <p className="text-xs text-red-600 mt-1">{errors.categoryId.message}</p>}
+        </div>
+        <div>
+          <label htmlFor="laboratoryId">Local*</label>
+          <select
+            id="laboratoryId"
+            {...register("laboratoryId")}
+            disabled={isLoadingLaboratories}
+            className="w-full px-3 py-2 cursor-pointer border border-border rounded-md text-sm focus:outline-none focus:ring-1"
+          >
+            <option value="">{isLoadingLaboratories ? "Carregando..." : "Selecione um laboratório"}</option>
+            {laboratories?.data?.map((laboratory) => (
+              <option key={laboratory.id} value={laboratory.id}>{laboratory.name}</option>
+            ))}
+          </select>
+          {errors.laboratoryId && <p className="text-xs text-red-600 mt-1">{errors.laboratoryId.message}</p>}
         </div>
       </div>
 

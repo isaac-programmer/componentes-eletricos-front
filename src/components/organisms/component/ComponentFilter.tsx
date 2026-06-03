@@ -1,5 +1,7 @@
 "use client";
 
+import { ComponentOrigin } from "@/domain/enums/ComponentOrigin";
+
 import { useGetCategories } from "@/useCases/category/useGetCategories";
 import { useGetLaboratories } from "@/useCases/laboratory/useGetLaboratories";
 import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
@@ -119,12 +121,18 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
                   <label htmlFor="origin" className="text-sm">Origem</label>
                 </div>
                 {watchedFields.origin && (
-                  <input
-                    type="text"
-                    placeholder="Informe a origem"
+                  <select
+                    id="originValue"
                     {...register("originValue")}
-                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
-                  />
+                    className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1 cursor-pointer"
+                  >
+                    <option value="">Selecione a origem</option>
+                    {Object.values(ComponentOrigin).map((origin) => (
+                      <option key={origin} value={origin}>
+                        {origin}
+                      </option>
+                    ))}
+                  </select>
                 )}
 
                 <div className="flex items-center gap-2">
@@ -149,7 +157,7 @@ export function ComponentFilter({ onApplyFilters }: ComponentFiltersProps) {
 
                 <div className="flex items-center gap-2">
                   <input type="checkbox" id="laboratory" {...register("laboratory")} className="h-4 w-4 rounded accent-primary cursor-pointer" />
-                  <label htmlFor="laboratory" className="text-sm">Laboratório</label>
+                  <label htmlFor="laboratory" className="text-sm">Local</label>
                 </div>
                 {watchedFields.laboratory && (
                   <select
