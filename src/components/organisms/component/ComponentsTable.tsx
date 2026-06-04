@@ -29,8 +29,8 @@ export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: C
 
   const columns: ColumnDef<Component>[] = [
     { accessorKey: "name", header: "Nome" },
-    { 
-      accessorKey: "reference", 
+    {
+      accessorKey: "reference",
       header: "Referência",
       cell: ({ row }) => (
         <div className="max-w-[300px] truncate" title={row.original.reference}>
@@ -39,6 +39,12 @@ export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: C
       ),
     },
     { accessorKey: "category.name", header: "Categoria" },
+    { accessorKey: "totalQuantity", header: "Estoque Total" },
+    {
+      accessorKey: "laboratory.name",
+      header: "Local",
+      cell: ({ row }) => row.original.laboratory?.name || "-"
+    },
     { accessorKey: "origin", header: "Origem" },
   ];
 
