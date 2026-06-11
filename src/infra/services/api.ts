@@ -8,6 +8,10 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
+  if (config.method?.toLowerCase() === "delete") {
+    config.data = config.data || {};
+  }
+
   const cookieTokenKey: string = process.env.NEXT_PUBLIC_TOKEN_KEY as string;
 
   const tokenCookie = getCookieValue(cookieTokenKey) as string | undefined;
