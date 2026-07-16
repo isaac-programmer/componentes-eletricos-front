@@ -35,7 +35,7 @@ export default function LoginPage() {
         />
       </div>
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center text-paragraph">Login</h1>
+        <h1 className="text-2xl font-bold text-center text-paragraph">Inventário de Componentes Elétricos</h1>
         <LoginForm
           isSubmitting={isLoading}
           onSubmit={handleLogin}
