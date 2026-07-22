@@ -24,9 +24,6 @@ export function CreateUserForm({
   const router = useRouter();
   const { data: groups, isLoading: isLoadingGroups } = useGetGroups();
 
-  // const [showPassword, setShowPassword] = useState(false);
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const {
     // reset,
     control,
@@ -154,48 +151,6 @@ export function CreateUserForm({
           </select>
           {errors.groupId && <p className="text-xs text-red-600 mt-1">{errors.groupId.message}</p>}
         </div>
-        {/* <div className="space-y-1">
-          <label htmlFor="password">Senha*</label>
-          <div className="relative">
-            <input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              {...register("password")}
-              autoComplete="new-password"
-              placeholder="Informe a sua senha"
-              className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
-            />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 flex items-center pr-3"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff className="h-5 w-5 text-placeholder" /> : <Eye className="h-5 w-5 text-placeholder" />}
-            </button>
-          </div>
-          {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password.message}</p>}
-        </div>
-        <div className="space-y-1">
-          <label htmlFor="password">Confirmação de Senha*</label>
-          <div className="relative">
-            <input
-              id="password"
-              type={showConfirmPassword ? "text" : "password"}
-              {...register("confirmPassword")}
-              autoComplete="new-password"
-              placeholder="Informe a confirmação da sua senha"
-              className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
-            />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 flex items-center pr-3"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <EyeOff className="h-5 w-5 text-placeholder" /> : <Eye className="h-5 w-5 text-placeholder" />}
-            </button>
-          </div>
-          {errors.confirmPassword && <p className="text-red-600 text-xs mt-1">{errors.confirmPassword.message}</p>}
-        </div> */}
       </div>
 
       <div className="flex justify-center gap-3 mt-4">
