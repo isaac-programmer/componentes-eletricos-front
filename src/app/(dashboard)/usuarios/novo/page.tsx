@@ -24,11 +24,11 @@ export default function NewUserPage() {
     }
 
     try {
-      await createUser({ data, password: userPasswordDefault });
+      const userCreated = await createUser({ data, password: userPasswordDefault });
       if (data.email) {
-        toast.success(`Usuário cadastrado com sucesso! O acesso foi enviado por e-mail.`);
+        toast.success(`Usuário cadastrado com sucesso! O acesso foi enviado por e-mail para ele.`);
       } else {
-        toast.success(`Usuário cadastrado com sucesso! Usuário: nome.sobrenome e Senha: ${userPasswordDefault}`);
+        toast.success(`Usuário cadastrado com sucesso! Usuário: ${userCreated.username} e Senha: ${userPasswordDefault}`);
       }
       router.push("/usuarios");
     } catch (error) {
