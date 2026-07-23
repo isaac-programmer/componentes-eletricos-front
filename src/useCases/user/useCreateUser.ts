@@ -7,7 +7,7 @@ export function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: UserFormData) => apiUserRepository.create(data),
+    mutationFn: ({ data, password }: { data: UserFormData; password?: string }) => apiUserRepository.create(data, password),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["usuarios"] });
     },

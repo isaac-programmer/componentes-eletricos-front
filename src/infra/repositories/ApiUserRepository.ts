@@ -1,6 +1,6 @@
-import { 
-  GetAllUsersResponse, 
-  UserRepository, 
+import {
+  GetAllUsersResponse,
+  UserRepository,
   UserFilters
 } from "@/domain/repositories/UserRepository";
 import { api } from "../services/api";
@@ -36,7 +36,7 @@ class ApiUserRepository implements UserRepository {
   async updateMyProfile(data: Partial<UpdateMyProfileFormData>): Promise<User> {
     const formData = new FormData();
 
-    const { 
+    const {
       avatar,
       email,
       phone,
@@ -52,7 +52,7 @@ class ApiUserRepository implements UserRepository {
     });
 
     if (email != undefined) {
-      if(email === "") {
+      if (email === "") {
         formData.append("emails", "null");
       } else {
         formData.append("emails", JSON.stringify([email]));
@@ -60,7 +60,7 @@ class ApiUserRepository implements UserRepository {
     }
 
     if (phone != undefined) {
-      if(phone === "") {
+      if (phone === "") {
         formData.append("phones", "null");
       } else {
         formData.append("phones", JSON.stringify([phone]));
@@ -113,15 +113,15 @@ class ApiUserRepository implements UserRepository {
     }
   }
 
-  async create(data: UserFormData): Promise<User> {
+  async create(data: UserFormData, password?: string): Promise<User> {
     const formData = new FormData();
 
-    const { 
-      avatar, 
+    const {
+      avatar,
       email,
       phone,
       // confirmPassword,
-      ...restOfData 
+      ...restOfData
     } = data;
 
     Object.entries(restOfData).forEach(([key, value]) => {
@@ -141,7 +141,9 @@ class ApiUserRepository implements UserRepository {
       formData.append("avatar", avatar[0]);
     }
 
-    formData.append("password", "ufc12345");
+    if (password) {
+      formData.append("password", password);
+    }
 
     try {
       const response = await api.post<User>("/admin/users", formData);
@@ -157,7 +159,7 @@ class ApiUserRepository implements UserRepository {
   async update(id: string, data: Partial<UserFormData>): Promise<User> {
     const formData = new FormData();
 
-    const { 
+    const {
       avatar,
       email,
       phone,

@@ -15,6 +15,7 @@ export interface User {
   id: string;
   name: string;
   surname: string;
+  username: string;
   cpf: string;
   emails?: string[];
   phones?: string[];
@@ -30,6 +31,7 @@ export interface UserProfile {
   id: string;
   name: string;
   surname: string;
+  username: string;
   cpf: string;
   emails?: string[];
   phones?: string[];

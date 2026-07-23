@@ -30,7 +30,7 @@ export interface GetAllUsersResponse {
 export interface UserRepository {
   getById(id: string): Promise<User>;
   getAll(filters?: UserFilters): Promise<GetAllUsersResponse>;
-  create(data: UserFormData): Promise<User>;
+  create(data: UserFormData, password?: string): Promise<User>;
   update(id: string, data: UserFormData): Promise<User>;
   delete(id: string): Promise<void>;
 }
