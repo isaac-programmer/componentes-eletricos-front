@@ -16,8 +16,8 @@ export const userSchema = z.object({
   email: z.email("O e-mail é inválido").or(z.literal("")).optional(),
   groupId: z.string().min(1, "Selecione um grupo"),
   imageUrl: z.url().optional().nullable(),
-  // password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres"),
-  // confirmPassword: z.string().min(8, "A confirmação de senha deve ter no mínimo 8 caracteres"),
+  // password: z.string().min(8, "A senha deve ter no mínimo 6 caracteres"),
+  // confirmPassword: z.string().min(8, "A confirmação de senha deve ter no mínimo 6 caracteres"),
   avatar: z.any()
     .optional()
     .refine(
@@ -141,8 +141,8 @@ export const updateMyProfileSchema = z
   );
 
 export const changePasswordSchema = z.object({
-  newPassword: z.string().min(8, "A nova senha deve ter no mínimo 8 caracteres"),
-  confirmPassword: z.string().min(8, "A confirmação da nova senha deve ter no mínimo 8 caracteres"),
+  newPassword: z.string().min(6, "A nova senha deve ter no mínimo 6 caracteres"),
+  confirmPassword: z.string().min(6, "A confirmação da nova senha deve ter no mínimo 6 caracteres"),
 })
 .refine(
   (data) => {
