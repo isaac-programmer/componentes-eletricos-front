@@ -63,13 +63,13 @@ export default function MyProfilePage() {
       let passwordChanged = false;
 
       if (data.newPassword && data.confirmPassword) {
-        if (data.newPassword.length < 8) {
-          toast.error("A nova senha deve ter no mínimo 8 caracteres");
+        if (data.newPassword.length < 6) {
+          toast.error("A nova senha deve ter no mínimo 6 caracteres");
           return;
         }
 
-        if (data.confirmPassword.length < 8) {
-          toast.error("A confirmação da senha deve ter no mínimo 8 caracteres");
+        if (data.confirmPassword.length < 6) {
+          toast.error("A confirmação da senha deve ter no mínimo 6 caracteres");
           return;
         }
 
