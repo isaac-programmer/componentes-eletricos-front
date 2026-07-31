@@ -83,11 +83,19 @@ Diferente do modo de desenvolvimento, as variáveis **NEXT_PUBLIC_** são injeta
 
 ### 5.2 Construindo a Imagem
 
-Use o comando abaixo para criar a imagem, passando os **ARGs** necessários. Em **NEXT_PUBLIC_API_URL** você deve inserir o endereço da API em produção na plataforma que você escolheu (Ex.: Vercel, Render e dentre outras).
+Use o comando abaixo para criar a imagem, passando os **ARGs** necessários. 
+
+⚠️ **Atenção ao NEXT_PUBLIC_API_URL:**
+O valor dessa variável muda dependendo de onde o contêiner será executado:
+
+- **Para Deploy Externo (API Pública):** Insira a URL completa da sua API (Ex.: https://sua-api.com).
+- **Para Deploy Interno (Rede Docker Fechada):** Insira o caminho relativo para ativar o roteamento de proxy interno do Next.js (Ex.: /api-interno).
+
+Exemplo de build para ambiente interno:
 
 ```bash
 docker build \
-  --build-arg NEXT_PUBLIC_API_URL="Informe a URL da API" \
+  --build-arg NEXT_PUBLIC_API_URL="/api-interno" \
   --build-arg NEXT_PUBLIC_TOKEN_KEY="exemplo_nome_do_cookie.token" \
   --build-arg NEXT_PUBLIC_REFRESH_TOKEN_KEY="exemplo_nome_do_cookie.refresh_token" \
   --build-arg NEXT_PUBLIC_USER_PASSWORD_DEFAULT="Informe a senha padrão para os usuários que serão cadastrados" \
@@ -96,15 +104,22 @@ docker build \
 
 ### 5.3 Executando a Imagem
 
-Com a imagem construída, você pode iniciar o contêiner. Como as variáveis `NEXT_PUBLIC_` já foram injetadas no momento do *build* (conforme explicado na seção 5.1), não é necessário repassá-las agora. Basta mapear a porta desejada (Ex.: `3000`).
+Com a imagem construída, você pode iniciar o contêiner.
+
+**Importante:** Se você construiu a imagem para o modo Deploy Interno, usando `/api-interno`, você deve fornecer a variável de ambiente de execução `INTERNAL_API_URL` para que o servidor saiba para qual contêiner redirecionar as requisições na rede fechada.
 
 Execute o seguinte comando:
 
 ```bash
-docker run -d -p 3000:3000 --name nome_do_seu_container nome_do_seu_usuario/nome_da_imagem:1.0.0
+docker run -d \
+  -p 3000:3000 \
+  -e INTERNAL_API_URL="http://<nome-do-seu-container-backend>:<porta>" \
+  --name <nome_do_seu_container_frontend> \
+  nome_do_seu_usuario/nome_da_imagem:1.0.0
 ```
 
 - `-d`: Executa o contêiner em segundo plano.
+- `-e INTERNAL_API_URL`: Habilita o proxy interno para o backend isolado.
 - `-p 3000:3000`: Mapeia a porta `3000` da sua máquina para a porta `3000` do contêiner.
 
 Após a execução, a aplicação estará disponível em http://localhost:3000 (ou na porta externa que você definiu).
