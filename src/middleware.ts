@@ -50,6 +50,17 @@ function isAdminRoute(pathname: string) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (pathname.startsWith("/api-interno/")) {
+    const internalApiUrl = process.env.INTERNAL_API_URL;
+    
+    if (internalApiUrl) {
+      const url = new URL(request.url);
+      const newPath = pathname.replace(/^\/api-interno/, "");
+      const destinationUrl = new URL(`${internalApiUrl}${newPath}${url.search}`);
+      return NextResponse.rewrite(destinationUrl);
+    }
+  }
+
   const tokenCookieKey = "inventario.token";
   const refreshTokenCookieKey = "inventario.refreshToken";
 
@@ -83,5 +94,6 @@ export const config = {
     "/laboratorios/:path*",
     "/usuarios/:path*",
     "/meu-perfil/:path*",
+    "/api-interno/:path*",
   ],
 };
