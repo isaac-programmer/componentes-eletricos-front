@@ -17,18 +17,13 @@ export default function NewUserPage() {
   const { mutateAsync: createUser, isPending } = useCreateUser();
 
   const handleCreateUser = async (data: UserFormData) => {
-    const userPasswordDefault = process.env.NEXT_PUBLIC_USER_PASSWORD_DEFAULT;
-
-    if (!userPasswordDefault) {
-      throw new Error("Senha de usuário padrão não configurada");
-    }
-
     try {
-      const userCreated = await createUser({ data, password: userPasswordDefault });
+      const userCreated = await createUser({ data });
+      
       if (data.email) {
         toast.success(`Usuário cadastrado com sucesso! O acesso foi enviado por e-mail para ele.`);
       } else {
-        toast.success(`Usuário cadastrado com sucesso! Usuário: ${userCreated.username} e Senha: ${userPasswordDefault}`);
+        toast.success(`Usuário cadastrado com sucesso! Usuário: ${userCreated.username} (utilize a senha padrão do sistema)`);
       }
       router.push("/usuarios");
     } catch (error) {
