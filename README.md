@@ -46,7 +46,6 @@ NODE_ENV=development
 NEXT_PUBLIC_API_URL="Informe a URL da API"
 NEXT_PUBLIC_TOKEN_KEY="exemplo_nome_do_cookie.token"
 NEXT_PUBLIC_REFRESH_TOKEN_KEY="exemplo_nome_do_cookie.refresh_token"
-NEXT_PUBLIC_USER_PASSWORD_DEFAULT="Informe a senha padrão para os usuários que serão cadastrados"
 ```
 
 ## 4. Executando Localmente
@@ -98,7 +97,6 @@ docker build \
   --build-arg NEXT_PUBLIC_API_URL="/api-interno" \
   --build-arg NEXT_PUBLIC_TOKEN_KEY="exemplo_nome_do_cookie.token" \
   --build-arg NEXT_PUBLIC_REFRESH_TOKEN_KEY="exemplo_nome_do_cookie.refresh_token" \
-  --build-arg NEXT_PUBLIC_USER_PASSWORD_DEFAULT="Informe a senha padrão para os usuários que serão cadastrados" \
   -t seu_usuario_docker/nome_da_imagem:1.0.0 .
 ```
 
