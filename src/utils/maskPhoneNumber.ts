@@ -1,3 +1,5 @@
+import { mask } from "remask";
+
 export const formatPhoneNumber = (phone: string): string => {
   if (!phone) return "-";
 
@@ -8,4 +10,17 @@ export const formatPhoneNumber = (phone: string): string => {
   }
 
   return phone;
+};
+
+export const handlePhoneChange = (newValue: string, oldValue: string): string => {
+  let digits = newValue.replace(/\D/g, "");
+
+  if (newValue.length < oldValue.length) {
+    const oldDigits = oldValue.replace(/\D/g, "");
+    if (oldDigits === digits && digits.length > 0) {
+      digits = digits.slice(0, -1);
+    }
+  }
+
+  return mask(digits, ["(99) 9 9999-9999"]);
 };

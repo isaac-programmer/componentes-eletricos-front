@@ -9,6 +9,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller, FieldNamesMarkedBoolean, useForm } from "react-hook-form";
 import { mask } from "remask";
+import { handlePhoneChange } from "@/utils/maskPhoneNumber";
 
 interface UpdateMyProfileFormProps {
   onSubmit: (data: UpdateMyProfileFormData, dirtyFields: FieldNamesMarkedBoolean<UpdateMyProfileFormData>) => Promise<void>;
@@ -130,7 +131,7 @@ export function UpdateMyProfileForm({
                 placeholder="Informe o telefone do usuário"
                 value={field.value || ""}
                 onChange={(e) => {
-                  const masked = mask(e.target.value, ["(99) 9 9999-9999"]);
+                  const masked = handlePhoneChange(e.target.value, field.value || "");
                   field.onChange(masked);
                 }}
                 className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
