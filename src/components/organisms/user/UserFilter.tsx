@@ -6,6 +6,7 @@ import { Filter } from "lucide-react";
 import { Fragment } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { mask } from "remask";
+import { handlePhoneChange } from "@/utils/maskPhoneNumber";
 
 type FilterFormInputs = {
   name: boolean;
@@ -149,19 +150,7 @@ export function UserFilter({ onApplyFilters }: UserFiltersProps) {
                       placeholder="Informe o telefone"
                       value={field.value || ""}
                       onChange={(e) => {
-                        const newValue = e.target.value;
-                        const oldValue = field.value || "";
-
-                        let digits = newValue.replace(/\D/g, "");
-
-                        if (newValue.length < oldValue.length) {
-                          const oldDigits = oldValue.replace(/\D/g, "");
-                          if (oldDigits === digits && digits.length > 0) {
-                            digits = digits.slice(0, -1);
-                          }
-                        }
-
-                        const masked = mask(digits, ["(99) 9 9999-9999"]);
+                        const masked = handlePhoneChange(e.target.value, field.value || "");
                         field.onChange(masked);
                       }}
                       className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-1"
