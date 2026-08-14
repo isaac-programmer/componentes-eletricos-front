@@ -19,7 +19,7 @@ export default function NewUserPage() {
   const handleCreateUser = async (data: UserFormData) => {
     try {
       const userCreated = await createUser({ data });
-      
+
       if (data.email) {
         toast.success(`Usuário cadastrado com sucesso! O acesso foi enviado por e-mail para ele.`);
       } else {
@@ -42,7 +42,7 @@ export default function NewUserPage() {
   }, [setBreadcrumbs]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 border border-black">
       <div>
         <h1 className="text-2xl font-regular text-paragraph">
           Informações do usuário

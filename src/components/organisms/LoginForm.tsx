@@ -25,7 +25,7 @@ export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <div className="space-y-1">
         <label htmlFor="login">E-mail ou Usuário</label>
         <input
@@ -37,6 +37,7 @@ export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
         />
         {errors.login && <p className="text-red-600 text-xs mt-1">{errors.login.message}</p>}
       </div>
+
       <div className="space-y-1">
         <label htmlFor="password">Senha</label>
         <div className="relative">
@@ -58,7 +59,7 @@ export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
         {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password.message}</p>}
       </div>
 
-      <div className="flex flex-col items-center gap-4 pt-4">
+      <div className="flex flex-col items-center gap-4 mt-4">
         <button
           type="submit"
           disabled={isSubmitting}

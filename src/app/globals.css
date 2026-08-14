@@ -9,6 +9,7 @@
   --color-placeholder: #25212649;
   --color-white-div: #F4F4F4;
   --color-paragraph: #525252;
+  --breakpoint-sm: 30rem;
 }
 
 body {

@@ -83,7 +83,7 @@ export default function MyProfilePage() {
             newPassword: data.newPassword,
             confirmPassword: data.confirmPassword,
           });
-          
+
           passwordChanged = true;
         } catch (error) {
           console.error("Erro ao alterar senha:", error);
