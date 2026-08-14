@@ -4,6 +4,7 @@ import { LoginForm } from "@/components/organisms/LoginForm";
 import { LoginFormData, LoginRequest } from "@/domain/schemas/authenticationSchema";
 import { useRouter } from "next/navigation";
 import { useAuthentication } from "@/contexts/AuthenticationContext";
+import Link from "next/link";
 
 export default function LoginPage() {
   const { signIn, isLoading, setIsLoading } = useAuthentication();
@@ -36,10 +37,15 @@ export default function LoginPage() {
       </div>
       <div className="flex flex-col gap-4 w-full max-w-md p-8 bg-white rounded-xl shadow-lg">
         <h1 className="text-2xl font-bold text-center text-paragraph">Inventário de Componentes Elétricos</h1>
+
         <LoginForm
           isSubmitting={isLoading}
           onSubmit={handleLogin}
         />
+
+        <Link href="/recuperar-senha" className="text-sm text-center text-primary hover:underline">
+          Esqueceu a senha?
+        </Link>
       </div>
     </div>
   );

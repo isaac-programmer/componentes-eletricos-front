@@ -34,7 +34,7 @@ export function ForgotPasswordForm({ onSubmit, isSubmitting }: ForgotPasswordFor
         {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email.message}</p>}
       </div>
 
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center">
         <button
           type="submit"
           disabled={isSubmitting}
