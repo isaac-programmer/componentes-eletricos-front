@@ -6,6 +6,7 @@ import { ForgotPasswordForm } from "@/components/organisms/ForgotPasswordForm";
 import { ForgotPasswordFormData } from "@/domain/schemas/passwordRecoverySchema";
 import { api } from "@/infra/services/api";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -54,14 +55,9 @@ export default function ForgotPasswordPage() {
           onSubmit={handleForgotPassword}
         />
 
-        <div className="text-center">
-          <button
-            onClick={() => router.push("/login")}
-            className="text-sm text-primary hover:underline"
-          >
-            Voltar para o Login
-          </button>
-        </div>
+        <Link href="/login" className="text-sm text-center text-primary hover:underline">
+          Voltar para o Login
+        </Link>
       </div>
     </div>
   );
