@@ -16,12 +16,12 @@ export default function ForgotPasswordPage() {
 
     try {
       await api.post("/auth/forgot-password", { email: data.email });
-      
+
       toast.success("Uma nova senha foi enviada para o seu e-mail");
       router.push("/login");
     } catch (error: any) {
       console.error("Falha ao solicitar recuperação de senha:", error);
-      
+
       if (error.response?.status === 404) {
         toast.error("O e-mail informado não existe para nenhum usuário cadastrado");
       } else {
@@ -33,28 +33,28 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="mb-12 cursor-pointer" onClick={() => router.push("/login")}>
+    <div className="flex flex-col items-center justify-center gap-8 w-full min-h-screen bg-gray-50 max-sm:px-4">
+      <div className="flex justify-center items-center cursor-pointer" onClick={() => router.push("/login")}>
         <img
           src="/logo-horizontal.png"
           alt="Logo da Universidade Federal do Ceará"
           className="w-[300px]"
         />
       </div>
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
+      <div className="flex flex-col gap-4 w-full max-w-md p-8 bg-white rounded-xl shadow-lg">
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-bold text-paragraph">Recuperar Senha</h1>
-          <p className="text-sm text-placeholder">
+          <p className="text-sm text-paragraph">
             Você receberá uma nova senha de acesso caso o e-mail exista no sistema.
           </p>
         </div>
-        
+
         <ForgotPasswordForm
           isSubmitting={isLoading}
           onSubmit={handleForgotPassword}
         />
 
-        <div className="text-center mt-4">
+        <div className="text-center">
           <button
             onClick={() => router.push("/login")}
             className="text-sm text-primary hover:underline"
