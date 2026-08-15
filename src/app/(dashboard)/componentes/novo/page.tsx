@@ -37,12 +37,10 @@ export default function NewComponentPage() {
   }, [setBreadcrumbs]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-regular text-paragraph">
-          Informações do componente
-        </h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-semibold text-paragraph max-lg:text-center lg:text-lg">
+        Informações do componente
+      </h1>
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-6">
         <ComponentForm

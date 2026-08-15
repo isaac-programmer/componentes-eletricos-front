@@ -47,12 +47,10 @@ export default function ComponentViewPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-paragraph">
-          Detalhes do Componente
-        </h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-semibold text-paragraph max-lg:text-center lg:text-lg">
+        Detalhes do Componente
+      </h1>
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-6">
         <ComponentViewForm
@@ -60,15 +58,17 @@ export default function ComponentViewPage() {
         />
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-6">
-        <h2 className="text-lg font-semibold text-paragraph mb-4">Quantidade por laboratório</h2>
-        <ComponentStockByLaboratoryTable
-          data={componentStockByLaboratory}
-          isLoading={isLoadingComponentStockByLaboratory}
-          onAddStock={() => {}}
-          onConsumeStock={() => {}}
-          onTransferStock={() => {}}
-        />
+      <div className="w-full bg-white rounded-lg shadow-sm border border-border p-6 max-sm:max-w-[85vw] max-sm:overflow-x-auto">
+        <h2 className="text-lg font-semibold text-paragraph mb-4 max-lg:text-center">Quantidade por laboratório</h2>
+        <div className="w-full max-sm:max-w-[85vw] max-sm:overflow-x-auto">
+          <ComponentStockByLaboratoryTable
+            data={componentStockByLaboratory}
+            isLoading={isLoadingComponentStockByLaboratory}
+            onAddStock={() => { }}
+            onConsumeStock={() => { }}
+            onTransferStock={() => { }}
+          />
+        </div>
       </div>
     </div>
   );

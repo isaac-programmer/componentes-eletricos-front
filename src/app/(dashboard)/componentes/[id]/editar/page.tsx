@@ -176,8 +176,8 @@ export default function EditComponentPage() {
   }
 
   return (
-    <div className="flex flex-col max-sm:items-center gap-6">
-      <h1 className="text-2xl font-semibold text-paragraph">
+    <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-semibold text-paragraph max-lg:text-center lg:text-lg">
         Editar Componente
       </h1>
 
@@ -191,7 +191,7 @@ export default function EditComponentPage() {
       </div>
 
       <div id="estoque" className="w-full bg-white rounded-lg shadow-sm border border-border p-6 max-sm:max-w-[85vw] max-sm:overflow-x-auto">
-        <h2 className="text-lg font-semibold text-paragraph mb-4 max-sm:text-center">Quantidade por laboratório</h2>
+        <h2 className="text-lg font-semibold text-paragraph mb-4 max-lg:text-center">Quantidade por laboratório</h2>
         <div className="w-full max-sm:max-w-[85vw] max-sm:overflow-x-auto">
           <ComponentStockByLaboratoryTable
             data={componentStockByLaboratory}
