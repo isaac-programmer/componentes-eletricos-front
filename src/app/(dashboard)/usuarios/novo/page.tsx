@@ -42,7 +42,7 @@ export default function NewUserPage() {
   }, [setBreadcrumbs]);
 
   return (
-    <div className="space-y-6 border border-black">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-regular text-paragraph">
           Informações do usuário
