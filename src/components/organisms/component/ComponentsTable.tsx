@@ -79,7 +79,7 @@ export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: C
     })
   };
 
-  const table = useReactTable({
+  const tableReactTable = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -91,9 +91,9 @@ export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: C
   }
 
   return (
-    <table className="w-full min-w-[700px] text-left text-sm">
+    <table className="w-full text-left text-sm">
       <thead className="border-b border-border text-paragraph font-semibold">
-        {table.getHeaderGroups().map(headerGroup => (
+        {tableReactTable.getHeaderGroups().map(headerGroup => (
           <tr
             key={headerGroup.id}
           >
@@ -109,7 +109,7 @@ export function ComponentsTable({ data, isLoading, onEdit, onView, onDelete }: C
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map(row => (
+        {tableReactTable.getRowModel().rows.map(row => (
           <tr
             key={row.id}
             className={clsx(

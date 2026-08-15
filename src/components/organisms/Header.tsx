@@ -19,24 +19,24 @@ export function Header({ onMenuClick }: HeaderProps) {
     const { items, icon: Icon } = breadcrumbs
 
     return (
-        <header className="bg-white-div border-b border-border flex items-center justify-between p-6 flex-shrink-0">
+        <header className="bg-white-div border-b border-border flex items-center justify-between p-6 shrink-0">
             <div className="flex items-center gap-3">
                 <button
                     onClick={onMenuClick}
-                    className="md:hidden p-1 text-gray-600 hover:text-primary"
+                    className="lg:hidden p-1 text-gray-600 hover:text-primary"
                 >
                     <Menu className="h-6 w-6" />
                 </button>
 
-                {Icon && <Icon className="h-6 w-6 hidden md:block text-primary" />}
+                {Icon && <Icon className="h-6 w-6 hidden lg:block text-primary" />}
 
                 {items.map((crumb, index) => (
-                    <div key={crumb.href} className="hidden md:flex items-center gap-2 text-primary">
-                        {index > 0 && <span className="text-xl hidden md:block text-primary">/</span>}
+                    <div key={crumb.href} className="hidden lg:flex items-center gap-2 text-primary">
+                        {index > 0 && <span className="text-xl hidden lg:block text-primary">/</span>}
                         {index === items.length - 1 ? (
-                            <span className="text-xl hidden md:block text-primary">{crumb.label}</span>
+                            <span className="text-xl hidden lg:block text-primary">{crumb.label}</span>
                         ) : (
-                            <Link href={crumb.href} className="text-xl hidden md:block text-primary">
+                            <Link href={crumb.href} className="text-xl hidden lg:block text-primary">
                                 {crumb.label}
                             </Link>
                         )}
