@@ -42,7 +42,7 @@ export function Sidebar({
   onCloseMobile,
 }: SidebarProps) {
   const pathname = usePathname();
-  
+
   const { user, signOut } = useAuthentication();
 
   const filteredNavItems = useMemo(() => {
@@ -76,7 +76,7 @@ export function Sidebar({
               "lg:block"
             )}
           />
-          
+
           <button
             className="p-1 rounded-md cursor-pointer hover:bg-gray-200 lg:hidden"
             onClick={onCloseMobile}
@@ -111,7 +111,7 @@ export function Sidebar({
                   : "text-primary hover:bg-gray-200"
               )}
             >
-              <navItem.icon className="h-5 w-5 flex-shrink-0" />
+              <navItem.icon className="h-5 w-5 shrink-0" />
               <span className={clsx(!isOpen && "lg:hidden")}>{navItem.label}</span>
             </Link>
           ))}
@@ -125,7 +125,7 @@ export function Sidebar({
               !isOpen && "justify-center"
             )}
           >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <LogOut className="h-5 w-5 shrink-0" />
             <span className={clsx(!isOpen && "lg:hidden")}>Sair</span>
           </span>
         </nav>
