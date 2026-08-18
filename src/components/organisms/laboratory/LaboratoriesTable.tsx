@@ -77,7 +77,7 @@ export function LaboratoriesTable({ data, isLoading, onEdit, onView }: Laborator
   }
 
   return (
-    <table className="w-full min-w-[700px] text-left text-sm">
+    <table className="w-full text-left text-sm">
       <thead className="border-b border-border text-paragraph font-semibold">
         {table.getHeaderGroups().map(headerGroup => (
           <tr
