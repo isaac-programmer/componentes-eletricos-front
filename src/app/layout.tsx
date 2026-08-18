@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Onest } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/infra/providers/QueryProvider";
@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   title: "Inventário de Componentes Elétricos",
   description: "Gerenciador de componentes eletrônicos da UFC - Sobral",
 };
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+}
 
 export default function RootLayout({
   children,

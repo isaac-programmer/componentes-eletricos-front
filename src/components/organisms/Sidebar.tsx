@@ -42,7 +42,7 @@ export function Sidebar({
   onCloseMobile,
 }: SidebarProps) {
   const pathname = usePathname();
-  
+
   const { user, signOut } = useAuthentication();
 
   const filteredNavItems = useMemo(() => {
@@ -58,14 +58,14 @@ export function Sidebar({
         "fixed inset-y-0 left-0 z-20",
         isMobileOpen ? "translate-x-0" : "-translate-x-full",
         "w-full",
-        "md:relative md:translate-x-0",
-        isOpen ? "md:w-64" : "md:w-auto"
+        "lg:relative lg:translate-x-0",
+        isOpen ? "lg:w-64" : "lg:w-auto"
       )}
     >
       <div className="flex flex-col gap-16 p-6">
         <div className={clsx(
           "flex items-center justify-between",
-          !isOpen && "md:justify-center",
+          !isOpen && "lg:justify-center",
         )}>
           <img
             src="/logo-horizontal.png"
@@ -73,19 +73,19 @@ export function Sidebar({
             className={clsx(
               "overflow-hidden transition-all",
               isOpen ? "w-32" : "w-0",
-              "md:block"
+              "lg:block"
             )}
           />
-          
+
           <button
-            className="p-1 rounded-md cursor-pointer hover:bg-gray-200 md:hidden"
+            className="p-1 rounded-md cursor-pointer hover:bg-gray-200 lg:hidden"
             onClick={onCloseMobile}
           >
             <ChevronLeft className="h-5 w-5 text-paragraph" />
           </button>
 
           <button
-            className="hidden md:block p-1 rounded-md cursor-pointer hover:bg-gray-200"
+            className="hidden lg:block p-1 rounded-md cursor-pointer hover:bg-gray-200"
             onClick={onToggleDesktop}
           >
             <ChevronLeft
@@ -111,8 +111,8 @@ export function Sidebar({
                   : "text-primary hover:bg-gray-200"
               )}
             >
-              <navItem.icon className="h-5 w-5 flex-shrink-0" />
-              <span className={clsx(!isOpen && "md:hidden")}>{navItem.label}</span>
+              <navItem.icon className="h-5 w-5 shrink-0" />
+              <span className={clsx(!isOpen && "lg:hidden")}>{navItem.label}</span>
             </Link>
           ))}
 
@@ -125,15 +125,15 @@ export function Sidebar({
               !isOpen && "justify-center"
             )}
           >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
-            <span className={clsx(!isOpen && "md:hidden")}>Sair</span>
+            <LogOut className="h-5 w-5 shrink-0" />
+            <span className={clsx(!isOpen && "lg:hidden")}>Sair</span>
           </span>
         </nav>
       </div>
 
       <div className="p-4">
         <p className="text-center text-xs text-paragraph">
-          2025 ©
+          {new Date().getFullYear()} ©
         </p>
       </div>
     </aside>

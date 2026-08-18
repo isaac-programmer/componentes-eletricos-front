@@ -9,7 +9,7 @@ import { useGetComponentById } from "@/useCases/component/useGetComponentById";
 import { useUpdateComponent } from "@/useCases/component/useUpdateComponent";
 import { useGetComponentStockByLaboratory } from "@/useCases/stock/useGetComponentStockByLaboratory";
 import { CircuitBoard } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldNamesMarkedBoolean } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -22,7 +22,6 @@ import { TransferStockForm } from "@/components/organisms/stock/TransferStockFor
 
 
 export default function EditComponentPage() {
-  const router = useRouter();
   const params = useParams();
 
   const { setBreadcrumbs } = useBreadcrumbs();
@@ -177,12 +176,10 @@ export default function EditComponentPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-paragraph">
-          Editar Componente
-        </h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-semibold text-paragraph max-lg:text-center lg:text-lg">
+        Editar Componente
+      </h1>
 
       <div className="bg-white rounded-lg shadow-sm border border-border p-6">
         <ComponentForm
@@ -193,15 +190,17 @@ export default function EditComponentPage() {
         />
       </div>
 
-      <div id="estoque" className="bg-white rounded-lg shadow-sm border border-border p-6">
-        <h2 className="text-lg font-semibold text-paragraph mb-4">Quantidade por laboratório</h2>
-        <ComponentStockByLaboratoryTable
-          data={componentStockByLaboratory}
-          isLoading={isLoadingComponentStockByLaboratory}
-          onAddStock={handleOpenAddModal}
-          onConsumeStock={handleOpenConsumeModal}
-          onTransferStock={handleOpenTransferModal}
-        />
+      <div id="estoque" className="w-full bg-white rounded-lg shadow-sm border border-border p-6 max-sm:max-w-[85vw] max-sm:overflow-x-auto">
+        <h2 className="text-lg font-semibold text-paragraph mb-4 max-lg:text-center">Quantidade por laboratório</h2>
+        <div className="w-full max-sm:max-w-[85vw] max-sm:overflow-x-auto">
+          <ComponentStockByLaboratoryTable
+            data={componentStockByLaboratory}
+            isLoading={isLoadingComponentStockByLaboratory}
+            onAddStock={handleOpenAddModal}
+            onConsumeStock={handleOpenConsumeModal}
+            onTransferStock={handleOpenTransferModal}
+          />
+        </div>
       </div>
 
       <Modal

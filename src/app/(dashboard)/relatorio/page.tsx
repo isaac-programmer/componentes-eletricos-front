@@ -110,23 +110,13 @@ export default function RelatoriosPage() {
     return date.toLocaleDateString("pt-BR");
   };
 
-  // if (isError) {
-  //   return (
-  //     <p
-  //       className="flex flex-col items-center justify-center h-[15vh] gap-4 p-8 bg-white text-center"
-  //     >
-  //       Ocorreu um erro ao buscar os registros de consumo de componentes
-  //     </p>
-  //   );
-  // }
-
   return (
-    <div className="flex flex-col space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h2 className="text-2xl text-paragraph md:text-lg font-regular">
+    <div className="flex flex-col max-lg:items-center gap-6">
+      <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between lg:gap-4">
+        <h2 className="text-2xl font-semibold text-paragraph lg:text-lg">
           Relatório de Consumo
         </h2>
-        <div className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="flex flex-col items-center gap-6 sm:flex-row sm:gap-4">
           <div className="relative w-full sm:w-auto bg-white">
             <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
               <Search className="h-4 w-4 text-primary" />
@@ -174,7 +164,7 @@ export default function RelatoriosPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-0 md:p-6 space-y-6">
+      <div className="w-full bg-white rounded-lg shadow-sm border border-border p-0 lg:p-6 max-lg:max-w-[85vw] max-lg:overflow-x-auto">
         <ReportTable
           data={reports}
           isLoading={isLoading}

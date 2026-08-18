@@ -30,7 +30,8 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
         leaveTo="transform opacity-0 scale-95"
       >
         <MenuItems
-          className="absolute right-0 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-10"
+          anchor="bottom end"
+          className="w-40 mt-1 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50"
         >
           <div className="px-1 py-1">
             <MenuItem>
@@ -39,7 +40,7 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
                   e.stopPropagation();
                   onEdit();
                 }}
-                className={"data-[active]:bg-primary data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+                className={"data-active:bg-primary data-active:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
               >
                 <Pencil className="w-4 h-4" />
                 Editar
@@ -52,7 +53,7 @@ export function ActionsMenu({ onEdit, onDelete }: ActionsMenuProps) {
                     e.stopPropagation();
                     onDelete();
                   }}
-                  className={"data-[active]:bg-red-500 data-[active]:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
+                  className={"data-active:bg-red-500 data-active:text-white text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"}
                 >
                   <Trash2 className="w-4 h-4" />
                   Excluir

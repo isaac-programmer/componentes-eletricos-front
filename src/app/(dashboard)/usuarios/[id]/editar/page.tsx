@@ -72,10 +72,6 @@ export default function EditUserPage() {
       payload.imageUrl = null;
     }
 
-    // if (payload.confirmPassword) {
-    //   delete payload.confirmPassword;
-    // }
-
     try {
       await updateUser({ id, data: payload });
       toast.success("Usuário atualizado com sucesso!");
@@ -111,14 +107,12 @@ export default function EditUserPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-paragraph">
-          Editar Usuário
-        </h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-semibold text-paragraph max-lg:text-center lg:text-lg">
+        Editar Usuário
+      </h1>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-6 my-0 mx-auto md:w-[40vw]">
+      <div className="bg-white rounded-lg shadow-sm border border-border p-6 w-full mx-auto lg:w-[40vw]">
         <UpdateUserForm
           initialData={user}
           onSubmit={handleUpdateUser}

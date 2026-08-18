@@ -66,8 +66,8 @@ export function ComponentForm({
   }, [initialData, reset]);
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data, dirtyFields))} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="md:col-span-2 space-y-4">
+    <form onSubmit={handleSubmit((data) => onSubmit(data, dirtyFields))} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-4">
         <div>
           <label htmlFor="name">Nome*</label>
           <input
@@ -144,7 +144,7 @@ export function ComponentForm({
         </div>
       </div>
 
-      <div className="md:col-span-1">
+      <div className="lg:col-span-1">
         <Controller
           name="image"
           control={control}
@@ -161,7 +161,7 @@ export function ComponentForm({
       </div>
 
       {isAdmin && (
-        <div className="md:col-span-3 flex justify-center md:justify-start gap-3 mt-4">
+        <div className="lg:col-span-3 flex justify-center lg:justify-start gap-3 mt-4">
           <button
             type="button"
             onClick={() => router.push("/componentes")}

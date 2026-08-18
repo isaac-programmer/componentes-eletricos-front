@@ -2,7 +2,7 @@
 
 import { useGetGroups } from "@/useCases/group/useGetGroups";
 import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
-import { Filter } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import { Fragment } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { mask } from "remask";
@@ -56,22 +56,36 @@ export function UserFilter({ onApplyFilters }: UserFiltersProps) {
 
   return (
     <Popover className="relative">
-      <PopoverButton className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-primary border border-primary rounded-md text-sm font-medium bg-white hover:bg-gray-50 focus:outline-none">
-        <Filter className="h-4 w-4" />
-        <span>Filtro</span>
-      </PopoverButton>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-200"
-        enterFrom="opacity-0 translate-y-1"
-        enterTo="opacity-100 translate-y-0"
-        leave="transition ease-in duration-150"
-        leaveFrom="opacity-100 translate-y-0"
-        leaveTo="opacity-0 translate-y-1"
-      >
-        <PopoverPanel className="absolute right-0 z-10 mt-2 w-screen max-w-xs transform px-4 sm:px-0">
-          <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
-            <form onSubmit={handleSubmit(onSubmit)} className="relative bg-white p-6 space-y-4">
+      {({ close }) => (
+        <>
+          <PopoverButton className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-primary border border-primary rounded-md text-sm font-medium bg-white hover:bg-gray-50 focus:outline-none">
+            <Filter className="h-4 w-4" />
+            <span>Filtro</span>
+          </PopoverButton>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 translate-y-1"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-1"
+          >
+            <PopoverPanel className="max-lg:fixed max-lg:inset-0 max-lg:z-50 max-lg:w-full max-lg:h-dvh max-lg:bg-white max-lg:overflow-y-auto lg:absolute lg:right-0 lg:z-10 lg:mt-2 lg:w-screen lg:max-w-xs lg:transform lg:px-0">
+              <div className="lg:overflow-hidden lg:rounded-lg lg:shadow-lg lg:ring-1 lg:ring-black/5 max-lg:min-h-full max-lg:p-4">
+                <div className="lg:hidden flex justify-between items-center pb-4 mb-4">
+                  <h3 className="text-lg font-medium text-primary">Filtro</h3>
+                  <button type="button" onClick={() => close()} className="p-1 rounded-full hover:bg-gray-100">
+                    <X className="h-4 w-4 text-primary" />
+                  </button>
+                </div>
+                <form
+                  onSubmit={handleSubmit((data) => {
+                    onSubmit(data);
+                    close();
+                  })}
+                  className="relative bg-white lg:p-6 space-y-4"
+                >
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <input
@@ -178,7 +192,14 @@ export function UserFilter({ onApplyFilters }: UserFiltersProps) {
               )}
 
               <div className="flex justify-center gap-2 pt-4">
-                <button type="button" onClick={handleClearFilters} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleClearFilters();
+                    close();
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                >
                   Limpar
                 </button>
                 <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90">
@@ -187,8 +208,10 @@ export function UserFilter({ onApplyFilters }: UserFiltersProps) {
               </div>
             </form>
           </div>
-        </PopoverPanel>
-      </Transition >
-    </Popover >
+            </PopoverPanel>
+          </Transition>
+        </>
+      )}
+    </Popover>
   );
 }
