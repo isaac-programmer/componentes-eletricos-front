@@ -133,7 +133,7 @@ export function Sidebar({
 
       <div className="p-4">
         <p className="text-center text-xs text-paragraph">
-          2025 ©
+          {new Date().getFullYear()} ©
         </p>
       </div>
     </aside>

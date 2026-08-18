@@ -133,12 +133,12 @@ export default function Usuarios() {
   const meta = useMemo(() => listUsers?.meta, [listUsers]);
 
   return (
-    <div className="flex flex-col space-y-6">
-      <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between md:gap-4">
-        <h2 className="text-2xl text-paragraph md:text-lg">
+    <div className="flex flex-col max-lg:items-center gap-6">
+      <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between lg:gap-4">
+        <h1 className="text-2xl font-semibold text-paragraph lg:text-lg">
           Usuários cadastrados
-        </h2>
-        <div className="flex flex-col sm:flex-row items-center gap-4">
+        </h1>
+        <div className="flex flex-col items-center gap-6 sm:flex-row sm:gap-4">
           <div className="relative w-full sm:w-auto bg-white">
             <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
               <Search className="h-4 w-4 text-primary" />
@@ -166,7 +166,7 @@ export default function Usuarios() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-0 md:p-6 space-y-6">
+      <div className="w-full bg-white rounded-lg shadow-sm border border-border p-0 lg:p-6 max-lg:max-w-[85vw] max-lg:overflow-x-auto">
         <UsersTable
           data={users}
           isLoading={isLoading}
