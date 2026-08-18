@@ -127,13 +127,11 @@ export default function MyProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-paragraph">
-          Editar Meu Perfil
-        </h1>
-      </div>
+      <h1 className="text-2xl font-semibold text-paragraph max-lg:text-center lg:text-lg">
+        Editar Meu Perfil
+      </h1>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-6 my-0 mx-auto md:w-[40vw]">
+      <div className="bg-white rounded-lg shadow-sm border border-border p-6 w-full mx-auto lg:w-[40vw]">
         <UpdateMyProfileForm
           onSubmit={handleUpdateMyProfile}
           isSubmitting={isSubmitting}

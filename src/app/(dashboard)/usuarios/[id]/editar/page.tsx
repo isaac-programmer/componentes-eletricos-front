@@ -72,10 +72,6 @@ export default function EditUserPage() {
       payload.imageUrl = null;
     }
 
-    // if (payload.confirmPassword) {
-    //   delete payload.confirmPassword;
-    // }
-
     try {
       await updateUser({ id, data: payload });
       toast.success("Usuário atualizado com sucesso!");
@@ -116,7 +112,7 @@ export default function EditUserPage() {
         Editar Usuário
       </h1>
 
-      <div className="bg-white rounded-lg shadow-sm border border-border p-6 w-full lg:w-[40vw] mx-auto">
+      <div className="bg-white rounded-lg shadow-sm border border-border p-6 w-full mx-auto lg:w-[40vw]">
         <UpdateUserForm
           initialData={user}
           onSubmit={handleUpdateUser}
